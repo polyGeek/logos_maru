@@ -1,0 +1,87 @@
+import 'package:flutter/material.dart';
+import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/lang_controller.dart';
+import 'package:logos_maru/logos/model/lang_vo.dart';
+import 'package:logos_maru/logos/model/logos_controller.dart';
+
+class LanguageChooser extends StatefulWidget {
+
+  final void Function( bool isBusy ) callbackState;
+
+  LanguageChooser( { required this.callbackState } );
+
+  @override
+  State<LanguageChooser> createState() => _LanguageChooserState();
+}
+
+class _LanguageChooserState extends State<LanguageChooser> {
+
+  String _dropdownValue = LanguageController().editingLanguageCode;
+
+  @override
+  void initState() {
+    LanguageController().addListener(() { _update(); });
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    LanguageController().removeListener(() { _update(); });
+    super.dispose();
+  }
+
+  void _update() {
+    if( mounted )
+      setState(() {});
+  }
+
+  @override
+  Widget build( BuildContext context ) {
+    return DropdownButton<String>(
+      value: _dropdownValue,
+      icon: const Icon(Icons.arrow_downward),
+      iconSize: 24,
+      elevation: 16,
+      style: const TextStyle(color: Colors.deepPurple),
+      underline: Container(
+        height: 2,
+        color: Colors.deepPurpleAccent,
+      ),
+
+      onChanged: ( String? newValue ) async {
+        _dropdownValue = newValue!;
+        EOL.log(msg: 'Changing edit language start');
+        widget.callbackState( true );
+        await LogosController().changeEditingLanguage( langCode: newValue );
+        if( mounted )
+          setState(() {});
+        widget.callbackState( false );
+      },
+      items: LanguageController().languageOptionsList.map<DropdownMenuItem<String>>(( LangVO value ) {
+        return DropdownMenuItem<String>(
+          value: value.langCode,
+          child: Text( value.langCode + ' - ' + value.name ),
+        );
+      }).toList(),
+    );
+  }
+}
+
+
+class CircularProgress extends StatelessWidget {
+
+  @override
+  Widget build( BuildContext context ) {
+    return Center(
+      child: Container(
+        constraints: BoxConstraints( maxHeight: 20, maxWidth:  20 ),
+        child: Center(
+          child: CircularProgressIndicator(
+            color: Colors.deepPurpleAccent,
+            strokeWidth: 1,
+          ),
+        ),
+      ),
+    );
+  }
+}
