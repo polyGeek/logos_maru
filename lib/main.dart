@@ -9,17 +9,16 @@ import 'package:logos_maru/test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /**
+ * 1a
  * On desktop set: Editor > Code Style > Dart: Line Length = 200
  * So that there's no more wrapping.
  *
- * 1a
  *
  * todo:
  * When someone becomes an editor download all the language updates.
  * Store "My Name" in DB and test that retrieved data updates widget.
  *
-
-
+ *
  * On the server:
  * Move to AWS
  * Sanitize the text.
