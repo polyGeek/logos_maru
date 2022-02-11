@@ -9,6 +9,8 @@ import 'package:logos_maru/test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /**
+ * Adding richtxt option
+ *
  * On desktop set: Editor > Code Style > Dart: Line Length = 200
  * So that there's no more wrapping.
  *
