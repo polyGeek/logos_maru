@@ -23,7 +23,7 @@ class _LogosEditorState extends State<LogosEditor> {
   @override
   void initState() {
     super.initState();
-    _logosVO = LogosController().getEditLogos(logosID: widget.logosID );
+    _logosVO = LogosController().getEditLogos( logosID: widget.logosID );
     _tecTxt.text = _logosVO.txt;
 
     _tecNote.text = _logosVO.note;
@@ -41,7 +41,7 @@ class _LogosEditorState extends State<LogosEditor> {
 
   void _update() {
     EOL.log(msg: "EDITOR SET STATE");
-    _logosVO = LogosController().getEditLogos(logosID: widget.logosID );
+    _logosVO = LogosController().getEditLogos( logosID: widget.logosID );
     _tecTxt.text = _logosVO.txt;
     _tecNote.text = _logosVO.note;
 
@@ -59,7 +59,7 @@ class _LogosEditorState extends State<LogosEditor> {
   Widget build( BuildContext context ) {
     return AlertDialog(
       scrollable: true,
-      insetPadding: EdgeInsets.zero,
+      insetPadding: EdgeInsets.symmetric( horizontal: 5 ),
       contentPadding: EdgeInsets.symmetric( vertical: 5, horizontal: 10 ),
 
       content: ( _isBusy == true )
@@ -81,6 +81,8 @@ class _LogosEditorState extends State<LogosEditor> {
               children: [
 
                 Text( 'logosID: ' + widget.logosID.toString(), ),
+
+                Expanded(child: SizedBox() ),
 
                 LanguageChooser( callbackState: changeBusyState,),
               ],
@@ -115,6 +117,22 @@ class _LogosEditorState extends State<LogosEditor> {
             SizedBox( height: 5,),
 
             Text( 'Tags: ' + _logosVO.tags ),
+
+            Row(
+              children: [
+                Checkbox(
+                    value: ( _logosVO.isRich == 1 )? true : false,
+                    onChanged: ( bool? value ) {
+                      LogosController().setEditingLogoVOisRich( logosID: widget.logosID, isRich: value! );
+                    }
+                ),
+                Text( 'isRichTxt' ),
+
+                Expanded(child: SizedBox() ),
+
+                StyleChooser( logosID: widget.logosID, ),
+              ],
+            ),
 
             SizedBox( height: 15,),
 
@@ -171,3 +189,4 @@ class _LogosEditorState extends State<LogosEditor> {
     );
   }
 }
+

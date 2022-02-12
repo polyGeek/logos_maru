@@ -9,7 +9,9 @@ import 'package:logos_maru/test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /**
- * Adding richtxt option
+ * Add richtxt option
+ * Add edit by user
+ * Add style
  *
  * On desktop set: Editor > Code Style > Dart: Line Length = 200
  * So that there's no more wrapping.
@@ -17,7 +19,7 @@ import 'package:package_info_plus/package_info_plus.dart';
  *
  * todo:
  * When someone becomes an editor download all the language updates.
- * Store "My Name" in DB and test that retrieved data updates widget.
+ * Store "My Name" in DBch and test that retrieved data updates widget.
  *
  *
  * On the server:

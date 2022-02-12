@@ -1,3 +1,24 @@
+import 'package:logos_maru/logos/model/eol.dart';
+
+enum Styles {
+  body,
+  title,
+  header,
+  subHeader,
+  strong,
+  em
+}
+
+extension on Styles {
+  String get name => describeEnum(this);
+}
+
+String describeEnum(Object enumEntry) {
+  final String description = enumEntry.toString();
+  final int indexOfDot = description.indexOf('.');
+  assert(indexOfDot != -1 && indexOfDot < description.length - 1);
+  return description.substring(indexOfDot + 1);
+}
 
 class LogosVO {
   int logosID;
@@ -7,6 +28,8 @@ class LogosVO {
   String langCode;
   String txt;
   String lastUpdate;
+  String style;
+  int isRich;
 
   LogosVO( {
     required this.logosID,
@@ -15,7 +38,9 @@ class LogosVO {
     required this.description,
     required this.langCode,
     required this.txt,
-    required this.lastUpdate
+    required this.lastUpdate,
+    required this.style,
+    required this.isRich
   }) {
     this.txt = unEscapeTxt( s: txt );
     this.note = unEscapeTxt( s: note );
@@ -30,6 +55,8 @@ class LogosVO {
         txt         : map[ 'txt' ],
         note        : map[ 'note' ],
         lastUpdate	: map[ 'lastUpdate' ],
+        style      : map[ 'style' ],
+        isRich      : map[ 'isRich' ],
     );
   }
 
@@ -47,6 +74,7 @@ class LogosVO {
       'txt'         : escapeTxt( s: txt ),
       'note'        : note,
       'lastUpdate'  : lastUpdate,
+      'style'      : style,
     };
   }
 
@@ -63,16 +91,50 @@ class LogosVO {
   }
 
   factory LogosVO.fromJson( Map<String, dynamic> json ) {
+    _log(msg: json.toString() );
+
     LogosVO logosVO = LogosVO(
-      logosID        : int.parse(json[ 'logosID' ]),
+      logosID       : int.parse(json[ 'logosID' ]),
       description   : json[ 'description' ],
       tags          : json[ 'tags' ],
-      note          : json[ 'note' ],
+      note          : ( json[ 'note' ] == null )? '' : json[ 'note' ],
       langCode      : ( json[ 'langCode' ] == null )? '' : json[ 'langCode' ],
       txt           : json[ 'txt' ],
       lastUpdate    : json[ 'lastUpdate' ],
+      style         : json[ 'style' ],
+      isRich        : int.parse( json[ 'isRich' ] ),
     );
     return logosVO;
+  }
+
+  static Styles getStyleName( { required String style } ) {
+    switch( style ) {
+      case 'title':
+        return Styles.title;
+      case 'header':
+        return Styles.header;
+      case 'subHeader':
+        return Styles.subHeader;
+      case 'strong':
+        return Styles.strong;
+      case 'em':
+        return Styles.em;
+      default:
+        return Styles.body;
+    }
+  }
+
+  static bool isDebug = true;
+  static void _log( { required String msg, String title = '', bool isJson=false, bool shout=false, bool fail=false } ) {
+    if ( isDebug == true || EOL.isDEBUG == true )
+      EOL.log(
+        msg: msg,
+        title: title,
+        isJson: isJson,
+        shout: shout,
+        fail: fail,
+        color: EOL.comboBlue_Black,
+      );
   }
 }
 

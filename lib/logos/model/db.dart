@@ -12,6 +12,10 @@ class LogosDB {
   Future<String> getLastUpdate( { required String langCode } ) async {
 
     Database db = await DBHelpers.openLogosDatabase( langCode: langCode );
+    await DBHelpers.updateDB(
+        db: db,
+        langCode: langCode
+    );
 
     /// Query the table for the movie to be updated.
     final List<Map<String, dynamic>> maps = await db.rawQuery(
@@ -24,13 +28,15 @@ class LogosDB {
       _log( msg: 'i = ' + i.toString() );
 
       return LogosVO(
-        logosID       : maps[i][ 'logosID' ],
-        description   : maps[i][ 'description' ],
-        tags          : maps[i][ 'tags' ],
-        langCode      : ( maps[i][ 'langCode' ] == null )? '' : maps[i][ 'langCode' ],
-        txt           : ( maps[i][ 'txt' ] == null )? '' : maps[i][ 'txt' ],
-        note          : ( maps[i][ 'note' ] == null )? '' : maps[i][ 'note' ],
-        lastUpdate    : maps[i][ 'lastUpdate' ],
+          logosID       : maps[i][ 'logosID' ],
+          description   : maps[i][ 'description' ],
+          tags          : maps[i][ 'tags' ],
+          langCode      : ( maps[i][ 'langCode' ] == null )? '' : maps[i][ 'langCode' ],
+          txt           : ( maps[i][ 'txt' ] == null )? '' : maps[i][ 'txt' ],
+          note          : ( maps[i][ 'note' ] == null )? '' : maps[i][ 'note' ],
+          lastUpdate    : maps[i][ 'lastUpdate' ],
+          style         : maps[i][ 'style' ],
+          isRich        : maps[i][ 'isRich' ]
       );
     });
 
@@ -53,13 +59,15 @@ class LogosDB {
       List<LogosVO> list = List.generate( maps.length, (i) {
 
         return LogosVO(
-          logosID      : maps[i][ 'logosID' ],
+          logosID     : maps[i][ 'logosID' ],
           description : maps[i][ 'description' ],
           tags        : maps[i][ 'tags' ],
           langCode    : (maps[i][ 'langCode' ] == null )? '' : maps[i][ 'langCode' ],
           note        : (maps[i][ 'note' ] == null )? '' : maps[i][ 'note' ],
           txt         : (maps[i][ 'txt' ] == null )? '' : maps[i][ 'txt' ],
           lastUpdate  : maps[i][ 'lastUpdate' ],
+          style       : ( maps[i][ 'style' ] == null )? '' : maps[i][ 'style' ],
+          isRich      : ( maps[i][ 'isRich' ] == null )? 0 : maps[i][ 'isRich' ],
         );
       });
 
@@ -129,6 +137,8 @@ class LogosDB {
     List<Map<String, dynamic>> maps;
     String sql = '';
 
+    _log( msg: 'changesList.length: ' + changesList.length.toString() );
+
     for( int i = 0; i < changesList.length; i++ ) {
       LogosVO logosVO = changesList.elementAt( i );
 
@@ -146,6 +156,8 @@ class LogosDB {
             "tags, "
             "note, "
             "txt, "
+            "style, "
+            "isRich, "
             "lastUpdate "
             " ) VALUES ( "
             + logosVO.logosID.toString() + ', '
@@ -153,6 +165,8 @@ class LogosDB {
             + "'" + logosVO.tags.escapeTxt() + "', "
             + "'" + logosVO.note.escapeTxt() + "', "
             + "'" + logosVO.txt.escapeTxt() + "', "
+            + "'" + logosVO.style + "', "
+            + logosVO.isRich.toString() + ", "
             + "'" + logosVO.lastUpdate + "' "
             + ' ) '
         );
@@ -164,12 +178,14 @@ class LogosDB {
       } else {
 
         await db.rawQuery( "UPDATE `logos_$langCode` SET "
-            "description = '" + logosVO.description.escapeTxt() + "', "
-            + "tags = '" + logosVO.tags.escapeTxt() + "', "
-            + "note = '" + logosVO.note.escapeTxt() + "', "
-            + "'txt' = '" + logosVO.txt.escapeTxt() + "', "
-            + "lastUpdate = '" + logosVO.lastUpdate + "' "
-            + "WHERE logosID = " + logosVO.logosID.toString()
+            "description      = '" + logosVO.description.escapeTxt() + "', "
+            + "tags           = '" + logosVO.tags.escapeTxt() + "', "
+            + "note           = '" + logosVO.note.escapeTxt() + "', "
+            + "txt            = '" + logosVO.txt.escapeTxt() + "', "
+            + "style          = '" + logosVO.style + "', "
+            + "isRich         = " + logosVO.isRich.toString() + ", "
+            + "lastUpdate     = '" + logosVO.lastUpdate + "' "
+            + "WHERE logosID  = " + logosVO.logosID.toString()
         );
 
         /// Select the row that was just UPDATED.
@@ -182,13 +198,16 @@ class LogosDB {
 
 
     return LogosVO(
-      logosID      : maps[0][ 'logosID' ],
-      description : maps[0][ 'description' ],
-      tags        : maps[0][ 'tags' ],
-      lastUpdate  : maps[0][ 'lastUpdate' ],
-      langCode    : ( maps[0][ 'langCode' ] == null ) ? '' : maps[0][ 'langCode' ],
-      note        : ( maps[0][ 'note' ] == null )     ? '' : maps[0][ 'note' ],
-      txt         : ( maps[0][ 'txt' ] == null )      ? '' : maps[0][ 'txt' ],
+        logosID      : maps[0][ 'logosID' ],
+        description : maps[0][ 'description' ],
+        tags        : maps[0][ 'tags' ],
+        lastUpdate  : maps[0][ 'lastUpdate' ],
+        langCode    : ( maps[0][ 'langCode' ] == null ) ? '' : maps[0][ 'langCode' ],
+        note        : ( maps[0][ 'note' ] == null )     ? '' : maps[0][ 'note' ],
+        txt         : ( maps[0][ 'txt' ] == null )      ? '' : maps[0][ 'txt' ],
+        style        : maps[0][ 'style' ],
+        isRich        : maps[0][ 'isRich' ]
+
     );
   }
 
@@ -283,5 +302,3 @@ class LogosDB {
       );
   }
 }
-
-

@@ -64,7 +64,7 @@ class LogosController extends ChangeNotifier {
     //_editingChanList = _chanList; /// doing this when the user becomes editor.
 
     /// 4: get any changes approved by the remote DB.
-    getRemoteChanges(langCode: LanguageController().editingLanguageCode);
+    getRemoteChanges( langCode: LanguageController().selectedLanguageCode );
 
     /// 5: Set the EditingLanguage Code to be the same as the viewing language code.
     LanguageController().editingLanguageCode = LanguageController().selectedLanguageCode;
@@ -78,9 +78,9 @@ class LogosController extends ChangeNotifier {
     }
   }
 
-  Future<void> getRemoteChanges({ required String langCode }) async {
+  Future<void> getRemoteChanges( { required String langCode } ) async {
     /// What is the timestamp of the last added entry?
-    String lastUpdate = await LogosDB().getLastUpdate(langCode: langCode);
+    String lastUpdate = await LogosDB().getLastUpdate( langCode: langCode );
 
     /// Get the last index in the langPref local DB,
     /// so we can check for additions in the remote DB.
@@ -184,7 +184,7 @@ class LogosController extends ChangeNotifier {
     _log( msg: "ERROR logosID =  $logosID" );
     /// Error
     return logosVO = LogosVO(
-      logosID: 0, description: '', lastUpdate: '', note: '', tags: '',
+      logosID: 0, description: '', lastUpdate: '', note: '', tags: '', style: '', isRich: 0,
       langCode: LanguageController().editingLanguageCode,
       txt: 'ERROR: ' + logosID.toString(),
     );
@@ -239,6 +239,8 @@ class LogosController extends ChangeNotifier {
       'description' : logosVO.description,
       'tags'        : logosVO.tags,
       'note'        : logosVO.note,
+      'isRich'      : logosVO.isRich.toString(),
+      'style'       : logosVO.style,
     };
 
     _log(msg: "Data to server: " + map.toString() );
@@ -257,13 +259,13 @@ class LogosController extends ChangeNotifier {
     );
 
     /// Update the model.
-    updateModel( logosVO: logosVO );
+    updateLogosList( logosVO: logosVO );
 
     notifyListeners();
 
   }
 
-  void updateModel( { required LogosVO logosVO } ) {
+  void updateLogosList( { required LogosVO logosVO } ) {
     for ( int i = 0; i < _logosList.length; i++ ) {
       LogosVO _logosVO = _logosList.elementAt( i );
       if( logosVO.logosID == _logosVO.logosID ) {
@@ -273,10 +275,35 @@ class LogosController extends ChangeNotifier {
     }
   }
 
+  void updateEditLogosList( { required LogosVO logosVO } ) {
+    for ( int i = 0; i < _editingLogosList.length; i++ ) {
+      LogosVO _logosVO = _editingLogosList.elementAt( i );
+      if( logosVO.logosID == _logosVO.logosID ) {
+        _editingLogosList[i] = logosVO;
+        break;
+      }
+    }
+  }
+
   void update() {
     Future.delayed( const Duration( milliseconds: 100 ), () {
       notifyListeners();
     });
+  }
+
+
+
+  void setEditingLogoVOisRich( { required int logosID, required bool isRich } ) {
+    LogosVO logosVO = getEditLogos( logosID: logosID );
+    logosVO.isRich = ( isRich == true )? 1 : 0;
+    updateEditLogosList( logosVO: logosVO );
+    update();
+  }
+
+  void setEditingLogoVOstyle( { required int logosID, required String style } ) {
+    LogosVO logosVO = getEditLogos( logosID: logosID );
+    logosVO.style = style;
+    updateEditLogosList( logosVO: logosVO );
   }
 
   String insertVars( { required String txt, required Map vars } ) {
