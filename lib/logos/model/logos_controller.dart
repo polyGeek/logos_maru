@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:logos_maru/logos/model/db.dart';
+import 'package:logos_maru/logos/model/db_helpers.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
@@ -38,15 +39,11 @@ class LogosController extends ChangeNotifier {
   Future<bool> init() async {
 
     /// 0: Copy databases from assets folder
-    /*bool doesExist = await DBHelpers.copyEmbeddedDatabase( filename: 'logos_pref.db' );
-    if( doesExist == false ) {
-      _log(msg: 'coping databases', shout: true );
-      /// Load the rest of the language files
-      DBHelpers.copyEmbeddedDatabase( filename: 'logos_AR.db' );
-      DBHelpers.copyEmbeddedDatabase( filename: 'logos_CN.db' );
-      DBHelpers.copyEmbeddedDatabase( filename: 'logos_EN.db' );
-      DBHelpers.copyEmbeddedDatabase( filename: 'logos_ES.db' );
-    }*/
+    DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_pref.db' );
+    DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_AR.db' );
+    DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_CN.db' );
+    DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_EN.db' );
+    DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_ES.db' );
 
     /// 1: get the selected langCode from the local DB.
     LanguageController().selectedLanguageCode = await LogosDB().getSavedLanguagePreference();
@@ -159,6 +156,22 @@ class LogosController extends ChangeNotifier {
     }
 
     return 'ERROR: ' + logosID.toString();
+  }
+
+  LogosVO getLogosVO( {
+    required int logosID,
+    Map? vars }) {
+
+    for (int i = 0; i < _logosList.length; i++) {
+      LogosVO logosVO = _logosList.elementAt(i);
+      if ( logosVO.logosID == logosID ) {
+        return logosVO;
+      }
+    }
+
+    return LogosVO(
+        txt: 'ERROR',
+        logosID: 0, tags: '', note: '', description: '', langCode: 'EN', lastUpdate: '', style: '', isRich: 0 );
   }
 
   LogosVO getEditLogos({
@@ -337,12 +350,12 @@ class LogosController extends ChangeNotifier {
   static void _log( { required String msg, String title = '', bool isJson=false, bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )
       EOL.log(
-          msg: msg,
-          title: title,
-          isJson: isJson,
-          shout: shout,
-          fail: fail,
-          color: EOL.comboGreen_White,
+        msg: msg,
+        title: title,
+        isJson: isJson,
+        shout: shout,
+        fail: fail,
+        color: EOL.comboGreen_White,
       );
   }
 }

@@ -1,9 +1,15 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
+import 'package:logos_maru/logos/model/styles.dart';
+import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 
 class LogosEditor extends StatefulWidget {
@@ -15,10 +21,13 @@ class LogosEditor extends StatefulWidget {
 }
 
 class _LogosEditorState extends State<LogosEditor> {
+
   final _tecTxt   = TextEditingController();
   final _tecNote  = TextEditingController();
+
   late LogosVO _logosVO;
   bool _isBusy = false;
+  Function? _formatFN = null;
 
   @override
   void initState() {
@@ -52,6 +61,42 @@ class _LogosEditorState extends State<LogosEditor> {
   void changeBusyState( bool isBusy ) {
     _isBusy = isBusy;
     EOL.log(msg: "isBusy: " + isBusy.toString() );
+  }
+
+  void formatingCallback( String formatChar ) {
+
+    int selectionStart = _tecTxt.selection.start;
+    int selectionEnd = _tecTxt.selection.extent.offset;
+
+    String txt = _tecTxt.text;
+    String t1 = '';
+    String t2 = '';
+    String newTxt = '';
+
+    if( selectionStart == selectionEnd ) {
+      /// Insert one character where the cursor is.
+      t1 = txt.substring( 0, selectionStart );
+      t2 = txt.substring( selectionStart, txt.length );
+      newTxt = t1 + formatChar + t2;
+      selectionEnd ++;
+
+    } else {
+      /// Insert formatChar around the text selection.
+      String t1 = txt.substring( 0, selectionStart );
+      String s  = txt.substring( selectionStart, selectionEnd );
+      String t2 = txt.substring( selectionEnd, txt.length );
+      newTxt = t1 + formatChar + s + formatChar + t2;
+      selectionEnd += 2;
+    }
+
+    print( t1 + formatChar + t2 );
+    _tecTxt.value = TextEditingValue(
+      text: newTxt,
+      selection: TextSelection.fromPosition(
+        TextPosition( offset: selectionEnd ),
+      ),
+    );
+    setState(() {});
 
   }
 
@@ -88,6 +133,56 @@ class _LogosEditorState extends State<LogosEditor> {
               ],
             ),
 
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              children: [
+
+                Checkbox(
+                    value: ( _logosVO.isRich == 1 )? true : false,
+                    onChanged: ( bool? value ) {
+                      LogosController().setEditingLogoVOisRich( logosID: widget.logosID, isRich: value! );
+                    }
+                ),
+
+                GestureDetector(
+                    onTap: () {
+                      bool newValue = ( _logosVO.isRich == 1 )? false : true;
+                      LogosController().setEditingLogoVOisRich( logosID: widget.logosID, isRich: newValue );
+                    },
+                    child: Text( 'isRichTxt' )
+                ),
+
+                SizedBox( width: 8 ,),
+
+                _FormatingBtn(
+                  format: '*',
+                  formatedCharacter: 'I',
+                  callback: formatingCallback,
+                ),
+
+                SizedBox( width: 8 ,),
+
+                _FormatingBtn(
+                  format: '^',
+                  formatedCharacter: 'B',
+                  callback: formatingCallback,
+                ),
+
+                SizedBox( width: 8 ,),
+
+                _FormatingBtn(
+                  format: '_',
+                  formatedCharacter: 'U',
+                  callback: formatingCallback,
+                ),
+
+
+
+              ],
+            ),
+
+            SizedBox( height:  5,),
+
             TextField(
               minLines: 1, /// Normal textInputField will be displayed
               maxLines: 5, /// When user presses enter it will adapt to it
@@ -116,17 +211,10 @@ class _LogosEditorState extends State<LogosEditor> {
 
             SizedBox( height: 5,),
 
-            Text( 'Tags: ' + _logosVO.tags ),
-
             Row(
               children: [
-                Checkbox(
-                    value: ( _logosVO.isRich == 1 )? true : false,
-                    onChanged: ( bool? value ) {
-                      LogosController().setEditingLogoVOisRich( logosID: widget.logosID, isRich: value! );
-                    }
-                ),
-                Text( 'isRichTxt' ),
+
+                Text( 'Tags: ' + _logosVO.tags ),
 
                 Expanded(child: SizedBox() ),
 
@@ -189,4 +277,46 @@ class _LogosEditorState extends State<LogosEditor> {
     );
   }
 }
+
+class _FormatingBtn extends StatelessWidget {
+
+  final String formatedCharacter;
+  final String format;
+  final void Function( String s ) callback;
+
+  _FormatingBtn( {
+    required this.formatedCharacter,
+    required this.format,
+    required this.callback,
+  });
+
+  @override
+  Widget build( BuildContext context ) {
+    return ElevatedButton(
+      onPressed: () {
+        callback( format );
+      },
+
+      style: ElevatedButton.styleFrom(
+        primary: Colors.white,
+      ),
+      child: SizedBox(
+        width: 25,
+        child: Row(
+          children: [
+            Text( format, style: TextStyle( color: Colors.black ), ),
+
+            RichTxt(
+              txt: format + formatedCharacter + format,
+              style: TxtStyles.body,
+            ),
+
+            Text( format, style: TextStyle( color: Colors.black ), ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 

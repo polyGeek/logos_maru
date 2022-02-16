@@ -3,6 +3,9 @@ import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/logos_editor.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
+import 'package:logos_maru/logos/model/logos_vo.dart';
+import 'package:logos_maru/logos/model/styles.dart';
+import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 /* ===============================================
 *  This root class has two states:
@@ -66,7 +69,6 @@ class _LogosTxtState extends State<LogosTxt> {
   void _textUpdated() {
 
     _body = _LogosUpdateTxt(
-      //id:         widget.comment,
       logosID:     widget.logoID,
       callback:   _waitingForUpdate,
       vars:       widget.vars,
@@ -88,19 +90,21 @@ class _LogosTxtState extends State<LogosTxt> {
 
 
 class _LogosUpdateTxt extends StatelessWidget {
-  //final String      id;
   final int         logosID;
   final Function    callback;
   final Map?        vars;
   final TextStyle?  txtStyle;
 
+  late final LogosVO _logosVO;
+
   _LogosUpdateTxt( {
-    //required this.id,
     required this.logosID,
     required this.callback,
     this.vars,
     this.txtStyle
-  } );
+  } ) {
+    _logosVO = LogosController().getLogosVO( logosID: logosID );
+  }
 
   @override
   Widget build( BuildContext context ) {
@@ -118,14 +122,12 @@ class _LogosUpdateTxt extends StatelessWidget {
         }
       },
 
-      child: Text(
-        LogosController().getLogos(
-            logosID: logosID,
-            vars: vars
-        ),
-        style: ( txtStyle == null )? null : txtStyle,
-      ),
+      child: ( _logosVO.isRich == 0 )
+          ? Text( LogosController().getLogos( logosID: logosID, vars: vars ), style: ( txtStyle == null )? null : txtStyle, )
+          : RichTxt( txt: _logosVO.txt, style: TxtStyles.body, ),
+
     );
+
   }
 }
 

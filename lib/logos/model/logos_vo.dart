@@ -1,6 +1,6 @@
 import 'package:logos_maru/logos/model/eol.dart';
 
-enum Styles {
+enum TxtStyleOptions {
   body,
   title,
   header,
@@ -9,16 +9,16 @@ enum Styles {
   em
 }
 
-extension on Styles {
+/*extension on Styles {
   String get name => describeEnum(this);
-}
+}*/
 
-String describeEnum(Object enumEntry) {
+/*String describeEnum(Object enumEntry) {
   final String description = enumEntry.toString();
   final int indexOfDot = description.indexOf('.');
   assert(indexOfDot != -1 && indexOfDot < description.length - 1);
   return description.substring(indexOfDot + 1);
-}
+}*/
 
 class LogosVO {
   int logosID;
@@ -107,20 +107,20 @@ class LogosVO {
     return logosVO;
   }
 
-  static Styles getStyleName( { required String style } ) {
+  static TxtStyleOptions getStyleName( { required String style } ) {
     switch( style ) {
       case 'title':
-        return Styles.title;
+        return TxtStyleOptions.title;
       case 'header':
-        return Styles.header;
+        return TxtStyleOptions.header;
       case 'subHeader':
-        return Styles.subHeader;
+        return TxtStyleOptions.subHeader;
       case 'strong':
-        return Styles.strong;
+        return TxtStyleOptions.strong;
       case 'em':
-        return Styles.em;
+        return TxtStyleOptions.em;
       default:
-        return Styles.body;
+        return TxtStyleOptions.body;
     }
   }
 

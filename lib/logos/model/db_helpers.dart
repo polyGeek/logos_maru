@@ -92,6 +92,22 @@ class DBHelpers {
     }
   }
 
+  static dynamic openUserSettingsDatabase() async {
+
+    return openDatabase(
+
+      join( await getDatabasesPath(), 'settings.db' ),
+
+      onCreate: ( db, version ) {
+        String sql = "CREATE TABLE settings ( "
+            "uKey 								INTEGER PRIMARY KEY, "
+            "fontScale						REAL DEFAULT 1 )";
+        db.execute( sql );
+      },
+      version: 1,
+    );
+  }
+
   static bool isDebug = true;
   static void _log( { required String msg, bool isJson=false, bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )

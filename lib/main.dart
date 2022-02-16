@@ -9,9 +9,10 @@ import 'package:logos_maru/test.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /**
- * Add richtxt option
+ *
  * Add edit by user
- * Add style
+ * --add a textfield for username. On the server, if the user name isn't recognized then nothing happens.
+ *
  *
  * On desktop set: Editor > Code Style > Dart: Line Length = 200
  * So that there's no more wrapping.
@@ -21,6 +22,7 @@ import 'package:package_info_plus/package_info_plus.dart';
  * When someone becomes an editor download all the language updates.
  * Store "My Name" in DBch and test that retrieved data updates widget.
  *
+ * Feature: Double the text to test for text overflows.
  *
  * On the server:
  * Move to AWS

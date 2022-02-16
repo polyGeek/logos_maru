@@ -86,7 +86,7 @@ class StyleChooser extends StatefulWidget {
 
 class _StyleChooserState extends State<StyleChooser> {
 
-  Styles _dropdownValue = Styles.body;
+  TxtStyleOptions _dropdownValue = TxtStyleOptions.body;
 
   @override
   void initState() {
@@ -107,7 +107,7 @@ class _StyleChooserState extends State<StyleChooser> {
 
   @override
   Widget build( BuildContext context ) {
-    return DropdownButton<Styles>(
+    return DropdownButton<TxtStyleOptions>(
         icon: const Icon(Icons.arrow_downward),
         iconSize: 24,
         elevation: 16,
@@ -117,7 +117,7 @@ class _StyleChooserState extends State<StyleChooser> {
           color: Colors.deepPurpleAccent,
         ),
         value: _dropdownValue,
-        onChanged: ( Styles? value ){
+        onChanged: ( TxtStyleOptions? value ){
           _dropdownValue = value!;
           print( _dropdownValue.toString() );
           LogosController().setEditingLogoVOstyle(
@@ -126,8 +126,8 @@ class _StyleChooserState extends State<StyleChooser> {
           );
           _update();
         },
-        items: Styles.values.map((Styles styles) {
-          return DropdownMenuItem<Styles>(
+        items: TxtStyleOptions.values.map((TxtStyleOptions styles) {
+          return DropdownMenuItem<TxtStyleOptions>(
               value: styles,
               child: Text( styles.toString().split( '.' )[1] ));
         }).toList() );

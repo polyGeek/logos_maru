@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.octocodipus.logos_maru">
    <application
-        android:label="logos_maru"
+        android:label="LogosMaru"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
