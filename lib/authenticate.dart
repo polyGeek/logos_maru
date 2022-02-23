@@ -9,6 +9,7 @@ class AuthenticateEditor extends StatefulWidget {
 class AuthenticateEditorState extends State<AuthenticateEditor> {
 
   String    _code         = 'CY2';
+  TextEditingController _tec = TextEditingController();
 
   void _update() {
     setState(() {});
@@ -77,7 +78,7 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
 
       if( code == _code ) {
 
-        LogosController().setIsEditable();
+        LogosController().setIsEditable( username: _tec.text );
         Navigator.of( context ).pop();
 
       } else {
@@ -90,43 +91,68 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
 
   @override
   Widget build( BuildContext context ) {
-    return Container(
-      color: Colors.black,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
+    return AlertDialog(
+      scrollable: true,
+      insetPadding: EdgeInsets.zero,
+      contentPadding: EdgeInsets.symmetric( vertical: 5, horizontal: 10 ),
 
-          Table(
-              children: <TableRow> [
-                TableRow(
-                    children: <Widget>[
-                      CodeInputBtn( character: 'A', column: 0, btnPressed: _btnPressed, ),
-                      CodeInputBtn( character: 'X', column: 1, btnPressed: _btnPressed, ),
-                      CodeInputBtn( character: '1', column: 2, btnPressed: _btnPressed, ),
-                    ]
+      content: Container(
+        color: Colors.white,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+
+            TextField(
+              minLines: 1, /// Normal textInputField will be displayed
+              maxLines: 5, /// When user presses enter it will adapt to it
+              autofocus: false,
+              controller: _tec,
+              autocorrect: false,
+              decoration: InputDecoration(
+                errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
+                border: OutlineInputBorder(),
+                labelText: 'User name:',
+                focusedBorder: OutlineInputBorder(),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                    color: Colors.blue,
+                  ),
                 ),
+              ),
+            ),
 
-                TableRow(
-                    children: <Widget>[
-                      CodeInputBtn( character: 'B', column: 0, btnPressed: _btnPressed, ),
-                      CodeInputBtn( character: 'Y', column: 1, btnPressed: _btnPressed, ),
-                      CodeInputBtn( character: '2', column: 2, btnPressed: _btnPressed, ),
-                    ]
-                ),
+            Table(
+                children: <TableRow> [
+                  TableRow(
+                      children: <Widget>[
+                        CodeInputBtn( character: 'A', column: 0, btnPressed: _btnPressed, ),
+                        CodeInputBtn( character: 'X', column: 1, btnPressed: _btnPressed, ),
+                        CodeInputBtn( character: '1', column: 2, btnPressed: _btnPressed, ),
+                      ]
+                  ),
 
-                TableRow(
-                    children: <Widget>[
-                      CodeInputBtn( character: 'C', column: 0, btnPressed: _btnPressed, ),
-                      CodeInputBtn( character: 'Z', column: 1, btnPressed: _btnPressed, ),
-                      CodeInputBtn( character: '3', column: 2, btnPressed: _btnPressed, ),
-                    ]
-                )
-              ]
-          ),
+                  TableRow(
+                      children: <Widget>[
+                        CodeInputBtn( character: 'B', column: 0, btnPressed: _btnPressed, ),
+                        CodeInputBtn( character: 'Y', column: 1, btnPressed: _btnPressed, ),
+                        CodeInputBtn( character: '2', column: 2, btnPressed: _btnPressed, ),
+                      ]
+                  ),
 
-          SizedBox( height: 20 ,),
+                  TableRow(
+                      children: <Widget>[
+                        CodeInputBtn( character: 'C', column: 0, btnPressed: _btnPressed, ),
+                        CodeInputBtn( character: 'Z', column: 1, btnPressed: _btnPressed, ),
+                        CodeInputBtn( character: '3', column: 2, btnPressed: _btnPressed, ),
+                      ]
+                  )
+                ]
+            ),
 
-        ],
+            SizedBox( height: 20 ,),
+
+          ],
+        ),
       ),
     );
   }
