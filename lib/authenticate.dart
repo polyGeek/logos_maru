@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 
 class AuthenticateEditor extends StatefulWidget {
@@ -9,7 +10,8 @@ class AuthenticateEditor extends StatefulWidget {
 class AuthenticateEditorState extends State<AuthenticateEditor> {
 
   String    _code         = 'CY2';
-  TextEditingController _tec = TextEditingController();
+  TextEditingController _tec    = TextEditingController();
+  bool                  _isBusy = false;
 
   void _update() {
     setState(() {});
@@ -60,7 +62,7 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
       }
     }
 
-    onInputChanged( code: code );
+    //onInputChanged( code: code );
   }
 
   bool validateCode( { required String code } ) {
@@ -74,20 +76,29 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
 
   void onInputChanged( { required String code } ) async {
 
-    if( code.length >= 3 ) {
+    if( code.length == 3 ) {
 
-      if( code == _code ) {
+      LogosController().setIsEditable(
+          username: _tec.text,
+          pass: code
+      );
 
-        LogosController().setIsEditable( username: _tec.text );
+      /*if( code == _code ) {
+
+        LogosController().setIsEditable(
+            username: _tec.text,
+            pass: code
+        );
         Navigator.of( context ).pop();
 
       } else {
         //incorrect code
-      }
+      }*/
 
     }
     _update();
   }
+
 
   @override
   Widget build( BuildContext context ) {
@@ -96,10 +107,17 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
       insetPadding: EdgeInsets.zero,
       contentPadding: EdgeInsets.symmetric( vertical: 5, horizontal: 10 ),
 
-      content: Container(
+      content: ( _isBusy == true )
+          ? Container(
+          width: MediaQuery.of( context ).size.width / 2,
+          height: MediaQuery.of( context ).size.width / 2,
+          child: CircularProgress()
+      )
+          : Container(
         color: Colors.white,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
 
             TextField(
@@ -150,6 +168,18 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
             ),
 
             SizedBox( height: 20 ,),
+
+            ElevatedButton(
+                onPressed: (){
+                  LogosController().setIsEditable(
+                      username: _tec.text,
+                      pass: code
+                  );
+                  _isBusy = true;
+                  _update();
+                },
+                child: Text( 'SUBMIT' )
+            )
 
           ],
         ),

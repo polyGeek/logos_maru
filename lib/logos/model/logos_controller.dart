@@ -25,9 +25,13 @@ class LogosController extends ChangeNotifier {
 
   bool get isEditable => _isEditable;
 
-  void setIsEditable( { required String username } ) {
+  void setIsEditable( {
+    required String username,
+    required String pass
+  } ) {
     _isEditable = true;
 
+    print( username + ' : ' + pass );
     /// These are different because the user might see EN in the app,
     /// but want to edit ES, or some other language.
     _editingLogosList = _logosList;
