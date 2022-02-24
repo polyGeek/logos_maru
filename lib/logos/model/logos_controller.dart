@@ -25,7 +25,7 @@ class LogosController extends ChangeNotifier {
 
   bool get isEditable => _isEditable;
 
-  void setIsEditable() {
+  void setIsEditable( { required String username } ) {
     _isEditable = true;
 
     /// These are different because the user might see EN in the app,
