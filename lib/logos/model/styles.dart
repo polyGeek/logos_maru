@@ -10,19 +10,19 @@ class Styles {
   static TextStyle fixedGoogle = GoogleFonts.robotoMono(
       letterSpacing: 1.2
   );
-  
 
-  
+
+
   static const Color c_RPYellow           = Color(0xe6fca905);
   static const Color c_bone               = Color(0xff000000);
   static const Color c_primaryColor       = Color(0xff000000);
   static const Color c_greenAccent        = Color( 0xff05FC2E ); /// Colors.lightGreenAccent;
   static const Color c_redAccent          = Colors.redAccent;      /// Color( 0xffFC05D4 );
-  
+
   static const double PADDING = 10;
-  
+
   static double iconSize      = 10;
-  
+
   static List<TextSpan> makeRichTxt( {
     required String txt,
     TextAlign textAlign = TextAlign.left,
@@ -39,7 +39,7 @@ class Styles {
      * 	_underline/gold_
      * 	more to use: þ Ø × ¿ « » ± œ ƒ
      */
-    
+
     String c;
     String subString  = '';
     bool isItalic     = false;
@@ -56,12 +56,12 @@ class Styles {
 
     if( txtStyle == null )
       txtStyle = TxtStyles.body;
-    
+
     List<TextSpan> spans = [];
-    
+
     for ( int i = 0; i < txt.length; i++ ) {
       c = txt[ i ];
-      
+
       if ( c == '*' ) {
         ts = ( isItalic == true )
             ? TextSpan( text: subString, style: txtStyle.italic )
@@ -136,10 +136,10 @@ class Styles {
         subString += c;
       }
     }
-    
+
     ts = TextSpan( text: subString, style: txtStyle );
     spans.add(ts);
-    
+
     return spans;
   }
 }
@@ -149,7 +149,7 @@ class RichTxt extends StatefulWidget {
   final TextAlign textAlign;
   final int maxLines;
   final TextStyle style;
-  
+
   /** ƒ ‰ › «
    * 	*Italics*
    *    ‡Gold Italic‡
@@ -162,50 +162,45 @@ class RichTxt extends StatefulWidget {
    *    |Big Bold Gold|
    *    ~Fixed~
    */
-  
+
   RichTxt( {
     required this.txt,
     required this.style,
     this.textAlign = TextAlign.left,
-    this.maxLines = 10000,} ) {
+    this.maxLines = 10000 } );
 
-    print( 'RichTxt: ' + txt );
-    _RichTxtState();
-  }
-  
   @override
   _RichTxtState createState() => _RichTxtState();
 }
 
 class _RichTxtState extends State<RichTxt> {
-  
+
   List<TextSpan>  _spans = [];
-  
+
   bool _isRefresh   = false;
-  
+
   TextSpan _txtSpan = TextSpan(
     children: null,
     style: null,
   );
-  
+
   @override
   void initState() {
     super.initState();
 
     FontSizeController().addListener( _update );
-    LogosController().addListener( _update );
+    LogosController().addListener( refresh );
     _update();
   }
-  
+
   @override
   void dispose() {
     FontSizeController().removeListener( _update );
-    LogosController().removeListener( _update );
+    LogosController().removeListener( refresh );
     super.dispose();
   }
-  
+
   void _update() {
-    print( '_RichTxtState: ' + widget.txt );
     if( mounted ) {
       _spans = Styles.makeRichTxt(
           txt: widget.txt,
@@ -218,45 +213,29 @@ class _RichTxtState extends State<RichTxt> {
         style: widget.style,
       );
       setState(() {});
+
     }
   }
-  
+
   void refresh() {
     _isRefresh = true;
     _update();
-    
+
     Future.delayed( const Duration( milliseconds: 50 ), () {
       _isRefresh = false;
       _update();
     } );
-    
+
   }
-  
+
   @override
   Widget build( BuildContext context ) {
-    
-    if( _isRefresh == true ) {
-      return SizedBox.shrink();
-    } else {
-      return RichText(
-        maxLines: widget.maxLines,
-        overflow: TextOverflow.ellipsis,
-        text: _txtSpan,
-        textAlign: widget.textAlign,
-      );
-    }
+    return RichText(
+      maxLines: widget.maxLines,
+      overflow: TextOverflow.ellipsis,
+      text: _txtSpan,
+      textAlign: widget.textAlign,
+    );
   }
 }
 
-class _RichTxt extends StatefulWidget {
-    @override
-    __RichTxtState createState() => __RichTxtState();
-}
-
-class __RichTxtState extends State<_RichTxt> {
-
-    @override
-    Widget build( BuildContext context ) {
-        return Container(  );
-    }
-}

@@ -131,7 +131,7 @@ class _LogosUpdateTxt extends StatelessWidget {
       )
           : RichTxt(
           txt: LogosController().getLogos( logosID: logosID, vars: vars ),
-          style: txtStyle!
+          style: txtStyle!,
       ),
     );
 
