@@ -61,7 +61,8 @@ class _LanguageChooserState extends State<LanguageChooser> {
           setState(() {});
         widget.callbackState( false );
       },
-      items: LanguageController().languageOptionsList.map<DropdownMenuItem<String>>(( LangVO value ) {
+
+      items: LanguageController().permittedLanguageOptionsList.map<DropdownMenuItem<String>>(( LangVO value ) {
         return DropdownMenuItem<String>(
           value: value.langCode,
           child: Text( value.langCode + ' - ' + value.name ),

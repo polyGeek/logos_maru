@@ -14,7 +14,6 @@ class LogosController extends ChangeNotifier {
   factory LogosController() => _logosController;
   LogosController._internal();
 
-
   static const ENVIRONMENT = "HT";
 
   List<LogosVO> _logosList = [];
@@ -23,18 +22,72 @@ class LogosController extends ChangeNotifier {
   /// Is editable
   bool _isEditable = false;
 
+  int? _userKey;
+  int get userKey {
+    if( _userKey == null ) {
+      return 0;
+    } else {
+      return _userKey!;
+    }
+  }
+
+
   bool get isEditable => _isEditable;
 
-  void setIsEditable( {
-    required String username,
-    required String pass
-  } ) {
-    _isEditable = true;
+  Future<bool> signin( {
+    required String userName,
+    required String passCode
+  } ) async {
 
-    print( username + ' : ' + pass );
+    print( userName + ' : ' + passCode );
+
     /// These are different because the user might see EN in the app,
     /// but want to edit ES, or some other language.
     _editingLogosList = _logosList;
+
+    /// Data to the server
+    Map<String, dynamic> map = {
+      'userName': userName.toLowerCase(),
+      'passCode': passCode.toLowerCase(),
+      'env': ENVIRONMENT
+    };
+
+    _log(msg: "signin: Data to server -> \n " + map.toString());
+
+    String result = await NetworkHelper.sendPostRequest(
+        url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION +
+            '/signin.php',
+        map: map
+    );
+
+    /// Language Options
+    var user = jsonDecode( result )[ 'user' ] as List;
+
+    if( user.isNotEmpty ) {
+
+      _log(msg: 'User signed in', shout: true);
+      _log(msg: user.toString());
+
+      _isEditable = true;
+      _userKey = int.parse( user[0][ 'userKey' ] );
+
+      var permittedLangCodesDecoded = jsonDecode( result )[ 'permittedLangCodes' ] as List;
+
+      if( permittedLangCodesDecoded.isNotEmpty ) {
+        _log(msg: permittedLangCodesDecoded.toString());
+
+        LanguageController().permittedLanguageOptionsList =
+            permittedLangCodesDecoded.map((e) => LangVO.fromJson(e)).toList();
+      }
+
+      return true;
+    } else {
+
+      _log(msg: 'User signin error', shout: true );
+      return false;
+    }
+
+
   }
 
   /**********************
@@ -50,8 +103,8 @@ class LogosController extends ChangeNotifier {
     DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_ES.db' );
 
     /// 1: get the selected langCode from the local DB.
-    LanguageController().selectedLanguageCode = await LogosDB().getSavedLanguagePreference();
-    _log(msg: '_selectedLangCode: ' + LanguageController().selectedLanguageCode.toString());
+    LanguageController().selectedAppLanguageCode = await LogosDB().getSavedLanguagePreference();
+    _log(msg: '_selectedLangCode: ' + LanguageController().selectedAppLanguageCode.toString());
 
     /// 2: get all of the language options from the local DB.
     LanguageController().languageOptionsList = await LogosDB().getLanguageOptionsList();
@@ -59,16 +112,16 @@ class LogosController extends ChangeNotifier {
     _log(msg: 'Language options: ' + LanguageController().languageOptionsList.toString());
 
     /// 3: get language data from local DB.
-    _logosList = await LogosDB().getLogosDataFromLocalDB( langCode: LanguageController().selectedLanguageCode.toString() );
+    _logosList = await LogosDB().getLogosDataFromLocalDB( langCode: LanguageController().selectedAppLanguageCode.toString() );
 
     /// Initially, set the editing list equal to the viewing list.
     //_editingChanList = _chanList; /// doing this when the user becomes editor.
 
     /// 4: get any changes approved by the remote DB.
-    getRemoteChanges( langCode: LanguageController().selectedLanguageCode );
+    getRemoteChanges( langCode: LanguageController().selectedAppLanguageCode );
 
     /// 5: Set the EditingLanguage Code to be the same as the viewing language code.
-    LanguageController().editingLanguageCode = LanguageController().selectedLanguageCode;
+    LanguageController().editingLanguageCode = LanguageController().selectedAppLanguageCode;
 
     _log(msg: '_logosList.isNotEmpty :' + _logosList.isNotEmpty.toString());
     if (_logosList.isNotEmpty) {
@@ -104,13 +157,12 @@ class LogosController extends ChangeNotifier {
     );
 
     /// Language Options
-    var newLanguageOptionsDecoded = jsonDecode(
-        result)[ 'newLanguagesOptions' ] as List;
-    if (newLanguageOptionsDecoded.isNotEmpty) {
+    var newLanguageOptionsDecoded = jsonDecode( result )[ 'newLanguagesOptions' ] as List;
+
+    if( newLanguageOptionsDecoded.isNotEmpty ) {
       _log(msg: 'We have new language options', shout: true);
       _log(msg: newLanguageOptionsDecoded.toString());
-      List<LangVO> newLangList = newLanguageOptionsDecoded.map((e) =>
-          LangVO.fromJson(e)).toList();
+      List<LangVO> newLangList = newLanguageOptionsDecoded.map((e) => LangVO.fromJson(e)).toList();
 
       /// Update local DB with newLanguage list.
       LanguageController().languageOptionsList = await LogosDB().updateLanguageOptions(
@@ -210,7 +262,7 @@ class LogosController extends ChangeNotifier {
   void changeLanguage( { required String langCode } ) async {
     _log(msg: '_selectedLangCode: $langCode' );
 
-    LanguageController().selectedLanguageCode = langCode;
+    LanguageController().selectedAppLanguageCode = langCode;
     LogosDB().saveLanguagePreference( code: langCode );
 
     /// Switch the language

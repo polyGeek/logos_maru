@@ -182,6 +182,4 @@ class FontSizeController extends ChangeNotifier {
         /**Store the fontScale in the UserSettings.*/
         SettingsController.setFontScale( fontScale: FontSizeController().userScale );
     }
-
-
 }

@@ -11,12 +11,12 @@ class LanguageController extends ChangeNotifier {
   /** ===============================================
   *  Selected language in APP
   *  ===============================================*/
-  String _selectedLangCode = 'EN';
+  String _selectedAppLanguageCode = 'EN';
 
-  String get selectedLanguageCode => _selectedLangCode;
+  String get selectedAppLanguageCode => _selectedAppLanguageCode;
 
-  set selectedLanguageCode( String langCode ) {
-    _selectedLangCode = langCode;
+  set selectedAppLanguageCode( String langCode ) {
+    _selectedAppLanguageCode = langCode;
     notifyListeners();
   }
 
@@ -34,13 +34,23 @@ class LanguageController extends ChangeNotifier {
   }
 
   /** ===============================================
-  *  List of language options
-  *  ===============================================*/
+   *  List of language options for app
+   *  ===============================================*/
   List<LangVO> _languageOptionsList = [ LangVO(langID: 1, langCode: 'EN', name: 'English') ];
   List<LangVO> get languageOptionsList => _languageOptionsList;
   set languageOptionsList(  List<LangVO> languageOptionsList ) {
     _languageOptionsList = languageOptionsList;
   }
+
+  /** ===============================================
+   *  List of language options for EDITING
+   *  ===============================================*/
+  List<LangVO> _editingLanguageOptionsList = [ LangVO(langID: 1, langCode: 'EN', name: 'English') ];
+  List<LangVO> get permittedLanguageOptionsList => _editingLanguageOptionsList;
+  set permittedLanguageOptionsList(  List<LangVO> editingLanguageOptionsList ) {
+    _editingLanguageOptionsList = editingLanguageOptionsList;
+  }
+
 
   static bool isDebug = true;
   static void _log( { required String msg, String title = '', bool isJson=false, bool shout=false, bool fail=false } ) {

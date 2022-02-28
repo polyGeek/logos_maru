@@ -128,7 +128,7 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
 
     _tec = TextEditingController( text: _myName );
-    _dropdownValue = LanguageController().selectedLanguageCode;
+    _dropdownValue = LanguageController().selectedAppLanguageCode;
     LogosController().addListener(() { _update(); } );
   }
 
@@ -180,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 comment: 'welcome msg',
                 logoID: 4,
                 vars: { 'fName': _myName },
-                txtStyle: TextStyle( fontSize: 28 ),
+                txtStyle: TextStyle( fontSize: 28, color: Colors.black ),
               ),
 
               const SizedBox( height: 20, ),

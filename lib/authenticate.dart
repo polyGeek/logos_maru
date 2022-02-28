@@ -9,7 +9,6 @@ class AuthenticateEditor extends StatefulWidget {
 
 class AuthenticateEditorState extends State<AuthenticateEditor> {
 
-  String    _code         = 'CY2';
   TextEditingController _tec    = TextEditingController();
   bool                  _isBusy = false;
 
@@ -17,7 +16,7 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
     setState(() {});
   }
 
-  String code = '';
+  String passCode = '';
   void _btnPressed(
       String character,
       bool isDelete,
@@ -25,80 +24,40 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
       ) {
 
     if( isDelete == true ) {
-      code = code.replaceAll( character , '' );
+      passCode = passCode.replaceAll( character , '' );
     } else {
-      /// First character
-      if( column == 0 ) {
-
-        code = character + code;
-
-        /// Second character
-      } else if( column == 1 ) {
-
-        if( code.length == 0 ) {
-          code += character;
-        } else if( code.length == 1 ){
-
-          if( code == '1' || code == '2' || code == '3' ) {
-            code = character + code;
-          } else {
-            code = code[0] + character;
-          }
-
-        } else {
-          code = code[0] + character + code[1];
-        }
-
-      } else {
-        /// Third column
-
-        if( code.length == 0 ){
-          code += character;
-        } else if( code.length == 1 ) {
-          code = code[0] + character;
-        } else {
-          code += character;
-        }
-      }
+      passCode += character;
     }
 
-    //onInputChanged( code: code );
+    print( passCode );
   }
 
-  bool validateCode( { required String code } ) {
+  void _onSubmit() async {
 
-    if( code == _code ) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  void onInputChanged( { required String code } ) async {
-
-    if( code.length == 3 ) {
-
-      LogosController().setIsEditable(
-          username: _tec.text,
-          pass: code
-      );
-
-      /*if( code == _code ) {
-
-        LogosController().setIsEditable(
-            username: _tec.text,
-            pass: code
-        );
-        Navigator.of( context ).pop();
-
-      } else {
-        //incorrect code
-      }*/
-
-    }
+    _isBusy = true;
     _update();
-  }
 
+    bool success = await LogosController().signin(
+        userName: _tec.text,
+        passCode: passCode
+    );
+
+    passCode = '';
+
+    if( success == true ) {
+      _isBusy = false;
+      Navigator.of( context ).pop();
+      _update();
+    } else {
+
+      Future.delayed( const Duration( milliseconds: 5000 ), () {
+        _isBusy = false;
+        _update();
+      } );
+    }
+
+
+  }
 
   @override
   Widget build( BuildContext context ) {
@@ -170,14 +129,7 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
             SizedBox( height: 20 ,),
 
             ElevatedButton(
-                onPressed: (){
-                  LogosController().setIsEditable(
-                      username: _tec.text,
-                      pass: code
-                  );
-                  _isBusy = true;
-                  _update();
-                },
+                onPressed: _onSubmit,
                 child: Text( 'SUBMIT' )
             )
 

@@ -72,7 +72,9 @@ class _LogosTxtState extends State<LogosTxt> {
       logosID:     widget.logoID,
       callback:   _waitingForUpdate,
       vars:       widget.vars,
-      txtStyle:   widget.txtStyle,
+      txtStyle:   ( widget.txtStyle == null )
+      ? TxtStyles.body
+      : widget.txtStyle,
     );
     _update();
   }
@@ -123,9 +125,14 @@ class _LogosUpdateTxt extends StatelessWidget {
       },
 
       child: ( _logosVO.isRich == 0 )
-          ? Text( LogosController().getLogos( logosID: logosID, vars: vars ), style: ( txtStyle == null )? null : txtStyle, )
-          : RichTxt( txt: _logosVO.txt, style: TxtStyles.body, ),
-
+          ? Text(
+        LogosController().getLogos( logosID: logosID, vars: vars ),
+        style: ( txtStyle == null )? null : txtStyle,
+      )
+          : RichTxt(
+          txt: LogosController().getLogos( logosID: logosID, vars: vars ),
+          style: txtStyle!
+      ),
     );
 
   }

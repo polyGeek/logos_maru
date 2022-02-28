@@ -1,8 +1,4 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
@@ -27,7 +23,6 @@ class _LogosEditorState extends State<LogosEditor> {
 
   late LogosVO _logosVO;
   bool _isBusy = false;
-  Function? _formatFN = null;
 
   @override
   void initState() {
@@ -63,7 +58,7 @@ class _LogosEditorState extends State<LogosEditor> {
     EOL.log(msg: "isBusy: " + isBusy.toString() );
   }
 
-  void formatingCallback( String formatChar ) {
+  void formatCallback( String formatChar ) {
 
     int selectionStart = _tecTxt.selection.start;
     int selectionEnd = _tecTxt.selection.extent.offset;
@@ -157,7 +152,7 @@ class _LogosEditorState extends State<LogosEditor> {
                 _FormatingBtn(
                   format: '*',
                   formatedCharacter: 'I',
-                  callback: formatingCallback,
+                  callback: formatCallback,
                 ),
 
                 SizedBox( width: 8 ,),
@@ -165,7 +160,7 @@ class _LogosEditorState extends State<LogosEditor> {
                 _FormatingBtn(
                   format: '^',
                   formatedCharacter: 'B',
-                  callback: formatingCallback,
+                  callback: formatCallback,
                 ),
 
                 SizedBox( width: 8 ,),
@@ -173,15 +168,13 @@ class _LogosEditorState extends State<LogosEditor> {
                 _FormatingBtn(
                   format: '_',
                   formatedCharacter: 'U',
-                  callback: formatingCallback,
+                  callback: formatCallback,
                 ),
-
-
 
               ],
             ),
 
-            SizedBox( height:  5,),
+            SizedBox( height:  25,),
 
             TextField(
               minLines: 1, /// Normal textInputField will be displayed

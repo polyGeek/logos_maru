@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
+import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 class Styles {
@@ -166,11 +167,14 @@ class RichTxt extends StatefulWidget {
     required this.txt,
     required this.style,
     this.textAlign = TextAlign.left,
-    this.maxLines = 10000,} );
+    this.maxLines = 10000,} ) {
+
+    print( 'RichTxt: ' + txt );
+    _RichTxtState();
+  }
   
   @override
   _RichTxtState createState() => _RichTxtState();
-  
 }
 
 class _RichTxtState extends State<RichTxt> {
@@ -187,19 +191,21 @@ class _RichTxtState extends State<RichTxt> {
   @override
   void initState() {
     super.initState();
-    
+
     FontSizeController().addListener( _update );
+    LogosController().addListener( _update );
     _update();
   }
   
   @override
   void dispose() {
     FontSizeController().removeListener( _update );
+    LogosController().removeListener( _update );
     super.dispose();
   }
   
   void _update() {
-    
+    print( '_RichTxtState: ' + widget.txt );
     if( mounted ) {
       _spans = Styles.makeRichTxt(
           txt: widget.txt,
@@ -240,4 +246,17 @@ class _RichTxtState extends State<RichTxt> {
       );
     }
   }
+}
+
+class _RichTxt extends StatefulWidget {
+    @override
+    __RichTxtState createState() => __RichTxtState();
+}
+
+class __RichTxtState extends State<_RichTxt> {
+
+    @override
+    Widget build( BuildContext context ) {
+        return Container(  );
+    }
 }
