@@ -74,6 +74,8 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
       )
           : Container(
         color: Colors.white,
+        width: MediaQuery.of( context ).size.width / 2,
+        height: ( MediaQuery.of( context ).size.width / 2 ) + 100,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -173,8 +175,8 @@ class _CodeInputBtnState extends State<CodeInputBtn> {
           backgroundColor: MaterialStateProperty.all<Color>( btnColor ),
         ),
         child: Container(
-          height: MediaQuery.of( context ).size.width / 6,
-          width: MediaQuery.of( context ).size.width / 6,
+          height: MediaQuery.of( context ).size.width / 8,
+          width: MediaQuery.of( context ).size.width / 8,
 
           child: Center(
               child: Text(

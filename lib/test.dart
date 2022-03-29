@@ -15,8 +15,7 @@ class CallbackWidget extends StatelessWidget {
       onTap: onPressed,
       child: LogosTxt(
         comment: 'callbackTest',
-        logoID: 17,
-        txtStyle: TextStyle( fontSize: 16 ),
+        logosID: 17
       ),
     );
   }

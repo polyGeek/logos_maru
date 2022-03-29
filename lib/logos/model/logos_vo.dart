@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 enum TxtStyleOptions {
   body,
@@ -121,6 +123,36 @@ class LogosVO {
         return TxtStyleOptions.em;
       default:
         return TxtStyleOptions.body;
+    }
+  }
+
+  static TextStyle getStyle( { required String style } ) {
+    switch( style ) {
+      case 'title':
+        return TxtStyles.title;
+      case 'header':
+        return TxtStyles.header;
+      case 'subHeader':
+        return TxtStyles.subHeader;
+      case 'strong':
+        return TxtStyles.strong;
+      case 'emphasis':
+        return TxtStyles.emphasis;
+      default:
+        return TxtStyles.body;
+    }
+  }
+
+  static TextStyle chooseStyle( {
+    required TextStyle? fromWidget,
+    required TextStyle fromLogos } ) {
+
+    if( fromLogos == TxtStyles.body
+        && fromWidget != null
+        && fromWidget != TxtStyles.body) {
+      return fromWidget;
+    } else {
+      return fromLogos;
     }
   }
 

@@ -177,7 +177,7 @@ class _RichTxtState extends State<RichTxt> {
 
   List<TextSpan>  _spans = [];
 
-  bool _isRefresh   = false;
+  //bool _isRefresh   = false;
 
   TextSpan _txtSpan = TextSpan(
     children: null,
@@ -218,11 +218,11 @@ class _RichTxtState extends State<RichTxt> {
   }
 
   void refresh() {
-    _isRefresh = true;
-    _update();
+    //_isRefresh = true;
+    //_update();
 
     Future.delayed( const Duration( milliseconds: 50 ), () {
-      _isRefresh = false;
+      //_isRefresh = false;
       _update();
     } );
 

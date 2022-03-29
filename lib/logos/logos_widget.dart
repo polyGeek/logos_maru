@@ -4,8 +4,7 @@ import 'package:logos_maru/logos/logos_editor.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
-import 'package:logos_maru/logos/model/styles.dart';
-import 'package:logos_maru/logos/model/txt_utilities.dart';
+import 'package:logos_maru/logos/model/rich_txt.dart';
 
 /* ===============================================
 *  This root class has two states:
@@ -14,13 +13,13 @@ import 'package:logos_maru/logos/model/txt_utilities.dart';
 *  ===============================================*/
 class LogosTxt extends StatefulWidget {
 
-  final int         logoID;
+  final int         logosID;
   final String      comment;
   final Map?        vars;
   final TextStyle?  txtStyle;
 
   LogosTxt( {
-    required this.logoID,
+    required this.logosID,
     required this.comment,
     this.vars,
     this.txtStyle,
@@ -33,16 +32,43 @@ class LogosTxt extends StatefulWidget {
 class _LogosTxtState extends State<LogosTxt> {
 
   late Widget _body;
+  late LogosVO _logosVO;
 
   @override
   void initState() {
     super.initState();
 
+    _logosVO = LogosController().getLogosVO( logosID: widget.logosID );
+
+    TextStyle textStyle = LogosVO.getStyle( style: _logosVO.style );
+
+    if( _logosVO.logosID == 0 ) {
+      print( '\n\n#############################################');
+    }
+
+    print( '_LogosTxtState > init >\n'
+        + 'ID:           ' + _logosVO.logosID.toString() + "\n"
+        + 'txt:          ' + _logosVO.txt + "\n"
+        + 'logosStyle:   ' + _logosVO.style + "\n"
+        + 'textStyle:    ' + textStyle.toString() + '\n'
+        + 'widget.style: ' + widget.txtStyle.toString( )
+        + "\n**************************\n" );
+
+    if( _logosVO.logosID == 0 ) {
+      print( '#############################################\n\n');
+    }
+
     _body = _LogosUpdateTxt(
-      logosID:    widget.logoID,
+      logosVO:    _logosVO,
       callback:   _waitingForUpdate,
       vars:       widget.vars,
-      txtStyle:   widget.txtStyle,
+      txtStyle:   LogosVO.chooseStyle(
+          fromWidget: widget.txtStyle,
+          fromLogos: textStyle
+      ),
+      /*txtStyle:   ( widget.txtStyle == null )
+          ? textStyle
+          : widget.txtStyle,*/
     );
 
     LogosController().addListener(() { _textUpdated(); });
@@ -68,13 +94,19 @@ class _LogosTxtState extends State<LogosTxt> {
 
   void _textUpdated() {
 
+    TextStyle textStyle = LogosVO.getStyle( style: _logosVO.style );
+
     _body = _LogosUpdateTxt(
-      logosID:     widget.logoID,
+      logosVO:    _logosVO,
       callback:   _waitingForUpdate,
       vars:       widget.vars,
-      txtStyle:   ( widget.txtStyle == null )
-      ? TxtStyles.body
-      : widget.txtStyle,
+      txtStyle:   LogosVO.chooseStyle(
+          fromWidget: widget.txtStyle,
+          fromLogos: textStyle
+      ),
+      /*txtStyle:   ( widget.txtStyle == null )
+      ? textStyle
+      : widget.txtStyle,*/
     );
     _update();
   }
@@ -92,20 +124,20 @@ class _LogosTxtState extends State<LogosTxt> {
 
 
 class _LogosUpdateTxt extends StatelessWidget {
-  final int         logosID;
+  final LogosVO     logosVO;
   final Function    callback;
   final Map?        vars;
-  final TextStyle?  txtStyle;
+  final TextStyle   txtStyle;
 
   late final LogosVO _logosVO;
 
   _LogosUpdateTxt( {
-    required this.logosID,
+    required this.logosVO,
     required this.callback,
+    required this.txtStyle,
     this.vars,
-    this.txtStyle
   } ) {
-    _logosVO = LogosController().getLogosVO( logosID: logosID );
+    _logosVO = LogosController().getLogosVO( logosID: logosVO.logosID );
   }
 
   @override
@@ -118,7 +150,7 @@ class _LogosUpdateTxt extends StatelessWidget {
               context: context,
               barrierDismissible: false,
               builder: (BuildContext context) {
-                return LogosEditor( logosID: logosID, );
+                return LogosEditor( logosID: logosVO.logosID, );
               }
           );
         }
@@ -126,17 +158,13 @@ class _LogosUpdateTxt extends StatelessWidget {
 
       child: ( _logosVO.isRich == 0 )
           ? Text(
-        LogosController().getLogos( logosID: logosID, vars: vars ),
-        style: ( txtStyle == null )? null : txtStyle,
+        LogosController().getLogos( logosID: logosVO.logosID, vars: vars ),
+        style: txtStyle,
       )
           : RichTxt(
-          txt: LogosController().getLogos( logosID: logosID, vars: vars ),
-          style: txtStyle!,
+        txt: LogosController().getLogos( logosID: logosVO.logosID, vars: vars ),
+        style: txtStyle,
       ),
     );
-
   }
 }
-
-
-

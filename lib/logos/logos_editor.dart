@@ -4,7 +4,7 @@ import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
-import 'package:logos_maru/logos/model/styles.dart';
+import 'package:logos_maru/logos/model/rich_txt.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 

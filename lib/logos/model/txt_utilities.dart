@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
-import 'package:logos_maru/logos/model/styles.dart';
+import 'package:logos_maru/logos/model/rich_txt.dart';
 
 
 class MyFontTypes {
@@ -20,11 +20,6 @@ class TxtStyles {
     color: Colors.black,
   );
 
-  static TextStyle get ViewPTbtn => bodyFont.copyWith(
-    fontSize: FontSizeController().bodySize,
-    color: Styles.c_RPYellow,
-  ).small;
-
   static TextStyle get bodySm =>
       body.copyWith( fontSize: FontSizeController().bodySize ).small;
 
@@ -34,21 +29,29 @@ class TxtStyles {
   static TextStyle get bodySubSmall =>
       body.copyWith( fontSize: FontSizeController().bodySubSm );
 
-  static TextStyle get subHeading =>
+  static TextStyle get subHeader =>
       body.copyWith( fontSize: FontSizeController().subHeading );
 
   static TextStyle get titleFont =>
       TextStyle( fontFamily: MyFontTypes.title );
-  
+
   static TextStyle get title =>
       titleFont.copyWith( fontSize: FontSizeController().title );
 
   static TextStyle get titleLight =>
       title.copyWith( fontWeight: FontWeight.w100 );
 
-  static TextStyle get heading =>
+  static TextStyle get header =>
       title.copyWith( fontSize: FontSizeController().heading, fontWeight: FontWeight.w100 );
-  
+
+
+  static TextStyle get strong =>
+      title.copyWith( fontSize: FontSizeController().bodySize, fontWeight: FontWeight.bold, color: Colors.black );
+
+  static TextStyle get emphasis =>
+      title.copyWith( fontSize: FontSizeController().bodySize, fontStyle: FontStyle.italic, color: Colors.black );
+
+
 }
 
 extension TextStyleHelpers on TextStyle {

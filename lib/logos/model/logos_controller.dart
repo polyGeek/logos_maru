@@ -211,7 +211,7 @@ class LogosController extends ChangeNotifier {
       }
     }
 
-    return 'ERROR: ' + logosID.toString();
+    return 'ERROR: #' + logosID.toString();
   }
 
   LogosVO getLogosVO( {
@@ -255,7 +255,7 @@ class LogosController extends ChangeNotifier {
     return logosVO = LogosVO(
       logosID: 0, description: '', lastUpdate: '', note: '', tags: '', style: '', isRich: 0,
       langCode: LanguageController().editingLanguageCode,
-      txt: 'ERROR: ' + logosID.toString(),
+      txt: 'ERROR: #' + logosID.toString(),
     );
   }
 
@@ -315,7 +315,7 @@ class LogosController extends ChangeNotifier {
     _log(msg: "Data to server: " + map.toString() );
 
     String result = await NetworkHelper.sendPostRequest(
-        url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/update_logos.php', map: map
+        url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/add-new.php', map: map
     );
 
     var chanDecoded = jsonDecode( result )[ 'changes' ] as List;

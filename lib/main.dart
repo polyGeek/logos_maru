@@ -137,6 +137,8 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {});
   }
 
+  
+
   @override
   Widget build( BuildContext context ) {
     return Center(
@@ -178,25 +180,76 @@ class _HomeScreenState extends State<HomeScreen> {
 
               LogosTxt(
                 comment: 'welcome msg',
-                logoID: 4,
+                logosID: 4,
                 vars: { 'fName': _myName },
-                txtStyle: TextStyle( fontSize: 28, color: Colors.black ),
+                txtStyle: TextStyle( fontSize: 28, color: Colors.deepOrange ),
               ),
 
               const SizedBox( height: 20, ),
 
               LogosTxt(
                 comment: 'intro txt',
-                logoID: 2,
-                txtStyle: TextStyle( fontSize: 16 ),
+                logosID: 2,
               ),
 
               const SizedBox( height: 20, ),
 
               LogosTxt(
                 comment: 'desc txt',
-                logoID: 5,
-                txtStyle: TextStyle( fontSize: 16 ),
+                logosID: 5,
+              ),
+
+
+              const SizedBox( height: 20, ),
+
+              LogosTxt(
+                comment: 'jump for joy',
+                logosID: 33,
+              ),
+
+              LogosTxt(
+                comment: 'cheer',
+                logosID: 34,
+              ),
+
+              LogosTxt(
+                comment: 'RED',
+                logosID: 36,
+              ),
+
+              LogosTxt(
+                comment: 'Green',
+                logosID: 37,
+              ),
+
+              LogosTxt(
+                comment: 'Mercury',
+                logosID: 38,
+              ),
+
+              LogosTxt(
+                comment: 'Venus',
+                logosID: 39,
+              ),
+
+              LogosTxt(
+                comment: 'Earth',
+                logosID: 40,
+              ),
+
+              LogosTxt(
+                comment: 'Mars',
+                logosID: 41,
+              ),
+
+              LogosTxt(
+                comment: 'Jupiter',
+                logosID: 42,
+              ),
+
+              LogosTxt(
+                comment: 'Ringed',
+                logosID: 43,
               ),
 
               const SizedBox( height: 20, ),
@@ -214,7 +267,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
                 child: LogosTxt(
                   comment: 'submit btn',
-                  logoID: 3,
+                  logosID: 3,
                 ),
               ),
 

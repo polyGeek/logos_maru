@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/settings_controller.dart';
-import 'package:logos_maru/logos/model/styles.dart';
+import 'package:logos_maru/logos/model/rich_txt.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 

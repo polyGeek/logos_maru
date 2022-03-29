@@ -10,14 +10,14 @@ class SubmitBtnPressed extends StatelessWidget {
       scrollable: true,
 
       title: Center(
-        child: LogosTxt( comment: 'alertTitle', logoID: 6, ),
+        child: LogosTxt( comment: 'alertTitle', logosID: 6, ),
       ),
 
       content: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
 
           children: [
-            LogosTxt( comment: 'alertContent', logoID: 7, ),
+            LogosTxt( comment: 'alertContent', logosID: 7, ),
           ]
 
       ),
@@ -28,7 +28,7 @@ class SubmitBtnPressed extends StatelessWidget {
           onPressed: (){
             Navigator.of( context ).pop();
           },
-          child: LogosTxt( comment: 'closeBtn', logoID: 8, ),
+          child: LogosTxt( comment: 'closeBtn', logosID: 8, ),
         ),
 
       ],

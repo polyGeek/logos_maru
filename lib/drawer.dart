@@ -21,13 +21,13 @@ class DrawerMenu extends StatelessWidget {
 
           LogosTxt(
             comment: 'version',
-            logoID: 9,
+            logosID: 9,
             vars: { 'version': Init.version },
           ),
 
           LogosTxt(
               comment: 'build',
-              logoID: 10,
+              logosID: 10,
               vars: { 'build': Init.buildNumber }
           ),
 
@@ -40,7 +40,7 @@ class DrawerMenu extends StatelessWidget {
             },
             child: LogosTxt(
               comment: 'getRemoteChanges',
-              logoID: 11,
+              logosID: 11,
             ),
           ),
 
@@ -57,8 +57,8 @@ class DrawerMenu extends StatelessWidget {
                   });
             },
             child: LogosTxt(
-                comment: 'authenticateAsEditor',
-              logoID: 12,
+              comment: 'authenticateAsEditor',
+              logosID: 12,
             ),
           ),
 
@@ -73,8 +73,8 @@ class DrawerMenu extends StatelessWidget {
                   });
             },
             child: LogosTxt(
-                comment: 'viewLogs_btn',
-              logoID: 13,
+              comment: 'viewLogs_btn',
+              logosID: 13,
             ),
           ),
         ],
