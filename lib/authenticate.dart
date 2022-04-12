@@ -37,7 +37,7 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
     _isBusy = true;
     _update();
 
-    bool success = await LogosController().signin(
+    bool success = await LogosController().signIn(
         userName: _tec.text,
         passCode: passCode
     );

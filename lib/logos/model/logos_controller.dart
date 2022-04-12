@@ -21,74 +21,11 @@ class LogosController extends ChangeNotifier {
 
   /// Is editable
   bool _isEditable = false;
-
-  int? _userKey;
-  int get userKey {
-    if( _userKey == null ) {
-      return 0;
-    } else {
-      return _userKey!;
-    }
-  }
-
-
   bool get isEditable => _isEditable;
 
-  Future<bool> signin( {
-    required String userName,
-    required String passCode
-  } ) async {
-
-    print( userName + ' : ' + passCode );
-
-    /// These are different because the user might see EN in the app,
-    /// but want to edit ES, or some other language.
-    _editingLogosList = _logosList;
-
-    /// Data to the server
-    Map<String, dynamic> map = {
-      'userName': userName.toLowerCase(),
-      'passCode': passCode.toLowerCase(),
-      'env': ENVIRONMENT
-    };
-
-    _log(msg: "signin: Data to server -> \n " + map.toString());
-
-    String result = await NetworkHelper.sendPostRequest(
-        url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION +
-            '/signin.php',
-        map: map
-    );
-
-    /// Language Options
-    var user = jsonDecode( result )[ 'user' ] as List;
-
-    if( user.isNotEmpty ) {
-
-      _log(msg: 'User signed in', shout: true);
-      _log(msg: user.toString());
-
-      _isEditable = true;
-      _userKey = int.parse( user[0][ 'userKey' ] );
-
-      var permittedLangCodesDecoded = jsonDecode( result )[ 'permittedLangCodes' ] as List;
-
-      if( permittedLangCodesDecoded.isNotEmpty ) {
-        _log(msg: permittedLangCodesDecoded.toString());
-
-        LanguageController().permittedLanguageOptionsList =
-            permittedLangCodesDecoded.map((e) => LangVO.fromJson(e)).toList();
-      }
-
-      return true;
-    } else {
-
-      _log(msg: 'User signin error', shout: true );
-      return false;
-    }
-
-
-  }
+  /// userID and userName
+  int? _userID;
+  String? _userName;
 
   /**********************
    *** Initialization ***
@@ -114,9 +51,6 @@ class LogosController extends ChangeNotifier {
     /// 3: get language data from local DB.
     _logosList = await LogosDB().getLogosDataFromLocalDB( langCode: LanguageController().selectedAppLanguageCode.toString() );
 
-    /// Initially, set the editing list equal to the viewing list.
-    //_editingChanList = _chanList; /// doing this when the user becomes editor.
-
     /// 4: get any changes approved by the remote DB.
     getRemoteChanges( langCode: LanguageController().selectedAppLanguageCode );
 
@@ -128,6 +62,61 @@ class LogosController extends ChangeNotifier {
       notifyListeners();
       return true;
     } else {
+      return false;
+    }
+  }
+
+  Future<bool> signIn( {
+    required String userName,
+    required String passCode
+  } ) async {
+
+    print( userName + ' : ' + passCode );
+
+    /// These are different because the user might see EN in the app,
+    /// but want to edit ES, or some other language.
+    _editingLogosList = _logosList;
+
+    /// Data to the server
+    Map<String, dynamic> map = {
+      'userName': userName.toLowerCase(),
+      'passCode': passCode.toLowerCase(),
+      'env': ENVIRONMENT
+    };
+
+    _log(msg: "signIn: Data to server -> \n " + map.toString());
+
+    String result = await NetworkHelper.sendPostRequest(
+        url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/signin.php',
+        map: map
+    );
+
+    /// Language Options
+    var user = jsonDecode( result )[ 'user' ] as List;
+
+    if( user.isNotEmpty ) {
+
+      _log(msg: 'User signed in', shout: true);
+      _log(msg: user.toString());
+
+      _isEditable = true;
+      _userID = int.parse( user[0][ 'userID' ] );
+      _userName = user[0][ 'userName' ];
+      _log(msg: 'userName: ' + _userName! );
+
+      var permittedLangCodesDecoded = jsonDecode( result )[ 'permittedLangCodes' ] as List;
+
+      if( permittedLangCodesDecoded.isNotEmpty ) {
+        _log(msg: permittedLangCodesDecoded.toString());
+
+        LanguageController().permittedLanguageOptionsList =
+            permittedLangCodesDecoded.map((e) => LangVO.fromJson(e)).toList();
+      }
+
+      return true;
+    } else {
+
+      _log(msg: 'User signin error', shout: true );
       return false;
     }
   }
@@ -304,6 +293,8 @@ class LogosController extends ChangeNotifier {
       'env'         : ENVIRONMENT,
       'langCode'    : langCode,
       'logosID'     : logosVO.logosID,
+      'userID'      : _userID.toString(),
+      'userName'    : _userName,
       'txt'         : logosVO.txt,
       'description' : logosVO.description,
       'tags'        : logosVO.tags,
@@ -318,8 +309,12 @@ class LogosController extends ChangeNotifier {
         url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/add-new.php', map: map
     );
 
-    var chanDecoded = jsonDecode( result )[ 'changes' ] as List;
-    List<LogosVO> changesList = chanDecoded.map( ( e ) => LogosVO.fromJson( e ) ).toList();
+    if( result.contains( '#ABORT#' ) ) {
+      return;
+    }
+
+    var logosDecoded = jsonDecode( result )[ 'changes' ] as List;
+    List<LogosVO> changesList = logosDecoded.map( ( e ) => LogosVO.fromJson( e ) ).toList();
 
     /// Update local database.
     logosVO = await LogosDB().updateLocalDatabase(
@@ -331,7 +326,6 @@ class LogosController extends ChangeNotifier {
     updateLogosList( logosVO: logosVO );
 
     notifyListeners();
-
   }
 
   void updateLogosList( { required LogosVO logosVO } ) {

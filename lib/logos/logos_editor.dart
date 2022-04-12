@@ -30,7 +30,8 @@ class _LogosEditorState extends State<LogosEditor> {
     _logosVO = LogosController().getEditLogos( logosID: widget.logosID );
     _tecTxt.text = _logosVO.txt;
 
-    _tecNote.text = _logosVO.note;
+    // Don't use the existing note because it just gets replicated.
+    //_tecNote.text = _logosVO.note;
 
     LogosController().addListener(() { _update(); });
     LanguageController().addListener(() { _update(); });
