@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:logos_maru/alert_dialogs.dart';
-import 'package:logos_maru/drawer.dart';
-import 'package:logos_maru/logos/logos_widget.dart';
-import 'package:logos_maru/logos/model/lang_controller.dart';
-import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
-import 'package:logos_maru/test.dart';
+import 'package:logos_maru/logos/model/txt_utilities.dart';
+import 'package:logos_maru/screens/home_screen.dart';
+import 'package:logos_maru/utils/data_controller.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /**
@@ -39,10 +36,47 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData( primarySwatch: Colors.blue, ),
+      //theme: ThemeData( primarySwatch: Colors.blue, ),
+      theme: ThemeData(
+        brightness: Brightness.light,
+        /* light theme settings */
+      ),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme(
+          background: Colors.black,
+          brightness: Brightness.dark,
+          error: Colors.redAccent,
+          onBackground: Colors.white,
+          onError: Colors.white,
+          onPrimary: Colors.white,
+          onSecondary: Colors.black,
+          onSurface: Colors.white70,
+          primary: Colors.blueGrey,
+          secondary: Colors.amber,
+          surface: Colors.black45,
+        ),
+        buttonTheme: ButtonThemeData(
+          splashColor: Colors.white70,
+          textTheme: ButtonTextTheme.primary, ///  <-- this auto selects the right color
+        ),
+        textTheme: TextTheme( bodyText1: TxtStyles.body, bodyText2: TxtStyles.body ),
+        checkboxTheme: CheckboxThemeData(
+          side: MaterialStateBorderSide.resolveWith(
+                  (_) => const BorderSide( width: 0, color: Colors.black54, style: BorderStyle.none )
+          ),
+          fillColor: MaterialStateProperty.all( Colors.lightGreenAccent ),
+          checkColor: MaterialStateProperty.all( Colors.black ),
+          shape: CircleBorder(),
+        ),
+      ),
+      themeMode: ThemeMode.dark,
+      /* ThemeMode.system to follow system theme,
+         ThemeMode.light for light theme,
+         ThemeMode.dark for dark theme
+      */
       debugShowCheckedModeBanner: false,
       home: MyHomePage(),
-
     );
   }
 }
@@ -69,20 +103,25 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void init() async {
 
-    LogosController().addListener(() {_update();});
+    LogosController().addListener(() { _update(); } );
 
     if( await LogosController().init() == true ) {
       _body = HomeScreen();
     } else {
-      _body = Center( child: Text( 'ERROR' ),);
+      _body = Scaffold( body: Center( child: Column(
+        children: [
+          Text( 'Loading' ),
+          CircularProgressIndicator(),
+        ],
+      ),));
     }
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    Init.appName      = packageInfo.appName;
-    Init.packageName  = packageInfo.packageName;
-    Init.version      = packageInfo.version;
-    Init.buildNumber  = packageInfo.buildNumber;
+    DataController.appName      = packageInfo.appName;
+    DataController.packageName  = packageInfo.packageName;
+    DataController.version      = packageInfo.version;
+    DataController.buildNumber  = packageInfo.buildNumber;
 
     _update();
   }
@@ -99,224 +138,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text( 'LogosMaru'),// Text( 'ChánChán' ),
-      ),
-      endDrawer: Drawer(
-        child: DrawerMenu(),
-      ),
-      body: _body,
-
-    );
+    return _body;
   }
 }
 
-
-class HomeScreen extends StatefulWidget {
-  @override
-  State<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends State<HomeScreen> {
-  String _dropdownValue = 'EN';
-  String _myName = 'My Name';
-  late TextEditingController _tec;
-
-  @override
-  void initState() {
-    super.initState();
-
-    _tec = TextEditingController( text: _myName );
-    _dropdownValue = LanguageController().selectedAppLanguageCode;
-    LogosController().addListener(() { _update(); } );
-  }
-
-  void _update() {
-    if( mounted )
-      setState(() {});
-  }
-
-  
-
-  @override
-  Widget build( BuildContext context ) {
-    return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: SingleChildScrollView(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-
-              const SizedBox( height: 20, ),
-
-              TextField(
-                onChanged: ( txt ) {
-                  _myName = txt;
-                  _update();
-                  LogosController().update();
-                },
-                minLines: 1, /// Normal textInputField will be displayed
-                maxLines: 5, /// When user presses enter it will adapt to it
-                autofocus: false,
-                controller: _tec,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
-                  border: OutlineInputBorder(),
-                  focusedBorder: OutlineInputBorder(
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.blue,
-                    ),
-                  ),
-                ),
-              ),
-
-              const SizedBox( height: 20, ),
-
-              LogosTxt(
-                comment: 'welcome msg',
-                logosID: 4,
-                vars: { 'fName': _myName },
-                txtStyle: TextStyle( fontSize: 28, color: Colors.deepOrange ),
-              ),
-
-              const SizedBox( height: 20, ),
-
-              LogosTxt(
-                comment: 'intro txt',
-                logosID: 2,
-              ),
-
-              const SizedBox( height: 20, ),
-
-              LogosTxt(
-                comment: 'desc txt',
-                logosID: 5,
-              ),
-
-
-              const SizedBox( height: 20, ),
-
-              LogosTxt(
-                comment: 'jump for joy',
-                logosID: 33,
-              ),
-
-              LogosTxt(
-                comment: 'cheer',
-                logosID: 34,
-              ),
-
-              LogosTxt(
-                comment: 'RED',
-                logosID: 36,
-              ),
-
-              LogosTxt(
-                comment: 'Green',
-                logosID: 37,
-              ),
-
-              LogosTxt(
-                comment: 'Mercury',
-                logosID: 38,
-              ),
-
-              LogosTxt(
-                comment: 'Venus',
-                logosID: 39,
-              ),
-
-              LogosTxt(
-                comment: 'Earth',
-                logosID: 40,
-              ),
-
-              LogosTxt(
-                comment: 'Mars',
-                logosID: 41,
-              ),
-
-              LogosTxt(
-                comment: 'Jupiter',
-                logosID: 42,
-              ),
-
-              LogosTxt(
-                comment: 'Ringed',
-                logosID: 43,
-              ),
-
-              const SizedBox( height: 20, ),
-
-              ElevatedButton(
-                onPressed: (){
-
-                  showDialog<void>(
-                      context: context,
-                      barrierDismissible: false,
-                      builder: (BuildContext context) {
-                        return SubmitBtnPressed();
-                      }
-                  );
-                },
-                child: LogosTxt(
-                  comment: 'submit btn',
-                  logosID: 3,
-                ),
-              ),
-
-              const SizedBox( height: 20, ),
-
-              DropdownButton<String>(
-                value: _dropdownValue,
-                icon: const Icon(Icons.arrow_downward),
-                iconSize: 24,
-                elevation: 16,
-                style: const TextStyle(color: Colors.deepPurple),
-                underline: Container(
-                  height: 2,
-                  color: Colors.deepPurpleAccent,
-                ),
-                onChanged: ( String? newValue ) {
-                  _dropdownValue = newValue!;
-                  print( newValue );
-                  LogosController().changeLanguage( langCode: newValue );
-                  if( mounted )
-                    setState(() {});
-                },
-                items: LanguageController().languageOptionsList.map<DropdownMenuItem<String>>(( LangVO value ) {
-                  return DropdownMenuItem<String>(
-                    value: value.langCode,
-                    child: Text( value.langCode + ' - ' + value.name ),
-                  );
-                }).toList(),
-              ),
-
-              SizedBox( height: 20, ),
-
-              CallbackWidget(
-                onPressed: () {
-                  print( 'pressed');
-                },
-              ),
-
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class Init {
-  static String appName        = appName = '';
-  static String packageName    = packageName = '';
-  static String version        = version = '';
-  static String buildNumber    = buildNumber = '';
-}

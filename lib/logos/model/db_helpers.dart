@@ -6,18 +6,6 @@ import 'package:sqflite/sqflite.dart';
 
 class DBHelpers {
 
-  static dynamic updateDB( { required Database db, required String langCode } ) async {
-
-    try {
-      await db.rawQuery( "ALTER TABLE logos_$langCode ADD COLUMN isRich INTEGER DEFAULT 0;" );
-      await db.rawQuery( "ALTER TABLE logos_$langCode ADD COLUMN style VARCHAR(32) DEFAULT 'body';" );
-    } catch( e ) {
-
-    }
-
-
-  }
-
   static dynamic openLogosDatabase( { required String langCode } ) async {
 
     return openDatabase(
@@ -106,6 +94,14 @@ class DBHelpers {
       },
       version: 1,
     );
+  }
+
+  static dynamic updateDB( { required Database db, required String langCode } ) async {
+    try {
+      await db.rawQuery( "ALTER TABLE logos_$langCode ADD COLUMN isRich INTEGER DEFAULT 0;" );
+      await db.rawQuery( "ALTER TABLE logos_$langCode ADD COLUMN style VARCHAR(32) DEFAULT 'body';" );
+    } catch( e ) {
+    }
   }
 
   static bool isDebug = true;

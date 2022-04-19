@@ -4,7 +4,7 @@ import 'package:logos_maru/authenticate.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
-import 'package:logos_maru/main.dart';
+import 'package:logos_maru/utils/data_controller.dart';
 
 class DrawerMenu extends StatelessWidget {
 
@@ -22,13 +22,13 @@ class DrawerMenu extends StatelessWidget {
           LogosTxt(
             comment: 'version',
             logosID: 9,
-            vars: { 'version': Init.version },
+            vars: { 'version': DataController.version },
           ),
 
           LogosTxt(
               comment: 'build',
               logosID: 10,
-              vars: { 'build': Init.buildNumber }
+              vars: { 'build': DataController.buildNumber }
           ),
 
           SizedBox( height: 20 ,),
