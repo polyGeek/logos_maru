@@ -150,9 +150,9 @@ class _LogosUpdateTxt extends StatelessWidget {
       onTap: () {
         if( onTap != null ) {
           onTap!();
-        } else {
+        }/* else {
           print( 'onTap undefined' );
-        }
+        }*/
       },
       onLongPress: (){
         if( LogosController().isEditable == true ) {

@@ -66,6 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Builder(builder: (BuildContext context) {
 
                 if ( DataController().userName == '' ) {
+
                   return LogosTxt(
                     comment: 'Link for user to sign in',
                     logosID: 2,
@@ -73,6 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
 
                 } else {
+
                   return Container(
                     padding: EdgeInsets.zero,
                     child: LogosTxt(
@@ -84,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
                 }
               }),
+
             ],
           )
       ),
@@ -170,8 +173,9 @@ class _UserNameAlertState extends State<UserNameAlert> {
       insetPadding: EdgeInsets.all( 10 ),
       contentPadding: EdgeInsets.all( 10 ),
       title: Center(
-        child: Text(
-          'What is your name?',
+        child: LogosTxt(
+          comment: 'Title on Alert for signin',
+          logosID: 4,
         ),
       ),
 
@@ -180,11 +184,6 @@ class _UserNameAlertState extends State<UserNameAlert> {
 
           children: [
             TextField(
-              /*onChanged: ( txt ) {
-                _myName = txt;
-                _update();
-                LogosController().update();
-              },*/
               minLines: 1, /// Normal textInputField will be displayed
               maxLines: 1, /// When user presses enter it will adapt to it
               autofocus: false,
@@ -211,7 +210,11 @@ class _UserNameAlertState extends State<UserNameAlert> {
 
         TextButton(
             onPressed: () => Navigator.of( context ).pop(),
-            child: Text( 'CANCEL')
+            child: LogosTxt(
+              comment: 'CANCEL btn',
+              logosID: 5,
+              onTap: () => Navigator.of( context ).pop(),
+            ),
         ),
 
         SizedBox( width: 20, ),
@@ -222,7 +225,11 @@ class _UserNameAlertState extends State<UserNameAlert> {
               LogosController().update();
               Navigator.of( context ).pop();
             },
-            child: Text( 'SUBMIT', style: TxtStyles.btn,)
+            child: LogosTxt(
+              comment: 'SUBMIT btn label',
+              txtStyle: TxtStyles.btn,
+              logosID: 6,
+            ),
         ),
 
       ],
