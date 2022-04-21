@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
+import 'package:logos_maru/utils/data_controller.dart';
 
 class Styles {
 

@@ -13,16 +13,18 @@ import 'package:logos_maru/logos/model/rich_txt.dart';
 *  ===============================================*/
 class LogosTxt extends StatefulWidget {
 
-  final int         logosID;
-  final String      comment;
-  final Map?        vars;
-  final TextStyle?  txtStyle;
+  final int           logosID;
+  final String        comment;
+  final Map?          vars;
+  final TextStyle?    txtStyle;
+  final VoidCallback? onTap;
 
   LogosTxt( {
     required this.logosID,
     required this.comment,
     this.vars,
     this.txtStyle,
+    this.onTap
   } );
 
   @override
@@ -31,7 +33,7 @@ class LogosTxt extends StatefulWidget {
 
 class _LogosTxtState extends State<LogosTxt> {
 
-  late Widget _body;
+  late Widget   _body;
   late LogosVO _logosVO;
 
   @override
@@ -43,7 +45,7 @@ class _LogosTxtState extends State<LogosTxt> {
     TextStyle textStyle = LogosVO.getStyle( style: _logosVO.style );
 
     if( _logosVO.logosID == 0 ) {
-      print( '\n\n#############################################');
+      print( '.\n..\n#############################################');
     }
 
     print( '_LogosTxtState > init >\n'
@@ -51,24 +53,25 @@ class _LogosTxtState extends State<LogosTxt> {
         + 'txt:          ' + _logosVO.txt + "\n"
         + 'logosStyle:   ' + _logosVO.style + "\n"
         + 'textStyle:    ' + textStyle.toString() + '\n'
-        + 'widget.style: ' + widget.txtStyle.toString( )
+        + 'widget.style: ' + widget.txtStyle.toString( ) + '\n'
+        //+ 'widget.onTap: ' + widget.onTap.toString()
         + "\n**************************\n" );
 
     if( _logosVO.logosID == 0 ) {
-      print( '#############################################\n\n');
+      print( '#############################################\n.\n..');
     }
 
+    print( '_LogosTxtState: onTap => ' + widget.onTap.toString() );
+
     _body = _LogosUpdateTxt(
-      logosVO:    _logosVO,
-      callback:   _waitingForUpdate,
-      vars:       widget.vars,
-      txtStyle:   LogosVO.chooseStyle(
+      logosVO     : _logosVO,
+      callback    : _waitingForUpdate,
+      vars        : widget.vars,
+      onTap       : widget.onTap,
+      txtStyle    : LogosVO.chooseStyle(
           fromWidget: widget.txtStyle,
           fromLogos: textStyle
       ),
-      /*txtStyle:   ( widget.txtStyle == null )
-          ? textStyle
-          : widget.txtStyle,*/
     );
 
     LogosController().addListener(() { _textUpdated(); });
@@ -97,16 +100,14 @@ class _LogosTxtState extends State<LogosTxt> {
     TextStyle textStyle = LogosVO.getStyle( style: _logosVO.style );
 
     _body = _LogosUpdateTxt(
-      logosVO:    _logosVO,
-      callback:   _waitingForUpdate,
-      vars:       widget.vars,
-      txtStyle:   LogosVO.chooseStyle(
-          fromWidget: widget.txtStyle,
-          fromLogos: textStyle
+      logosVO         : _logosVO,
+      callback        : _waitingForUpdate,
+      vars            : widget.vars,
+      onTap           : widget.onTap,
+      txtStyle        : LogosVO.chooseStyle(
+          fromWidget  : widget.txtStyle,
+          fromLogos   : textStyle
       ),
-      /*txtStyle:   ( widget.txtStyle == null )
-      ? textStyle
-      : widget.txtStyle,*/
     );
     _update();
   }
@@ -124,10 +125,11 @@ class _LogosTxtState extends State<LogosTxt> {
 
 
 class _LogosUpdateTxt extends StatelessWidget {
-  final LogosVO     logosVO;
-  final Function    callback;
-  final Map?        vars;
-  final TextStyle   txtStyle;
+  final LogosVO       logosVO;
+  final Function      callback;
+  final Map?          vars;
+  final VoidCallback? onTap;
+  final TextStyle     txtStyle;
 
   late final LogosVO _logosVO;
 
@@ -136,13 +138,22 @@ class _LogosUpdateTxt extends StatelessWidget {
     required this.callback,
     required this.txtStyle,
     this.vars,
+    this.onTap,
   } ) {
     _logosVO = LogosController().getLogosVO( logosID: logosVO.logosID );
+    print( '_LogosUpdateTxt: onTap => ' + onTap.toString() );
   }
 
   @override
   Widget build( BuildContext context ) {
     return GestureDetector(
+      onTap: () {
+        if( onTap != null ) {
+          onTap!();
+        } else {
+          print( 'onTap undefined' );
+        }
+      },
       onLongPress: (){
         if( LogosController().isEditable == true ) {
           callback();

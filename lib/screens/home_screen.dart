@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:logos_maru/alert_dialogs.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
@@ -16,12 +17,19 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   String _dropdownValue   = 'EN';
 
-
   @override
   void initState() {
     super.initState();
     _dropdownValue = LanguageController().selectedAppLanguageCode;
+    DataController().addListener(() { _update(); } );
     LogosController().addListener(() { _update(); } );
+  }
+
+  @override
+  void dispose() {
+    DataController().removeListener(() { _update(); } );
+    LogosController().removeListener(() { _update(); } );
+    super.dispose();
   }
 
   void _update() {
@@ -29,13 +37,17 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {});
   }
 
-  void userNameAlert() {
+  void _onSigninTap() {
     showDialog<void>(
         context: context,
         barrierDismissible: false,
         builder: (BuildContext context) {
           return UserNameAlert();
         });
+  }
+
+  void _onUserAccount() {
+    print( 'user account settings');
   }
 
   @override
@@ -51,11 +63,27 @@ class _HomeScreenState extends State<HomeScreen> {
                   logosID: 1
               ),
 
-              LogosTxt(
-                comment: 'welcome msg',
-                logosID: 4,
-                vars: { 'fName': DataController().userName },
-              ),
+              Builder(builder: (BuildContext context) {
+
+                if ( DataController().userName == '' ) {
+                  return LogosTxt(
+                    comment: 'Link for user to sign in',
+                    logosID: 2,
+                    onTap: _onSigninTap,
+                  );
+
+                } else {
+                  return Container(
+                    padding: EdgeInsets.zero,
+                    child: LogosTxt(
+                      comment: 'Welcome UserName and link to user settings',
+                      logosID: 3,
+                      vars: { 'userName': DataController().userName },
+                      onTap: ()=>print( 'Welcome, ' + DataController().userName ),
+                    ),
+                  );
+                }
+              }),
             ],
           )
       ),
@@ -74,30 +102,6 @@ class _HomeScreenState extends State<HomeScreen> {
               children: <Widget>[
 
                 const SizedBox( height: 20, ),
-
-
-
-                const SizedBox( height: 20, ),
-
-
-                const SizedBox( height: 20, ),
-
-                ElevatedButton(
-                  onPressed: (){
-
-                    showDialog<void>(
-                        context: context,
-                        barrierDismissible: false,
-                        builder: (BuildContext context) {
-                          return SubmitBtnPressed();
-                        }
-                    );
-                  },
-                  child: LogosTxt(
-                    comment: 'submit btn',
-                    logosID: 3,
-                  ),
-                ),
 
                 const SizedBox( height: 20, ),
 
@@ -144,7 +148,7 @@ class UserNameAlert extends StatefulWidget {
 
 class _UserNameAlertState extends State<UserNameAlert> {
 
-  String _myName          = 'My Name';
+  String _myName          = '';
   late TextEditingController _tec;
 
   @override
@@ -167,7 +171,7 @@ class _UserNameAlertState extends State<UserNameAlert> {
       contentPadding: EdgeInsets.all( 10 ),
       title: Center(
         child: Text(
-          'Title',
+          'What is your name?',
         ),
       ),
 
@@ -176,17 +180,18 @@ class _UserNameAlertState extends State<UserNameAlert> {
 
           children: [
             TextField(
-              onChanged: ( txt ) {
+              /*onChanged: ( txt ) {
                 _myName = txt;
                 _update();
                 LogosController().update();
-              },
+              },*/
               minLines: 1, /// Normal textInputField will be displayed
-              maxLines: 5, /// When user presses enter it will adapt to it
+              maxLines: 1, /// When user presses enter it will adapt to it
               autofocus: false,
               controller: _tec,
               autocorrect: false,
               decoration: InputDecoration(
+                labelText: 'Username',
                 errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
                 border: OutlineInputBorder(),
                 focusedBorder: OutlineInputBorder(
@@ -204,11 +209,20 @@ class _UserNameAlertState extends State<UserNameAlert> {
 
       actions: [
 
+        TextButton(
+            onPressed: () => Navigator.of( context ).pop(),
+            child: Text( 'CANCEL')
+        ),
+
+        SizedBox( width: 20, ),
+
         ElevatedButton(
-            onPressed: (){
+            onPressed: () {
+              DataController().setUserName( userName: _tec.text );
+              LogosController().update();
               Navigator.of( context ).pop();
             },
-            child: Text( 'CLOSE', style: TxtStyles.btn,)
+            child: Text( 'SUBMIT', style: TxtStyles.btn,)
         ),
 
       ],
