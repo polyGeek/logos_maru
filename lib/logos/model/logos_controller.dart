@@ -71,8 +71,6 @@ class LogosController extends ChangeNotifier {
     required String passCode
   } ) async {
 
-    print( userName + ' : ' + passCode );
-
     /// These are different because the user might see EN in the app,
     /// but want to edit ES, or some other language.
     _editingLogosList = _logosList;
@@ -189,9 +187,10 @@ class LogosController extends ChangeNotifier {
   }
 
   /// todo: look at ways to optimize.
-  String getLogos({
+  String getLogos( {
     required int logosID,
-    Map? vars }) {
+    Map? vars } ) {
+
     for (int i = 0; i < _logosList.length; i++) {
       LogosVO logosVO = _logosList.elementAt(i);
       if (logosVO.logosID == logosID) {
@@ -370,23 +369,23 @@ class LogosController extends ChangeNotifier {
   }
 
   String insertVars( { required String txt, required Map vars } ) {
-    p( msg: '_________________START_________________' );
-    p( msg: 'insertVars: ' + txt );
-    p( msg: 'map: ' + vars.toString() );
-    while( txt.contains( '{' ) == true ) {
+    p(msg: '_________________START_________________');
+    p(msg: 'insertVars: ' + txt);
+    p(msg: 'map: ' + vars.toString());
+    while (txt.contains('{') == true) {
 
       /// Get the first {}
-      int start = txt.indexOf( '{' ) + 1;
-      int end = txt.indexOf( '}', start );
-      p( msg: '     start: ' + start.toString() + ', end: ' + end.toString() );
+      int start = txt.indexOf('{') + 1;
+      int end = txt.indexOf('}', start);
+      p(msg: '     start: ' + start.toString() + ', end: ' + end.toString());
 
       /// Get the variable name
-      String v = txt.substring( start, end );
-      p( msg: '     variable: ' + v );
+      String v = txt.substring(start, end);
+      p(msg: '     variable: ' + v);
 
-      txt = txt.substring( 0, start - 1 ) + vars[v] + txt.substring( end + 1 );
-      p( msg: '     txt: ' + txt );
-      p( msg: '_________________END_________________' );
+      txt = txt.substring(0, start - 1) + vars[v] + txt.substring(end + 1);
+      p(msg: '     txt: ' + txt);
+      p(msg: '_________________END_________________');
     }
 
     return txt;
@@ -410,3 +409,13 @@ class LogosController extends ChangeNotifier {
   }
 }
 
+/*
+class LogosForced extends ChangeNotifier {
+  static final LogosForced _logosForced = LogosForced._internal();
+  factory LogosForced() => _logosForced;
+  LogosForced._internal();
+
+  void launchEditor( { required int logosID } ) {
+    notifyListeners();
+  }
+}*/

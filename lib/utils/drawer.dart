@@ -20,14 +20,14 @@ class DrawerMenu extends StatelessWidget {
           SizedBox( height: 50 ,),
 
           LogosTxt(
-            comment: 'version',
-            logosID: 9,
+            comment: 'App version label',
+            logosID: 8,
             vars: { 'version': DataController.version },
           ),
 
           LogosTxt(
-              comment: 'build',
-              logosID: 10,
+              comment: 'application build number',
+              logosID: 9,
               vars: { 'build': DataController.buildNumber }
           ),
 
@@ -39,9 +39,10 @@ class DrawerMenu extends StatelessWidget {
               LogosController().getRemoteChanges( langCode: LanguageController().editingLanguageCode );
             },
             child: LogosTxt(
-              comment: 'getRemoteChanges',
-              logosID: 11,
+              comment: 'Button text to update LogosMare data from the remote database',
+              logosID: 10,
             ),
+
           ),
 
           SizedBox( height: 20 ,),
@@ -56,9 +57,9 @@ class DrawerMenu extends StatelessWidget {
                     return AuthenticateEditor();
                   });
             },
-            child: LogosTxt(
-              comment: 'authenticateAsEditor',
-              logosID: 12,
+            child:LogosTxt(
+              comment: 'Authenticate as Editor',
+              logosID: 11,
             ),
           ),
 

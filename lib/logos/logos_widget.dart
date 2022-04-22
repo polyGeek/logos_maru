@@ -18,10 +18,12 @@ class LogosTxt extends StatefulWidget {
   final Map?          vars;
   final TextStyle?    txtStyle;
   final VoidCallback? onTap;
+  final Widget?       child;
 
   LogosTxt( {
     required this.logosID,
     required this.comment,
+    this.child,
     this.vars,
     this.txtStyle,
     this.onTap
@@ -54,7 +56,6 @@ class _LogosTxtState extends State<LogosTxt> {
         + 'logosStyle:   ' + _logosVO.style + "\n"
         + 'textStyle:    ' + textStyle.toString() + '\n'
         + 'widget.style: ' + widget.txtStyle.toString( ) + '\n'
-        //+ 'widget.onTap: ' + widget.onTap.toString()
         + "\n**************************\n" );
 
     if( _logosVO.logosID == 0 ) {
@@ -68,6 +69,7 @@ class _LogosTxtState extends State<LogosTxt> {
       callback    : _waitingForUpdate,
       vars        : widget.vars,
       onTap       : widget.onTap,
+      child       : widget.child,
       txtStyle    : LogosVO.chooseStyle(
           fromWidget: widget.txtStyle,
           fromLogos: textStyle
@@ -104,6 +106,7 @@ class _LogosTxtState extends State<LogosTxt> {
       callback        : _waitingForUpdate,
       vars            : widget.vars,
       onTap           : widget.onTap,
+      child           : widget.child,
       txtStyle        : LogosVO.chooseStyle(
           fromWidget  : widget.txtStyle,
           fromLogos   : textStyle
@@ -130,13 +133,14 @@ class _LogosUpdateTxt extends StatelessWidget {
   final Map?          vars;
   final VoidCallback? onTap;
   final TextStyle     txtStyle;
-
+  final Widget?       child;
   late final LogosVO _logosVO;
 
   _LogosUpdateTxt( {
     required this.logosVO,
     required this.callback,
     required this.txtStyle,
+    this.child,
     this.vars,
     this.onTap,
   } ) {
@@ -150,9 +154,7 @@ class _LogosUpdateTxt extends StatelessWidget {
       onTap: () {
         if( onTap != null ) {
           onTap!();
-        }/* else {
-          print( 'onTap undefined' );
-        }*/
+        }
       },
       onLongPress: (){
         if( LogosController().isEditable == true ) {
@@ -167,7 +169,24 @@ class _LogosUpdateTxt extends StatelessWidget {
         }
       },
 
-      child: ( _logosVO.isRich == 0 )
+      child: Builder(builder: (BuildContext context) {
+        if ( child == null ) {
+
+          return ( _logosVO.isRich == 0 )
+              ? Text(
+            LogosController().getLogos( logosID: logosVO.logosID, vars: vars ),
+            style: txtStyle,
+          )
+              : RichTxt(
+            txt: LogosController().getLogos( logosID: logosVO.logosID, vars: vars ),
+            style: txtStyle,
+          );
+
+        } else {
+          return child!;
+        }
+      }),
+      /* ( _logosVO.isRich == 0 )
           ? Text(
         LogosController().getLogos( logosID: logosVO.logosID, vars: vars ),
         style: txtStyle,
@@ -175,7 +194,7 @@ class _LogosUpdateTxt extends StatelessWidget {
           : RichTxt(
         txt: LogosController().getLogos( logosID: logosVO.logosID, vars: vars ),
         style: txtStyle,
-      ),
+      ),*/
     );
   }
 }
