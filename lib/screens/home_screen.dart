@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:logos_maru/alert_dialogs.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
-import 'package:logos_maru/logos/model/lang_controller.dart';
-import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
+import 'package:logos_maru/logos/model/rich_txt.dart';
+import 'package:logos_maru/logos/model/txt_utilities.dart';
+import 'package:logos_maru/screens/drawer.dart';
 import 'package:logos_maru/utils/data_controller.dart';
-import 'package:logos_maru/utils/drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   @override
@@ -14,12 +13,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String _dropdownValue   = 'EN';
 
   @override
   void initState() {
     super.initState();
-    _dropdownValue = LanguageController().selectedAppLanguageCode;
     DataController().addListener(() { _update(); } );
     LogosController().addListener(() { _update(); } );
   }
@@ -39,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
   void _onSigninTap() {
     showDialog<void>(
         context: context,
-        barrierDismissible: false,
+        barrierDismissible: true,
         builder: (BuildContext context) {
           return UserNameAlert();
         });
@@ -62,10 +59,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 if ( DataController().userName == '' ) {
 
-                  return LogosTxt(
-                    comment: 'Link for user to sign in',
-                    logosID: 2,
-                    onTap: _onSigninTap,
+                  return TextButton(
+                    onPressed: _onSigninTap,
+                    child: LogosTxt(
+                      comment: 'Link for user to sign in',
+                      logosID: 2,
+                    ),
                   );
 
                 } else {
@@ -76,7 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
                       comment: 'Welcome UserName and link to user settings',
                       logosID: 3,
                       vars: { 'userName': DataController().userName },
-                      onTap: ()=>print( 'Welcome, ' + DataController().userName ),
                     ),
                   );
                 }
@@ -90,51 +88,89 @@ class _HomeScreenState extends State<HomeScreen> {
         child: DrawerMenu(),
       ),
 
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: SingleChildScrollView(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
 
-                const SizedBox( height: 20, ),
+              SizedBox( height: 20,),
 
-                const SizedBox( height: 20, ),
+              LogosTxt(
+                comment: 'Welcome to LogosMaru. | Intro to app',
+                logosID: 14,
+              ),
 
-                DropdownButton<String>(
-                  value: _dropdownValue,
-                  icon: const Icon(Icons.arrow_downward),
-                  iconSize: 24,
-                  elevation: 16,
-                  style: const TextStyle(color: Colors.deepPurple),
-                  underline: Container(
-                    height: 2,
-                    color: Colors.deepPurpleAccent,
-                  ),
-                  onChanged: ( String? newValue ) {
-                    _dropdownValue = newValue!;
-                    print( newValue );
-                    LogosController().changeLanguage( langCode: newValue );
-                    if( mounted )
-                      setState(() {});
-                  },
-                  items: LanguageController().languageOptionsList.map<DropdownMenuItem<String>>(( LangVO value ) {
-                    return DropdownMenuItem<String>(
-                      value: value.langCode,
-                      child: Text( value.langCode + ' - ' + value.name ),
-                    );
-                  }).toList(),
-                ),
+              LogosTxt(
+                comment: 'This is a demo app to show you how easy it is to create a multi-language application using our service. | Description of the LogosMaru Demo app',
+                logosID: 15,
+              ),
 
-                SizedBox( height: 20, ),
+              SizedBox( height: 20,),
 
-              ],
-            ),
+              LogosTxt(
+                comment: 'Key benefits: | Header',
+                logosID: 16,
+              ),
+              SizedBox( height: 10,),
+
+              LogosTxt(
+                comment: '• Authorized users can edit any text, in any language, from within your client side app. This way translators have access the context and display where their translation will go. ',
+                logosID: 17,
+              ),
+              SizedBox( height: 10,),
+
+              LogosTxt(
+                comment: '• Update the text/translations in your application without updating the app. Once a change has been approved by the administrator, using the LogosMaru Admin app, the next user who starts your app will see the latest text changes instead of waiting to submit and get approval from the app stores. | ',
+                logosID: 18,
+              ),
+              SizedBox( height: 10,),
+
+              LogosTxt(
+                comment: '• Update the text/translations in your application without updating the app. Once a change has been approved by the administrator, using the LogosMaru Admin app, the next user who starts your app will see the latest text changes instead of waiting to submit and get approval from the app stores. | ',
+                logosID: 18,
+              ),
+              SizedBox( height: 10,),
+
+              LogosTxt(
+                comment: '• Add a new language to your application without updating the app in the app stores. | ',
+                logosID: 20,
+              ),
+              SizedBox( height: 10,),
+
+              LogosTxt(
+                comment: '• Get access to hundreds of pre-translated common words and phrases used in most apps, like: Submit, Send, Cancel, Close... | Feature description: access to pre-translated common words.',
+                logosID: 21,
+              ),
+              SizedBox( height: 10,),
+
+
+              Text( "• Let trusted users help you with translations in their native language.\n"),
+
+              Text( "• Include multiple variables in the text, "
+                  "like names and dates that may be dynamic in your application.\n" ),
+
+              Text( "• Include and change text styles with the translations.\n" ),
+
+              Text( "• Add special formatting to your text.\n" ),
+
+              const SizedBox( height: 20, ),
+
+              Align(
+                  alignment: Alignment.center,
+                  child: ChangeLanguageDropdown()
+              ),
+
+              SizedBox( height: 20, ),
+
+            ],
           ),
         ),
       ),
     );
   }
 }
+
+

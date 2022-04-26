@@ -44,14 +44,12 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         colorScheme: ColorScheme(
-          primaryVariant: Colors.blueGrey.shade800,
-          secondaryVariant: Colors.amber.shade800,
           background: Colors.black,
           brightness: Brightness.dark,
           error: Colors.redAccent,
           onBackground: Colors.white,
           onError: Colors.white,
-          onPrimary: Colors.white,
+          onPrimary: Colors.black,
           onSecondary: Colors.black,
           onSurface: Colors.white70,
           primary: Colors.blueGrey,
@@ -65,12 +63,25 @@ class MyApp extends StatelessWidget {
         textTheme: TextTheme( bodyText1: TxtStyles.body, bodyText2: TxtStyles.body ),
         checkboxTheme: CheckboxThemeData(
           side: MaterialStateBorderSide.resolveWith(
-                  (_) => const BorderSide( width: 0, color: Colors.black54, style: BorderStyle.none )
+                  (_) => const BorderSide(
+                      width: 1,
+                      color: Colors.black54,
+                      style: BorderStyle.solid
+                  )
           ),
           fillColor: MaterialStateProperty.all( Colors.lightGreenAccent ),
           checkColor: MaterialStateProperty.all( Colors.black ),
           shape: CircleBorder(),
         ),
+        outlinedButtonTheme: OutlinedButtonThemeData(
+          style: OutlinedButton.styleFrom(
+            side: BorderSide(
+                width: 1.0,
+                color: Colors.white70
+            ),
+          ),
+        ),
+
       ),
       themeMode: ThemeMode.dark,
       /* ThemeMode.system to follow system theme,

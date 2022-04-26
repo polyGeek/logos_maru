@@ -33,6 +33,17 @@ class LanguageController extends ChangeNotifier {
     notifyListeners();
   }
 
+  String getLanguageNameFromCode( { required String langCode } ) {
+
+    int _len = permittedLanguageOptionsList.length;
+    for( int i = 0; i < _len; i++ ) {
+      LangVO langVO = permittedLanguageOptionsList.elementAt( i );
+      if( langVO.langCode == langCode )
+        return langVO.name;
+    }
+    return 'Language unknown';
+}
+
   /** ===============================================
    *  List of language options for app
    *  ===============================================*/

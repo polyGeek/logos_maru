@@ -4,6 +4,7 @@ import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
+import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 /* ===============================================
 *  Language Chooser
@@ -46,10 +47,9 @@ class _LanguageChooserState extends State<LanguageChooser> {
       icon: const Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
-      style: const TextStyle(color: Colors.deepPurple),
       underline: Container(
         height: 2,
-        color: Colors.deepPurpleAccent,
+        color: Colors.amber,
       ),
 
       onChanged: ( String? newValue ) async {
@@ -112,10 +112,9 @@ class _StyleChooserState extends State<StyleChooser> {
         icon: const Icon(Icons.arrow_downward),
         iconSize: 24,
         elevation: 16,
-        style: const TextStyle(color: Colors.deepPurple),
         underline: Container(
           height: 2,
-          color: Colors.deepPurpleAccent,
+          color: Colors.amber,
         ),
         value: _dropdownValue,
         onChanged: ( TxtStyleOptions? value ){
@@ -149,6 +148,70 @@ class CircularProgress extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/** ===============================================
+ *  Radio Button and Label
+ *  ===============================================*/
+class RadioBtnLabel extends StatefulWidget {
+
+  final void Function( bool value )  callback;
+  final bool boolean;
+  final String label;
+
+  RadioBtnLabel( {
+    required this.callback,
+    required this.boolean,
+    required this.label,
+  } );
+
+  @override
+  _RadioBtnLabelState createState() => _RadioBtnLabelState();
+}
+
+class _RadioBtnLabelState extends State<RadioBtnLabel> {
+
+  late bool _localBool;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _localBool = widget.boolean;
+  }
+
+  void _update() {
+    if( mounted )
+      setState(() {});
+  }
+
+  @override
+  Widget build( BuildContext context ) {
+    return Column(
+
+      children: [
+
+        Checkbox(
+            value: _localBool,
+            onChanged: ( bool? value ) {
+              _localBool = value!;
+              widget.callback( value );
+              _update();
+            }
+        ),
+
+        GestureDetector(
+            onTap: () {
+              _localBool = !_localBool;
+              widget.callback( _localBool );
+              _update();
+            },
+            child: Text( widget.label, style: TxtStyles.body, )
+        ),
+
+      ],
     );
   }
 }

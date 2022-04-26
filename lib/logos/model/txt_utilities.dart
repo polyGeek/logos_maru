@@ -21,10 +21,13 @@ class TxtStyles {
   );
 
   static TextStyle get bodySm =>
-      body.copyWith( fontSize: FontSizeController().bodySize ).small;
+      body.copyWith( fontSize: FontSizeController().bodySize ).small.black.boldHeavy;
 
   static TextStyle get btn =>
-      body.copyWith( fontSize: FontSizeController().bodySize ).small.black.boldMild;
+      body.copyWith( fontSize: FontSizeController().bodySize ).black.boldMild;
+
+  static TextStyle get btnFlat =>
+      body.copyWith( fontSize: FontSizeController().bodySize ).white.boldMild;
 
   static TextStyle get bodySubSmall =>
       body.copyWith( fontSize: FontSizeController().bodySubSm );
@@ -61,6 +64,7 @@ extension TextStyleHelpers on TextStyle {
   TextStyle get gold          => copyWith( color: Styles.c_RPYellow );
   TextStyle get green         => copyWith( color: Styles.c_greenAccent);
   TextStyle get black         => copyWith( color: Colors.black87 );
+  TextStyle get white         => copyWith( color: Colors.white );
   TextStyle get red           => copyWith( color: Styles.c_redAccent );
   TextStyle get blue           => copyWith( color: Colors.blue );
   TextStyle get bone          => copyWith( color: Styles.c_bone );

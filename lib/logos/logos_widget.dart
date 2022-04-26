@@ -17,7 +17,6 @@ class LogosTxt extends StatefulWidget {
   final String        comment;
   final Map?          vars;
   final TextStyle?    txtStyle;
-  final VoidCallback? onTap;
   final Widget?       child;
 
   LogosTxt( {
@@ -26,7 +25,6 @@ class LogosTxt extends StatefulWidget {
     this.child,
     this.vars,
     this.txtStyle,
-    this.onTap
   } );
 
   @override
@@ -62,13 +60,10 @@ class _LogosTxtState extends State<LogosTxt> {
       print( '#############################################\n.\n..');
     }
 
-    print( '_LogosTxtState: onTap => ' + widget.onTap.toString() );
-
     _body = _LogosUpdateTxt(
       logosVO     : _logosVO,
       callback    : _waitingForUpdate,
       vars        : widget.vars,
-      onTap       : widget.onTap,
       child       : widget.child,
       txtStyle    : LogosVO.chooseStyle(
           fromWidget: widget.txtStyle,
@@ -105,7 +100,6 @@ class _LogosTxtState extends State<LogosTxt> {
       logosVO         : _logosVO,
       callback        : _waitingForUpdate,
       vars            : widget.vars,
-      onTap           : widget.onTap,
       child           : widget.child,
       txtStyle        : LogosVO.chooseStyle(
           fromWidget  : widget.txtStyle,
@@ -131,7 +125,6 @@ class _LogosUpdateTxt extends StatelessWidget {
   final LogosVO       logosVO;
   final Function      callback;
   final Map?          vars;
-  final VoidCallback? onTap;
   final TextStyle     txtStyle;
   final Widget?       child;
   late final LogosVO _logosVO;
@@ -142,18 +135,23 @@ class _LogosUpdateTxt extends StatelessWidget {
     required this.txtStyle,
     this.child,
     this.vars,
-    this.onTap,
   } ) {
     _logosVO = LogosController().getLogosVO( logosID: logosVO.logosID );
-    print( '_LogosUpdateTxt: onTap => ' + onTap.toString() );
   }
 
   @override
   Widget build( BuildContext context ) {
     return GestureDetector(
-      onTap: () {
-        if( onTap != null ) {
-          onTap!();
+      onDoubleTap: (){
+        if( LogosController().isEditable == true ) {
+          callback();
+          showDialog<void> (
+              context: context,
+              barrierDismissible: false,
+              builder: (BuildContext context) {
+                return LogosEditor( logosID: logosVO.logosID, );
+              }
+          );
         }
       },
       onLongPress: (){
@@ -174,11 +172,11 @@ class _LogosUpdateTxt extends StatelessWidget {
 
           return ( _logosVO.isRich == 0 )
               ? Text(
-            LogosController().getLogos( logosID: logosVO.logosID, vars: vars ),
+            LogosController().getLogos( logosID: logosVO.logosID, vars: vars, comment: '' ),
             style: txtStyle,
           )
               : RichTxt(
-            txt: LogosController().getLogos( logosID: logosVO.logosID, vars: vars ),
+            txt: LogosController().getLogos( logosID: logosVO.logosID, vars: vars, comment: '' ),
             style: txtStyle,
           );
 
@@ -186,15 +184,6 @@ class _LogosUpdateTxt extends StatelessWidget {
           return child!;
         }
       }),
-      /* ( _logosVO.isRich == 0 )
-          ? Text(
-        LogosController().getLogos( logosID: logosVO.logosID, vars: vars ),
-        style: txtStyle,
-      )
-          : RichTxt(
-        txt: LogosController().getLogos( logosID: logosVO.logosID, vars: vars ),
-        style: txtStyle,
-      ),*/
     );
   }
 }

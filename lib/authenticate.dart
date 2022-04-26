@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/ancillary.dart';
+import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
+import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 class AuthenticateEditor extends StatefulWidget {
   @override
@@ -69,32 +71,48 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
       content: ( _isBusy == true )
           ? Container(
           width: MediaQuery.of( context ).size.width / 2,
-          height: MediaQuery.of( context ).size.width / 2,
           child: CircularProgress()
       )
           : Container(
-        color: Colors.white,
         width: MediaQuery.of( context ).size.width / 2,
-        height: ( MediaQuery.of( context ).size.width / 2 ) + 100,
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
 
-            TextField(
-              minLines: 1, /// Normal textInputField will be displayed
-              maxLines: 5, /// When user presses enter it will adapt to it
-              autofocus: false,
-              controller: _tec,
-              autocorrect: false,
-              decoration: InputDecoration(
-                errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
-                border: OutlineInputBorder(),
-                labelText: 'User name:',
-                focusedBorder: OutlineInputBorder(),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.blue,
+            Align(
+              alignment: Alignment.topRight,
+              child: TextButton(
+                  onPressed: (){
+                    Navigator.of( context ).pop();
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.blueGrey,
+                      borderRadius: BorderRadius.all( Radius.circular( 4 ))
+                    ),
+                      child: Icon( Icons.close, color: Colors.white, )
+                  )
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.symmetric( horizontal: 8 ),
+              child: TextField(
+                minLines: 1, /// Normal textInputField will be displayed
+                maxLines: 5, /// When user presses enter it will adapt to it
+                autofocus: false,
+                controller: _tec,
+                autocorrect: false,
+                decoration: InputDecoration(
+                  errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
+                  border: OutlineInputBorder(),
+                  labelText: LogosController().getLogos( logosID: 7, comment: 'User name: hint on TextInput' ),
+                  focusedBorder: OutlineInputBorder(),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.blue,
+                    ),
                   ),
                 ),
               ),
@@ -130,9 +148,16 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
 
             SizedBox( height: 20 ,),
 
-            ElevatedButton(
-                onPressed: _onSubmit,
-                child: Text( 'SUBMIT' )
+            Padding(
+              padding: const EdgeInsets.symmetric( horizontal: 8 ),
+              child: ElevatedButton(
+                  onPressed: _onSubmit,
+                  child: LogosTxt(
+                    comment: 'SUBMIT: btn label',
+                    logosID: 6,
+                    txtStyle: TxtStyles.btn,
+                  ),
+              ),
             )
 
           ],

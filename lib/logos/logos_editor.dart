@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/model/eol.dart';
@@ -23,6 +24,8 @@ class _LogosEditorState extends State<LogosEditor> {
 
   late LogosVO _logosVO;
   bool _isBusy = false;
+
+  //bool _isHashtagged = false;
 
   @override
   void initState() {
@@ -94,12 +97,24 @@ class _LogosEditorState extends State<LogosEditor> {
 
   }
 
+  void callbackHashtag( bool value ) {
+    LogosController().setUseHashtag( useHashtag: value );
+  }
+
+  void callbackDoubleSized( bool value ) {
+    LogosController().setMakeDoubleSize( makeDoubleSize: value );
+  }
+
   @override
   Widget build( BuildContext context ) {
     return AlertDialog(
       scrollable: true,
-      insetPadding: EdgeInsets.symmetric( horizontal: 5 ),
+      insetPadding: EdgeInsets.symmetric( horizontal: 10 ),
       contentPadding: EdgeInsets.symmetric( vertical: 5, horizontal: 10 ),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.all( Radius.circular( 8 ) ),
+          side: BorderSide(color: Colors.white38 )
+      ),
 
       content: ( _isBusy == true )
           ? Column(
@@ -127,6 +142,23 @@ class _LogosEditorState extends State<LogosEditor> {
               ],
             ),
 
+            Text( 'Description: ' + _logosVO.description ),
+
+            SizedBox( height: 5,),
+
+            Row(
+              children: [
+
+                Text( 'Tags: ' + _logosVO.tags ),
+
+                Expanded(child: SizedBox() ),
+
+                StyleChooser( logosID: widget.logosID, ),
+              ],
+            ),
+
+            SizedBox( height: 10,),
+
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
@@ -150,7 +182,7 @@ class _LogosEditorState extends State<LogosEditor> {
 
                 _FormatingBtn(
                   format: '*',
-                  formatedCharacter: 'I',
+                  formatedCharacter: 'italic',
                   callback: formatCallback,
                 ),
 
@@ -158,7 +190,7 @@ class _LogosEditorState extends State<LogosEditor> {
 
                 _FormatingBtn(
                   format: '^',
-                  formatedCharacter: 'B',
+                  formatedCharacter: 'bold',
                   callback: formatCallback,
                 ),
 
@@ -166,7 +198,7 @@ class _LogosEditorState extends State<LogosEditor> {
 
                 _FormatingBtn(
                   format: '_',
-                  formatedCharacter: 'U',
+                  formatedCharacter: 'underline',
                   callback: formatCallback,
                 ),
 
@@ -184,34 +216,17 @@ class _LogosEditorState extends State<LogosEditor> {
               decoration: InputDecoration(
                 errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
                 border: OutlineInputBorder(),
-                labelText: LanguageController().editingLanguageCode,
+                labelText: LanguageController().getLanguageNameFromCode(
+                    langCode: LanguageController().editingLanguageCode
+                ),
                 focusedBorder: OutlineInputBorder(
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.blue,
+                    color: Colors.white70,
                   ),
                 ),
               ),
-            ),
-
-            SizedBox( height: 5,),
-
-            SizedBox( height: 5,),
-
-            Text( 'Description: ' + _logosVO.description ),
-
-            SizedBox( height: 5,),
-
-            Row(
-              children: [
-
-                Text( 'Tags: ' + _logosVO.tags ),
-
-                Expanded(child: SizedBox() ),
-
-                StyleChooser( logosID: widget.logosID, ),
-              ],
             ),
 
             SizedBox( height: 15,),
@@ -230,7 +245,7 @@ class _LogosEditorState extends State<LogosEditor> {
                 ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(
-                    color: Colors.blue,
+                    color: Colors.white70,
                   ),
                 ),
               ),
@@ -241,29 +256,51 @@ class _LogosEditorState extends State<LogosEditor> {
 
       actions: [
 
-        TextButton(
-          onPressed: () {
+        Row(
+          children: [
+            RadioBtnLabel(
+              boolean: LogosController().useHashtag,
+              callback: callbackHashtag,
+              label: 'Add Hashtag',
+            ),
 
-            LogosController().update();
-            Navigator.of( context ).pop();
-          },
-          child: Text( 'CANCEL' ),
-        ),
+            SizedBox( width: 20,),
 
-        ElevatedButton(
-          onPressed: () {
+            RadioBtnLabel(
+              boolean: LogosController().makeDoubleSize,
+              callback: callbackDoubleSized,
+              label: 'DoubleSize',
+            ),
 
-            _logosVO.txt = _tecTxt.text;
-            _logosVO.note = _tecNote.text;
+            Expanded(child: SizedBox()),
 
-            LogosController().updateLogosDatabase(
-              logosVO: _logosVO,
-              langCode: LanguageController().editingLanguageCode,
-            );
+            TextButton(
+              onPressed: () {
 
-            Navigator.of( context ).pop();
-          },
-          child: Text( 'SUBMIT' ),
+                LogosController().update();
+                Navigator.of( context ).pop();
+              },
+              child: Text( 'CANCEL', style: TxtStyles.btnFlat ),
+            ),
+
+            SizedBox( width: 25 ,),
+
+            ElevatedButton(
+              onPressed: () {
+
+                _logosVO.txt = _tecTxt.text;
+                _logosVO.note = _tecNote.text;
+
+                LogosController().updateLogosDatabase(
+                  logosVO: _logosVO,
+                  langCode: LanguageController().editingLanguageCode,
+                );
+
+                Navigator.of( context ).pop();
+              },
+              child: Text( 'SUBMIT', style: TxtStyles.btn ),
+            ),
+          ],
         ),
       ],
     );
@@ -284,31 +321,25 @@ class _FormatingBtn extends StatelessWidget {
 
   @override
   Widget build( BuildContext context ) {
-    return ElevatedButton(
+    return OutlinedButton(
       onPressed: () {
         callback( format );
       },
 
-      style: ElevatedButton.styleFrom(
-        primary: Colors.white,
-      ),
-      child: SizedBox(
-        width: 25,
+      child: IntrinsicWidth(
         child: Row(
           children: [
-            Text( format, style: TextStyle( color: Colors.black ), ),
+            Text( format, style: TextStyle( color: Colors.white ), ),
 
             RichTxt(
               txt: format + formatedCharacter + format,
               style: TxtStyles.body,
             ),
 
-            Text( format, style: TextStyle( color: Colors.black ), ),
+            Text( format, style: TextStyle( color: Colors.white ), ),
           ],
         ),
       ),
     );
   }
 }
-
-

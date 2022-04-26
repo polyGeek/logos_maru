@@ -31,7 +31,7 @@ class _UserNameAlertState extends State<UserNameAlert> {
       contentPadding: EdgeInsets.all( 10 ),
       title: Center(
         child: LogosTxt(
-          comment: 'Title on Alert for signin',
+          comment: 'What is your name? : Title on Alert for signin',
           logosID: 4,
         ),
       ),
@@ -56,7 +56,10 @@ class _UserNameAlertState extends State<UserNameAlert> {
                    * So we have to access the Logos data through the API. This text won't be
                    * editable in the client app. Only via the admin.
                    */
-                  labelText: LogosController().getLogos( logosID: 7 ), /// 'User name',
+                  labelText: LogosController().getLogos(
+                      logosID: 7,
+                      comment: 'User name | hint on TextInput'
+                  ),
                   errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
                   border: OutlineInputBorder(),
                   focusedBorder: OutlineInputBorder(
@@ -80,7 +83,7 @@ class _UserNameAlertState extends State<UserNameAlert> {
           child: LogosTxt(
             comment: 'CANCEL btn',
             logosID: 5,
-            onTap: () => Navigator.of( context ).pop(),
+            //onTap: () => Navigator.of( context ).pop(),
           ),
         ),
 
@@ -174,7 +177,11 @@ class ViewLogsDialog extends StatelessWidget {
           onPressed: (){
             Navigator.of( context ).pop();
           },
-          child: Text( 'Close'),
+          child: LogosTxt(
+            comment: 'CLOSE: Close button',
+            logosID: 13,
+            txtStyle: TxtStyles.btn,
+          ),
         ),
 
       ],

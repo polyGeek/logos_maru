@@ -23,6 +23,22 @@ class LogosController extends ChangeNotifier {
   bool _isEditable = false;
   bool get isEditable => _isEditable;
 
+  /// Places a #hashtag# at the beginning and ending of all text
+  /// so that developer can tell where Logos is applied and where
+  /// there is raw text.
+  bool? _useHashtag = false;
+  bool get useHashtag => _useHashtag!;
+  void setUseHashtag( { required bool useHashtag } ) {
+    _useHashtag = useHashtag;
+  }
+
+  /// Repeat the text to test Text Wrapping
+  bool? _makeDoubleSize = false;
+  bool get makeDoubleSize => _makeDoubleSize!;
+  void setMakeDoubleSize( { required bool makeDoubleSize } ) {
+    _makeDoubleSize = makeDoubleSize;
+  }
+
   /// userID and userName
   int? _userID;
   String? _userName;
@@ -189,13 +205,24 @@ class LogosController extends ChangeNotifier {
   /// todo: look at ways to optimize.
   String getLogos( {
     required int logosID,
+    required String comment,
     Map? vars } ) {
 
     for (int i = 0; i < _logosList.length; i++) {
       LogosVO logosVO = _logosList.elementAt(i);
-      if (logosVO.logosID == logosID) {
-        return (vars == null) ? logosVO.txt : insertVars(
-            txt: logosVO.txt, vars: vars);
+
+      if ( logosVO.logosID == logosID ) {
+
+        /// Add vars if needed.
+        String txt = ( vars == null )? logosVO.txt : insertVars( txt: logosVO.txt, vars: vars);
+
+        if( _useHashtag == true ) {
+          return '#' + txt + '#';
+        } else if( _makeDoubleSize == true ) {
+          return txt + ' | ' + txt.toUpperCase();
+        } else {
+          return txt;
+        }
       }
     }
 
@@ -409,13 +436,3 @@ class LogosController extends ChangeNotifier {
   }
 }
 
-/*
-class LogosForced extends ChangeNotifier {
-  static final LogosForced _logosForced = LogosForced._internal();
-  factory LogosForced() => _logosForced;
-  LogosForced._internal();
-
-  void launchEditor( { required int logosID } ) {
-    notifyListeners();
-  }
-}*/
