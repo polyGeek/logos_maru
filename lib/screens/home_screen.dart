@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:logos_maru/alert_dialogs.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
-import 'package:logos_maru/logos/model/rich_txt.dart';
-import 'package:logos_maru/logos/model/txt_utilities.dart';
 import 'package:logos_maru/screens/drawer.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 
@@ -147,7 +145,11 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox( height: 10,),
 
 
-              Text( "• Let trusted users help you with translations in their native language.\n"),
+              //Text( "• Let trusted users help you with translations in their native language.\n"),
+              LogosTxt(
+                comment: '• Let trusted users help you with translations in their native language. | Feature',
+                logosID: 22,
+              ),
 
               Text( "• Include multiple variables in the text, "
                   "like names and dates that may be dynamic in your application.\n" ),

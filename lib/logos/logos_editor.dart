@@ -1,4 +1,4 @@
-import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/model/eol.dart';
