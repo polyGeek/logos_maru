@@ -31,16 +31,16 @@ class Styles {
 
     /**
      * 	*Italics*
-     * 	†Bold†
-     * 	^RP Gold^
+     * 	^Bold^
+     * 	_underline_
      * 	>Big>
      *  <small<
      * 	§Big-Italic§
-     * 	_underline/gold_
+
      * 	more to use: þ Ø × ¿ « » ± œ ƒ
      */
 
-    String c;
+    String c          = '';
     String subString  = '';
     bool isItalic     = false;
     bool isBold       = false;
@@ -59,7 +59,18 @@ class Styles {
 
     List<TextSpan> spans = [];
 
+
     for ( int i = 0; i < txt.length; i++ ) {
+      if( txt[ i ] == '~' ) {
+        print( 'skipping: ' + i.toString() + ' : ' + txt.codeUnitAt(i).toString());
+        subString += txt[ i+1 ];
+        i+=2; /// skip over if escaped.
+        if( i == txt.length ) {
+          spans.add( TextSpan( text: subString, style: txtStyle ) );
+          return spans;
+        }
+      }
+
       c = txt[ i ];
 
       if ( c == '*' ) {

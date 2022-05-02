@@ -25,8 +25,6 @@ class _LogosEditorState extends State<LogosEditor> {
   late LogosVO _logosVO;
   bool _isBusy = false;
 
-  //bool _isHashtagged = false;
-
   @override
   void initState() {
     super.initState();
@@ -199,6 +197,14 @@ class _LogosEditorState extends State<LogosEditor> {
                 _FormatingBtn(
                   format: '_',
                   formatedCharacter: 'underline',
+                  callback: formatCallback,
+                ),
+
+                SizedBox( width: 8 ,),
+
+                _FormatingBtn(
+                  format: '|',
+                  formatedCharacter: 'emphasis',
                   callback: formatCallback,
                 ),
 

@@ -25,6 +25,8 @@ import 'package:package_info_plus/package_info_plus.dart';
  * Move to AWS
  * Sanitize the text.
  * LastUpdate sends "lastLangID": "1" for a new DB. Make sure the remote DB sends everything >= that ID.
+ *
+ *
 */
 
 void main() {
@@ -36,7 +38,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //theme: ThemeData( primarySwatch: Colors.blue, ),
       theme: ThemeData(
         brightness: Brightness.light,
         /* light theme settings */
@@ -44,8 +45,6 @@ class MyApp extends StatelessWidget {
       darkTheme: ThemeData(
         brightness: Brightness.dark,
         colorScheme: ColorScheme(
-          primaryVariant: Colors.grey,
-          secondaryVariant: Colors.blueGrey,
           background: Colors.black,
           brightness: Brightness.dark,
           error: Colors.redAccent,

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:logos_maru/alert_dialogs.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
+import 'package:logos_maru/logos/model/rich_txt.dart';
+import 'package:logos_maru/logos/model/txt_utilities.dart';
 import 'package:logos_maru/screens/drawer.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 
@@ -96,6 +98,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox( height: 20,),
 
+              RichTxt(
+                txt: 'This is a >test> for greater-than~>',
+                style: TxtStyles.body,
+              ),
+
               LogosTxt(
                 comment: 'Welcome to LogosMaru. | Intro to app',
                 logosID: 14,
@@ -144,19 +151,26 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox( height: 10,),
 
-
-              //Text( "• Let trusted users help you with translations in their native language.\n"),
               LogosTxt(
                 comment: '• Let trusted users help you with translations in their native language. | Feature',
                 logosID: 22,
               ),
+              SizedBox( height: 10,),
 
-              Text( "• Include multiple variables in the text, "
-                  "like names and dates that may be dynamic in your application.\n" ),
+              LogosTxt(
+                comment: '• Include multiple variables in the text, like names and dates that may be dynamic in your applicati... | Logos variables',
+                logosID: 23,
+              ),
+              SizedBox( height: 10,),
 
-              Text( "• Include and change text styles with the translations.\n" ),
+              LogosTxt(
+                comment: '• Include and change text styles with the translations. | Add text styles dynamically.',
+                logosID: 24,
+              ),
+              SizedBox( height: 10,),
 
               Text( "• Add special formatting to your text.\n" ),
+              SizedBox( height: 10,),
 
               const SizedBox( height: 20, ),
 

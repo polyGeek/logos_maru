@@ -139,32 +139,27 @@ class _LogosUpdateTxt extends StatelessWidget {
     _logosVO = LogosController().getLogosVO( logosID: logosVO.logosID );
   }
 
+  void openEditor( { required BuildContext context } ) {
+    if( LogosController().isEditable == true ) {
+      callback();
+      showDialog<void> (
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return LogosEditor( logosID: logosVO.logosID, );
+          }
+      );
+    }
+  }
+
   @override
   Widget build( BuildContext context ) {
     return GestureDetector(
-      onDoubleTap: (){
-        if( LogosController().isEditable == true ) {
-          callback();
-          showDialog<void> (
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return LogosEditor( logosID: logosVO.logosID, );
-              }
-          );
-        }
+      onDoubleTap:(){
+          openEditor( context: context );
       },
       onLongPress: (){
-        if( LogosController().isEditable == true ) {
-          callback();
-          showDialog<void> (
-              context: context,
-              barrierDismissible: false,
-              builder: (BuildContext context) {
-                return LogosEditor( logosID: logosVO.logosID, );
-              }
-          );
-        }
+        openEditor( context: context );
       },
 
       child: Builder(builder: (BuildContext context) {
