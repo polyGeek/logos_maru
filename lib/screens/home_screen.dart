@@ -96,14 +96,22 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
 
-              RichTxt(
-                txt: 'This is <strong>some bold text</strong> text. This is <em>italics</em> text. This is <tag>something</tag>!',
+             /* RichTxt(
+                txt: "This is <strong>some bold text</strong> text. This is <em>italics</em> text. This is <tag>something</tag>!",
                 style: TxtStyles.header,
               ),
 
-              SizedBox( height: 20,),
+              RichTxt(
+                txt: "<u>Here</u> is a <b>tag</b> that starts <em>but does not end.",
+                style: TxtStyles.header,
+              ),
 
-              SizedBox( height: 60,),
+              RichTxt( txt: "<u>Underlined text</u> is the first tag in this string, followed by <strong>some bold text</strong>, and then something using "
+                  "<b>the b-tag</b> for bold text, and at the end we go with an <em>emphasis</em>. And here is a <tag> that just doesn't have a closing-tag</tag>. "
+                  "Finally, let's add a custom tag: <title>Title Text</title> an extra line...",
+                  style: TxtStyles.body ),*/
+
+              SizedBox( height: 20,),
 
               LogosTxt(
                 comment: 'Welcome to LogosMaru. | Intro to app',
