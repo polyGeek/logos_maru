@@ -72,27 +72,25 @@ class _LogosEditorState extends State<LogosEditor> {
       /// Insert one character where the cursor is.
       t1 = txt.substring( 0, selectionStart );
       t2 = txt.substring( selectionStart, txt.length );
-      newTxt = t1 + formatChar + t2;
-      selectionEnd ++;
+      newTxt = t1 + '<' + formatChar + '>' + t2;
+      selectionEnd += formatChar.length + 2;
 
     } else {
       /// Insert formatChar around the text selection.
       String t1 = txt.substring( 0, selectionStart );
       String s  = txt.substring( selectionStart, selectionEnd );
       String t2 = txt.substring( selectionEnd, txt.length );
-      newTxt = t1 + formatChar + s + formatChar + t2;
-      selectionEnd += 2;
+      newTxt = t1 + '<' + formatChar + '>' + s + '</' + formatChar + '>' + t2;
+      selectionEnd += ( formatChar.length * 2 ) + 5;
     }
 
-    print( t1 + formatChar + t2 );
     _tecTxt.value = TextEditingValue(
       text: newTxt,
       selection: TextSelection.fromPosition(
         TextPosition( offset: selectionEnd ),
       ),
     );
-    setState(() {});
-
+    _update();
   }
 
   void callbackHashtag( bool value ) {
@@ -178,33 +176,33 @@ class _LogosEditorState extends State<LogosEditor> {
 
                 SizedBox( width: 8 ,),
 
-                _FormatingBtn(
-                  format: '*',
-                  formatedCharacter: 'italic',
+                _FormattingBtn(
+                  tag: 'em',
+                  formattedCharacter: 'italic',
                   callback: formatCallback,
                 ),
 
-                SizedBox( width: 8 ,),
-
-                _FormatingBtn(
-                  format: '^',
-                  formatedCharacter: 'bold',
+                _FormattingBtn(
+                  tag: 'strong',
+                  formattedCharacter: 'bold',
                   callback: formatCallback,
                 ),
 
-                SizedBox( width: 8 ,),
-
-                _FormatingBtn(
-                  format: '_',
-                  formatedCharacter: 'underline',
+                _FormattingBtn(
+                  tag: 'u',
+                  formattedCharacter: 'u',
                   callback: formatCallback,
                 ),
 
-                SizedBox( width: 8 ,),
+                _FormattingBtn(
+                  tag: 'title',
+                  formattedCharacter: 'title',
+                  callback: formatCallback,
+                ),
 
-                _FormatingBtn(
-                  format: '|',
-                  formatedCharacter: 'emphasis',
+                _FormattingBtn(
+                  tag: 'link',
+                  formattedCharacter: 'link',
                   callback: formatCallback,
                 ),
 
@@ -313,37 +311,40 @@ class _LogosEditorState extends State<LogosEditor> {
   }
 }
 
-class _FormatingBtn extends StatelessWidget {
+class _FormattingBtn extends StatelessWidget {
 
-  final String formatedCharacter;
-  final String format;
+  final String formattedCharacter;
+  final String tag;
   final void Function( String s ) callback;
 
-  _FormatingBtn( {
-    required this.formatedCharacter,
-    required this.format,
+  _FormattingBtn( {
+    required this.formattedCharacter,
+    required this.tag,
     required this.callback,
   });
 
   @override
   Widget build( BuildContext context ) {
-    return OutlinedButton(
-      onPressed: () {
-        callback( format );
-      },
+    return Padding(
+      padding: const EdgeInsets.only( right: 12.0 ),
+      child: OutlinedButton(
+        onPressed: () {
+          callback( tag );
+        },
 
-      child: IntrinsicWidth(
-        child: Row(
-          children: [
-            Text( format, style: TextStyle( color: Colors.white ), ),
+        child: IntrinsicWidth(
+          child: Row(
+            children: [
+              Text( '<', style: TextStyle( color: Colors.white ), ),
 
-            RichTxt(
-              txt: format + formatedCharacter + format,
-              style: TxtStyles.body,
-            ),
+              RichTxt(
+                txt: '<' + tag + '>' + formattedCharacter + '</' + tag + '>',
+                style: TxtStyles.body,
+              ),
 
-            Text( format, style: TextStyle( color: Colors.white ), ),
-          ],
+              Text( '>', style: TextStyle( color: Colors.white ), ),
+            ],
+          ),
         ),
       ),
     );

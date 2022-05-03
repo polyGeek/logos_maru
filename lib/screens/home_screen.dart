@@ -84,7 +84,7 @@ class _HomeScreenState extends State<HomeScreen> {
           )
       ),
 
-      endDrawer: Drawer(
+      drawer: Drawer(
         child: DrawerMenu(),
       ),
 
@@ -95,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
+
 
              /* RichTxt(
                 txt: "This is <strong>some bold text</strong> text. This is <em>italics</em> text. This is <tag>something</tag>!",

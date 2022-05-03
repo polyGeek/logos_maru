@@ -140,10 +140,13 @@ class CircularProgress extends StatelessWidget {
   Widget build( BuildContext context ) {
     return Center(
       child: Container(
-        constraints: BoxConstraints( maxHeight: 20, maxWidth:  20 ),
+        constraints: BoxConstraints(
+            minHeight: 200, minWidth: 200,
+            maxHeight: 200, maxWidth:  200
+        ),
         child: Center(
           child: CircularProgressIndicator(
-            color: Colors.deepPurpleAccent,
+            color: Colors.white,
             strokeWidth: 1,
           ),
         ),

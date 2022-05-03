@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/logos_editor.dart';
+import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
@@ -46,17 +47,17 @@ class _LogosTxtState extends State<LogosTxt> {
 
     if( _logosVO.logosID == 0 ) {
       print( '.\n..\n#############################################');
-    }
 
-    print( '_LogosTxtState > init >\n'
-        + 'ID:           ' + _logosVO.logosID.toString() + "\n"
-        + 'txt:          ' + _logosVO.txt + "\n"
-        + 'logosStyle:   ' + _logosVO.style + "\n"
-        + 'textStyle:    ' + textStyle.toString() + '\n'
-        + 'widget.style: ' + widget.txtStyle.toString( ) + '\n'
-        + "\n**************************\n" );
+      EOL.log( msg: '_LogosTxtState > init >\n'
+          + 'ID:           ' + _logosVO.logosID.toString() + "\n"
+          + 'txt:          ' + _logosVO.txt + "\n"
+          + 'logosStyle:   ' + _logosVO.style + "\n"
+          + 'textStyle:    ' + textStyle.toString() + '\n'
+          + 'widget.style: ' + widget.txtStyle.toString( ) + '\n'
+          + "\n**************************\n",
+          color: EOL.comboLightRed_White
+      );
 
-    if( _logosVO.logosID == 0 ) {
       print( '#############################################\n.\n..');
     }
 

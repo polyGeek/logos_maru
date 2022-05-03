@@ -13,8 +13,6 @@ class Styles {
       letterSpacing: 1.2
   );
 
-
-
   static const Color c_RPYellow           = Color(0xe6fca905);
   static const Color c_bone               = Color(0xff000000);
   static const Color c_primaryColor       = Color(0xff000000);

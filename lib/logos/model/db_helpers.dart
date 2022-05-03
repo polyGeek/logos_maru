@@ -104,7 +104,7 @@ class DBHelpers {
     }
   }
 
-  static bool isDebug = true;
+  static bool isDebug = false;
   static void _log( { required String msg, bool isJson=false, bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )
       EOL.log(

@@ -1,6 +1,7 @@
 
 // ignore_for_file: dead_code
 
+import 'dart:convert';
 import 'dart:io';
 
 
@@ -127,6 +128,7 @@ class EOL {
   static void log(
       { required String msg,
         String title = '',
+        Map<String, dynamic>? map,
         String borderTop = '=',
         String borderSide = '|',
         String color = '',
@@ -257,12 +259,67 @@ class EOL {
             }
             msg = msg.replaceAll('09104m| ', '');
             msg = msg.replaceAll('09107m| ', '');
+            msg = msg.replaceAll('03107m| ', '');
             msg = msg.replaceAll('\n', '');
+
+
+/*
+{"changes":[],"newLanguagesOptions":[{"langID":"2","langCode":"ES","name":"Spanish"},{"langID":"3","langCode":"CN","name":"Chinese"},{"langID":"4","langCode ":"AR","name":"Arabic"}]}
+
+
+    [{langID: 2, langCode: ES, name: Spanish}, {langID: 3, langCode: CN, name: Chinese}, {langID: 4, langCode: AR, name: Arabic}]
+
+*/
+
+            print( '1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ' );
+            print( '2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ' );
+
+            if( map != null ) {
+              print( '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
+              map.forEach( (key, value) {
+                print( 'key: ' + key + '        value: ' + value.toString() );
+              });
+            } else {
+              print( ' ######################### null map ###########################');
+            }
+
+            print( msg );
+            Map<String, dynamic> jsonMap = jsonDecode( msg );
+            print( 'jsonMap.length: ' + jsonMap.length.toString() );
+
+            jsonMap.forEach( ( String k, dynamic v ) {
+              print( ">Key : $k, Value : $v" );
+
+              /*if( v.runtimeType == Map ) {
+                print( ' ----------------map ');
+                v.forEach( ( String k2, dynamic v2 ) {
+                  print(">>Key : $k2, Value : $v2" );
+
+                } );
+
+              }*/
+            } );
+
+            /*for (var i = 0; i < jsonMap.length; i++){
+              print("array index: " + i.toString() );
+              var obj = jsonMap[i];
+              for (var key in obj){
+                var value = obj[key];
+                print(" " + key + ": " + value);
+              }
+            }*/
+
+
+            print( '3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ' );
+            print( '4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ' );
 
             /// Break the JSON array into multiple collections.
             List<String> jsonArray = msg.split('],');
 
-            if (jsonArray.length > 0) {
+
+
+
+    if (jsonArray.length == -1 ) { /// was > 0
               for (int i = 0; i < jsonArray.length - 1; i++) {
                 /// This will output the name of this collection
                 /// Example     {{{ COLLECTION_NAME }}}

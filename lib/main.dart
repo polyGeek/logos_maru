@@ -6,24 +6,12 @@ import 'package:logos_maru/utils/data_controller.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 /**
- *
- * Add edit by user
- * --add a textfield for username. On the server, if the user name isn't recognized then nothing happens.
- *
- *
- * On desktop set: Editor > Code Style > Dart: Line Length = 200
- * So that there's no more wrapping.
- *
- *
  * todo:
  * When someone becomes an editor download all the language updates.
  * Store "My Name" in DBch and test that retrieved data updates widget.
  *
- * Feature: Double the text to test for text overflows.
- *
  * On the server:
  * Move to AWS
- * Sanitize the text.
  * LastUpdate sends "lastLangID": "1" for a new DB. Make sure the remote DB sends everything >= that ID.
  *
  *

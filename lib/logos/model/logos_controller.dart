@@ -73,7 +73,7 @@ class LogosController extends ChangeNotifier {
     /// 5: Set the EditingLanguage Code to be the same as the viewing language code.
     LanguageController().editingLanguageCode = LanguageController().selectedAppLanguageCode;
 
-    _log(msg: '_logosList.isNotEmpty :' + _logosList.isNotEmpty.toString());
+    _log(msg: _logosList.isNotEmpty.toString(), isJson: true );
     if (_logosList.isNotEmpty) {
       notifyListeners();
       return true;
@@ -152,19 +152,26 @@ class LogosController extends ChangeNotifier {
     };
 
     _log(msg: "Kickoff: Data to server -> \n " + map.toString());
+    _log(msg: map.toString() );
 
     String result = await NetworkHelper.sendPostRequest(
         url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION +
             '/kickoff.php',
         map: map
     );
+    print( ' ######################### map ###########################');
+    map.forEach( (key, value) {
+      print( 'key: ' + key + '        value: ' + value.toString() );
+    });
+    print( ' ######################### map ###########################');
+
+    _log(msg: '', map: map, isJson: true );
 
     /// Language Options
     var newLanguageOptionsDecoded = jsonDecode( result )[ 'newLanguagesOptions' ] as List;
 
     if( newLanguageOptionsDecoded.isNotEmpty ) {
-      _log(msg: 'We have new language options', shout: true);
-      _log(msg: newLanguageOptionsDecoded.toString());
+      _log(msg: 'We have new language options', shout: true );
       List<LangVO> newLangList = newLanguageOptionsDecoded.map((e) => LangVO.fromJson(e)).toList();
 
       /// Update local DB with newLanguage list.
@@ -423,11 +430,12 @@ class LogosController extends ChangeNotifier {
   }
 
   static bool isDebug = true;
-  static void _log( { required String msg, String title = '', bool isJson=false, bool shout=false, bool fail=false } ) {
+  static void _log( { required String msg, String title = '', Map<String, dynamic>? map, bool isJson=false, bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )
       EOL.log(
         msg: msg,
         title: title,
+        map: map,
         isJson: isJson,
         shout: shout,
         fail: fail,

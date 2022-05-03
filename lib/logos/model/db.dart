@@ -72,7 +72,7 @@ class LogosDB {
       });
 
       _log( msg: '_logosLength: ' + maps.length.toString() );
-      _log( msg: maps[0].toString() );
+      _log( msg: maps[0].toString(), isJson: false );
 
       return list;
 
@@ -290,7 +290,7 @@ class LogosDB {
     }
   }
 
-  static bool isDebug = true;
+  static bool isDebug = false;
   static void _log( { required String msg, bool isJson=false, bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )
       EOL.log(
