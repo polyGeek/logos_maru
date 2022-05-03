@@ -23,6 +23,20 @@ class Styles {
 
   static double iconSize      = 10;
 
+  static TextStyle getTxtStyle( { required String tag } ) {
+    switch( tag ) {
+      case 'strong':
+        return TxtStyles.strong;
+      case 'b':
+        return TxtStyles.strong;
+      case 'em':
+        return TxtStyles.emphasis;
+      default:
+        return TxtStyles.body;
+    }
+  }
+
+
   static List<TextSpan> makeRichTxt( {
     required String txt,
     TextAlign textAlign = TextAlign.left,
@@ -59,8 +73,69 @@ class Styles {
 
     List<TextSpan> spans = [];
 
+    //<[^>]+>\s+(?=<)|<[^>]+>
+    //<(\S*?)[^>]>.?</\1>|<.*?/>
+
+    // This is <b>bold</b> text.
+    /*for ( int i = 0; i < txt.length; i++ ) {
+
+    }*/
+
+    int loopCount = 4;
+    String tag = '';
+    int tagLen = 0;
+    String styledTxt = '';
+
+    while( txt.length > 0 ) {
+      loopCount--;
+      int n = txt.indexOf( '<' );
+      print( '10-n: ' + n.toString() );
+
+      if( n == -1 ) {
+        spans.add( TextSpan( text: txt, style: TxtStyles.body ) );
+        return spans;
+      }
+
+      String snip = txt.substring( 0, n );
+      print( '20-snip: ' + snip );
+
+      txt = txt.substring( n );
+      print( '30-txt: ' + txt );
+
+      ///txt: 'This is <strong>some bold text</strong> text. This is <em>italics</em> text. This is <tag>something</tag>',
+      if( n > 0 ) {
+        tag = txt.substring( 1, txt.indexOf( '>' ) );
+        print( '40-tag: ' + tag );
+        txt = txt.substring( tag.length + 2 ); /// Adding 2 for the opening and closing <>.
+        print( '50-txt: ' + txt );
+        styledTxt = txt.substring( 0, txt.indexOf( '</' + tag + '>' ) ); /// text up to the closing tag.
+        print( '60-styledTxt: ' + styledTxt );
+        txt = txt.substring( styledTxt.length + tag.length + 3 );
+        print( '70-remaining: ' + txt );
+
+        spans.add( TextSpan( text: snip, style: TxtStyles.body ) );
+        spans.add( TextSpan( text: styledTxt, style: getTxtStyle( tag: tag ) ) );
+      } else {
+        spans.add( TextSpan( text: txt, style: TxtStyles.body ) );
+        return spans;
+      }
+
+      print( '============================');
+      if( loopCount == 0 )
+        break;
+    }
+
+    print( 'ooooooooooooooooooooooooooooooooooooooooo');
+    print( spans.toString() );
+
+
+    return spans;
 
     for ( int i = 0; i < txt.length; i++ ) {
+
+
+
+      /// KEEP
       if( txt[ i ] == '~' ) {
         print( 'skipping: ' + i.toString() + ' : ' + txt.codeUnitAt(i).toString());
         subString += txt[ i+1 ];

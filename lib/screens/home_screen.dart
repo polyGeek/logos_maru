@@ -96,12 +96,14 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
 
+              RichTxt(
+                txt: 'This is <strong>some bold text</strong> text. This is <em>italics</em> text. This is <tag>something</tag>!',
+                style: TxtStyles.header,
+              ),
+
               SizedBox( height: 20,),
 
-              RichTxt(
-                txt: 'This is a >test> for greater-than~>',
-                style: TxtStyles.body,
-              ),
+              SizedBox( height: 60,),
 
               LogosTxt(
                 comment: 'Welcome to LogosMaru. | Intro to app',
