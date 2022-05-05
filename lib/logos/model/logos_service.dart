@@ -32,7 +32,8 @@ class NetworkHelper {
 
 
     _log( msg: '<<<<<<<<<<<<<<<<<<<<[ DATA SENT TO SERVER ]>>>>>>>>>>>>>>>>>>>>\n' + url );
-    _log( msg: map.toString(), isJson: true );
+    _log( msg: '', );
+
 
     String jsonBody = json.encode( map );
     late http.Response response;
@@ -77,10 +78,9 @@ class NetworkHelper {
 
       } else {
 
-        _log( msg: '\n\n Network call SUCCESS >>> \n' + url + ' \n\n' );
-        _log( msg: body, isJson: false );
+        _log( msg: url, title: 'NETWORK CALL SUCCESS', json: body );
+        /// TEST
         return body;
-
       }
 
     } else {
@@ -92,17 +92,9 @@ class NetworkHelper {
   }
 
   static const bool isDebug = true;
-
-  static void _log( { required String msg , bool isJson=false, bool shout=false, bool fail=false } ) {
-
+  static void _log( { required String msg, String title='', String json='', bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )
-      EOL.log(
-          msg: msg,
-          isJson: isJson,
-          shout: shout,
-          fail: fail,
-          color: EOL.comboMagenta_Gray
-      );
+      EOL.log( msg: msg, title: title, json: json, shout: shout, fail: fail, color: EOL.comboMagenta_Gray );
   }
 }
 

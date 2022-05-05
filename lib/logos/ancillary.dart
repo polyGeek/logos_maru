@@ -54,7 +54,7 @@ class _LanguageChooserState extends State<LanguageChooser> {
 
       onChanged: ( String? newValue ) async {
         _dropdownValue = newValue!;
-        EOL.log(msg: 'Changing edit language start');
+        EOL.log( msg: 'Changing edit language start');
         widget.callbackState( true );
         await LogosController().changeEditingLanguage( langCode: newValue );
         if( mounted )

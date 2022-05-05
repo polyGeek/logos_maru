@@ -65,10 +65,10 @@ class SettingsDB {
 		db.rawQuery( sql );
 	}
 
-	static bool isDebug = false;
-	static void _log( { required String msg, bool isJson=false, bool shout=false, bool fail=false } ) {
+	static const bool isDebug = false;
+	static void _log( { required String msg, String title='', String json='', bool shout=false, bool fail=false } ) {
 		if ( isDebug == true || EOL.isDEBUG == true )
-			EOL.log( msg: msg, isJson: isJson, shout: shout, fail: fail );
+			EOL.log( msg: msg, title: title, json: json, shout: shout, fail: fail, color: EOL.comboLightGreen_White );
 	}
 	
 }

@@ -157,12 +157,11 @@ class LogosVO {
   }
 
   static bool isDebug = true;
-  static void _log( { required String msg, String title = '', bool isJson=false, bool shout=false, bool fail=false } ) {
+  static void _log( { required String msg, String title = '', bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )
       EOL.log(
         msg: msg,
         title: title,
-        isJson: isJson,
         shout: shout,
         fail: fail,
         color: EOL.comboBlue_Black,

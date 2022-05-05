@@ -26,9 +26,9 @@ class EOL {
 
   static void setLineWidth({int characterLineWidth = 70}) {
     assert(
-        characterLineWidth > 40 && characterLineWidth <= 120,
-        EOL.comboYellow_Gray +
-            "LineWidth must be between 40 and 120: requested = $characterLineWidth");
+    characterLineWidth > 40 && characterLineWidth <= 120,
+    EOL.comboYellow_Gray +
+        "LineWidth must be between 40 and 120: requested = $characterLineWidth");
     _lineWidth = characterLineWidth;
   }
 
@@ -54,7 +54,7 @@ class EOL {
   }
 
   ///https://github.com/shiena/ansicolor/blob/master/README.md
-  static String BG_purple = '\x1b[93m\x1b[41m';//'\x1b[97m\x1b[46m';
+  static String BG_purple = '\x1b[93m\x1b[41m';
   static String BG_gray = '\x1b[97m\x1b[47m';
   static String BG_green = '\x1b[97m\x1b[42m';
   static String BG_LiteBlue = '\x1b[97m\x1b[104m';
@@ -127,15 +127,15 @@ class EOL {
 
   static void log(
       { required String msg,
-        String title = '',
-        Map<String, dynamic>? map,
-        String borderTop = '=',
+        String title      = '',
+        String json       ='',
+        String borderTop  = '=',
         String borderSide = '|',
-        String color = '',
-        bool isJson = false,
-        bool shout = false,
-        bool underline = false,
-        bool fail = false}) {
+        String color      = '',
+        bool shout        = false,
+        bool fail         = false,
+        Map<String, dynamic>? map,
+      }) {
 
     //return;
     buffer += msg + '\n\n';
@@ -157,261 +157,102 @@ class EOL {
 
       if (msg.contains('://') == false) {
         msg = msg.replaceAllMapped(RegExp(r".{79}"),
-            (match) => "${match.group(0)} $borderSide$_reset\n$color| ");
+                (match) => "${match.group(0)} $borderSide$_reset\n$color| ");
       }
 
-      try {
-        String fnName = '';
-        String fileName = '';
-        String currentClass = '';
+      //try {
+      String fnName = '';
+      String fileName = '';
+      String currentClass = '';
 
-        /// Parse the stacktrace data.
-        //if (StackTrace != null && StackTrace.current != null) {
-          String trace = StackTrace.current.toString();
-          trace = trace.substring(trace.indexOf('#2') + 8);
-          trace = trace.substring(0, trace.indexOf(')'));
+      /// Parse the stacktrace data.
 
-          fnName = trace.substring(0, trace.indexOf(' '));
-          fileName = trace.substring(trace.indexOf('(') + 1);
-          currentClass = trace.substring(
-              trace.lastIndexOf('/') + 1, trace.lastIndexOf('.dart'));
-        //}
+      String trace = StackTrace.current.toString();
+      trace = trace.substring(trace.indexOf('#2') + 8);
+      trace = trace.substring(0, trace.indexOf(')'));
 
-        EOL._logFile += '\n ';
+      fnName = trace.substring(0, trace.indexOf(' '));
+      fileName = trace.substring(trace.indexOf('(') + 1);
+      currentClass = trace.substring(
+          trace.lastIndexOf('/') + 1, trace.lastIndexOf('.dart'));
 
-        /// Print divider with [ CLASS ] information.
+      EOL._logFile += '\n ';
+
+      /// Print divider with [ CLASS ] information.
+      _print(
+          s: lineBreak(
+              msg: borderTop +
+                  borderTop +
+                  borderTop +
+                  borderTop +
+                  borderTop +
+                  '[ ' +
+                  currentClass.toUpperCase() +( ( title == '' )? '' : ' > ' ) + title +
+                  ' ]',
+              borderTop: borderTop),
+          color: color,
+          borderSide: borderSide);
+
+      /// Called from FUNCTION
+      _print(s: 'Fn: ' + fnName + '()', color: color, borderSide: borderSide);
+      _logFile += '\n' + s;
+
+      /// Called from FILE
+      _print(
+        s: fileName,
+        color: color,
+        borderSide: borderSide,
+      );
+      _logFile += '\n' + s;
+
+      _previousNow = DateTime.now();
+
+
+      if( json != '' ) {
+        printJson(
+          msg: msg,
+          color: color,
+          borderSide: borderSide,
+          json: jsonDecode( json ),
+        );
+      }
+
+      if( map != null ) {
+        /// FINISH
+      }
+
+
+      if( msg == '' ) {
+        /// If printing a blank line.
+        s = '';
         _print(
-            s: lineBreak(
-                msg: borderTop +
-                    borderTop +
-                    borderTop +
-                    borderTop +
-                    borderTop +
-                    '[ ' +
-                    currentClass.toUpperCase() +( ( title == '' )? '' : ' > ' ) + title +
-                    ' ]',
-                borderTop: borderTop),
-            color: color,
-            borderSide: borderSide);
-
-        /// Called from FUNCTION
-        _print(s: 'Fn: ' + fnName + '()', color: color, borderSide: borderSide);
-        _logFile += '\n' + s;
-
-        /// Json data printed below
-        if (isJson == false) {
-          _print(s: 'MSG: ' + msg, color: color, borderSide: borderSide);
-        }
-
-        /// Called from FILE
-        _print(
-          s: fileName,
+          s: s,
           color: color,
           borderSide: borderSide,
         );
         _logFile += '\n' + s;
 
-        //if (EOL._previousNow == null) {
-          _previousNow = DateTime.now();
-        //}
+        _print(s: '', color: color, borderSide: borderSide);
+        _logFile += '\n';
+      } else {
+        /// Display the time duration from last call.
+        DateTime now = DateTime.now();
+        s = '  #' +
+            _count.toString() +
+            ' [' + (now.millisecondsSinceEpoch - _previousNow.millisecondsSinceEpoch).toString() + 'ms]';
+        _print(
+          s: s,
+          color: color,
+          borderSide: borderSide,
+        );
+        s = '';
+        _logFile += '\n' + s;
+        _count++;
+      }
 
-        if (msg == '') {
-          /// If printing a blank line.
-          s = '';
-          _print(
-            s: s,
-            color: color,
-            borderSide: borderSide,
-          );
-          _logFile += '\n' + s;
-
-          _print(s: '', color: color, borderSide: borderSide);
-          _logFile += '\n';
-        } else {
-          /// Display the time duration from last call.
-          DateTime now = DateTime.now();
-          s = '  #' +
-              _count.toString() +
-              ' [' + (now.millisecondsSinceEpoch - _previousNow.millisecondsSinceEpoch).toString() + 'ms]';
-          _print(
-            s: s,
-            color: color,
-            borderSide: borderSide,
-          );
-          s = '';
-          _logFile += '\n' + s;
-
-          if (isJson == true) {
-            if ( msg == '[]') {
-              _print(
-                  s: 'JSON EMPTY > ' + msg,
-                  color: _comboBlackOverLightRed,
-                  borderSide: borderSide);
-              return;
-            }
-
-            /// Removing strange characters in the output
-            /// that create unwanted line breaks.
-            for (int k = 0; k < msg.length; k++) {
-              if (msg.codeUnitAt(k) == 27) {
-                msg = msg.substring(0, k - 2) + msg.substring(k + 2);
-              }
-            }
-            msg = msg.replaceAll('09104m| ', '');
-            msg = msg.replaceAll('09107m| ', '');
-            msg = msg.replaceAll('03107m| ', '');
-            msg = msg.replaceAll('\n', '');
-
-
-/*
-{"changes":[],"newLanguagesOptions":[{"langID":"2","langCode":"ES","name":"Spanish"},{"langID":"3","langCode":"CN","name":"Chinese"},{"langID":"4","langCode ":"AR","name":"Arabic"}]}
-
-
-    [{langID: 2, langCode: ES, name: Spanish}, {langID: 3, langCode: CN, name: Chinese}, {langID: 4, langCode: AR, name: Arabic}]
-
-*/
-
-            print( '1 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ' );
-            print( '2 <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< ' );
-
-            if( map != null ) {
-              print( '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@');
-              map.forEach( (key, value) {
-                print( 'key: ' + key + '        value: ' + value.toString() );
-              });
-            } else {
-              print( ' ######################### null map ###########################');
-            }
-
-            print( msg );
-            Map<String, dynamic> jsonMap = jsonDecode( msg );
-            print( 'jsonMap.length: ' + jsonMap.length.toString() );
-
-            jsonMap.forEach( ( String k, dynamic v ) {
-              print( ">Key : $k, Value : $v" );
-
-              /*if( v.runtimeType == Map ) {
-                print( ' ----------------map ');
-                v.forEach( ( String k2, dynamic v2 ) {
-                  print(">>Key : $k2, Value : $v2" );
-
-                } );
-
-              }*/
-            } );
-
-            /*for (var i = 0; i < jsonMap.length; i++){
-              print("array index: " + i.toString() );
-              var obj = jsonMap[i];
-              for (var key in obj){
-                var value = obj[key];
-                print(" " + key + ": " + value);
-              }
-            }*/
-
-
-            print( '3 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ' );
-            print( '4 >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> ' );
-
-            /// Break the JSON array into multiple collections.
-            List<String> jsonArray = msg.split('],');
-
-
-
-
-    if (jsonArray.length == -1 ) { /// was > 0
-              for (int i = 0; i < jsonArray.length - 1; i++) {
-                /// This will output the name of this collection
-                /// Example     {{{ COLLECTION_NAME }}}
-                String s = jsonArray[i];
-                int firstQuote = s.indexOf('"') + 1;
-                int secondQuote = s.indexOf('"', firstQuote);
-                String field = s.substring(firstQuote, secondQuote);
-                _print(
-                    s: _spaces.substring(
-                            0, ((_lineWidth - field.length - 10) / 2).round()) +
-                        '{{{ ' +
-                        field.toUpperCase() +
-                        ' }}}',
-                    color: BG_gray,
-                    borderSide: borderSide);
-                _logFile += '\n' + s;
-
-                /// Trim off the beginning ':[{' and closing '}' from this nameValuePair
-                String nameValuePairs =
-                    s.substring(s.indexOf(':[{') + 3, s.length - 1);
-
-                /// Split the nameValuePairs from each other.
-                List<String> pairs = nameValuePairs.split('","');
-
-                if (pairs != -1) {
-                  for (int j = 0; j < pairs.length - 1; ++j) {
-                    String p = pairs[j];
-
-                    /// Remove all the quotes.
-                    p = p.replaceAll('"', '');
-                    String name = p.substring(0, p.indexOf(':'));
-                    String value = p.substring(p.indexOf(':') + 1);
-
-                    /// Add empty spaces after the name.
-                    name = name +
-                        '                         '
-                            .substring(0, 20 - name.length);
-
-                    /// Check if value will fit on one line.
-                    if (value.length + 20 > _lineWidth) {
-                      /// Value doesn't fit so break it into multiple lines.
-
-                      int start = 0;
-                      int end = _lineWidth - 25;
-                      String subValue;
-
-                      for (int valueLines = 0;
-                          valueLines <= value.length / (_lineWidth - 25);
-                          valueLines++) {
-                        start = valueLines * (_lineWidth - 25);
-                        if (start + end > value.length) {
-                          subValue = value.substring(start);
-                        } else {
-                          subValue = value.substring(start, start + end);
-                        }
-
-                        end = start + _lineWidth - 25;
-
-                        _print(
-                            s: name + ': ' + subValue,
-                            color: color,
-                            borderSide: borderSide);
-                        name = '                    ';
-                      }
-                    } else {
-                      _print(
-                          s: name + ': ' + value,
-                          color: color,
-                          borderSide: borderSide);
-                      _logFile += '\n' + s;
-                    }
-                  }
-                } else {
-                  _print(
-                      s: '< < < NO PAIRS > > > ',
-                      color: color,
-                      borderSide: borderSide);
-                }
-              }
-            } else {
-              _print(
-                  s: '< < < JSON EMPTY > > > ',
-                  color: color,
-                  borderSide: borderSide);
-            }
-          }
-          _count++;
-        }
-
-        /// Reset the previousNow so we can keep track of time between steps. Not time from app startup.
-        _previousNow = DateTime.now();
-      } catch (error) {
+      /// Reset the previousNow so we can keep track of time between steps. Not time from app startup.
+      _previousNow = DateTime.now();
+      /*} catch (error) {
         _print(
             s: "\n<<<<<<<<<<\nLOG TRY/CATCH: " +
                 error.toString() +
@@ -421,13 +262,123 @@ class EOL {
             color: color,
             borderSide: borderSide);
         _logFile += '\nOUTPUT ERROR';
-      }
+      }*/
     }
+  }
+
+  static dynamic printJson( {
+    required String msg,
+    required String color,
+    required String borderSide,
+    required dynamic json } ) {
+
+    _print(
+        s: _spaces.substring( 0, ((_lineWidth - msg.length - 12) / 2).round())
+            + '{ { { ' + msg.toUpperCase() + ' } } }',
+        color: color,
+        borderSide: borderSide);
+
+
+    String type = json.runtimeType.toString();
+    if( type == '_InternalLinkedHashMap<String, dynamic>' ) {
+
+      json = json as Map<String, dynamic>;
+
+      /// Get the string length of the longest key for formatting.
+      int longestKey = 0;
+      json.forEach( ( key, value ) {
+        if( key.length > longestKey )
+          longestKey = key.length;
+      });
+
+      json.forEach( ( key, value ) {
+
+        if( value.runtimeType.toString().contains( 'List' ) == true ) {
+          printJson(msg: key, color: color, borderSide: borderSide, json: value );
+        } else {
+
+          _printJsonLine(
+              key: key,
+              value: value,
+              color: color,
+              borderSide: borderSide,
+              longestKey: longestKey
+          );
+        }
+      });
+    } else if( type.contains( 'List' ) == true ) {
+
+      int _len = json.length;
+      for( int i = 0; i < _len; i++ ) {
+        printJson(
+            msg: msg,
+            color: color,
+            borderSide: borderSide,
+            json: json[i]
+        );
+      }
+
+    } else {
+      _print(s: 'UNKNOWN TYPE: ' + type, color: color, borderSide: borderSide );
+    }
+
+    return json;
+  }
+
+  static void _printJsonLine({
+    required String key,
+    required dynamic value,
+    required String color,
+    required String borderSide,
+    required int longestKey,
+  }) {
+
+    String keyValueLine = key + _spaces.substring( 0, longestKey - key.length + 1 ) + ': ' + value;
+
+    /// Check to see if this line is longer than _lineWidth.
+    if( keyValueLine.length > _lineWidth ) {
+
+      List<String> words = value.split( ' ' );
+
+      String currentLine = '';
+      int _len = words.length;
+      for( int i = 0; i < _len; i++ ) {
+
+
+        if( i == 0 ) {
+          /// First word with key     :
+          currentLine = key + _spaces.substring( 0, longestKey - key.length + 1 ) + ': ' + words[0] + ' ';
+        } else {
+
+          int nextWord = ( i < _len - 1 )? i + 1 : i;
+          if( ( currentLine + words[i] ).length + words[ nextWord ].length > _lineWidth ) {
+
+            _print(
+              s: currentLine,
+              color: color,
+              borderSide: borderSide,
+            );
+            currentLine = _spaces.substring( 0, longestKey + 3 ) + words[i] + ' ';
+          } else {
+            currentLine += words[i] + ' ';
+          }
+        }
+      }
+
+    } else {
+      _print(
+        s: keyValueLine,
+        color: color,
+        borderSide: borderSide,
+      );
+    }
+
+
   }
 
   static String addEmptySpaces({ required String msg, String borderSide = '|'}) {
     msg = borderSide + ' ' + msg;
-    msg = msg.padRight(_lineWidth, ' ') + borderSide;
+    msg = msg.padRight( _lineWidth, ' ' ) + borderSide;
     return msg;
   }
 

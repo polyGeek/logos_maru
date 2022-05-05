@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:logos_maru/alert_dialogs.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
-import 'package:logos_maru/logos/model/rich_txt.dart';
-import 'package:logos_maru/logos/model/txt_utilities.dart';
 import 'package:logos_maru/screens/drawer.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:logos_maru/logos/model/db.dart';
 import 'package:logos_maru/logos/model/db_helpers.dart';
@@ -73,7 +74,8 @@ class LogosController extends ChangeNotifier {
     /// 5: Set the EditingLanguage Code to be the same as the viewing language code.
     LanguageController().editingLanguageCode = LanguageController().selectedAppLanguageCode;
 
-    _log(msg: _logosList.isNotEmpty.toString(), isJson: true );
+    //_log(msg: _logosList.isNotEmpty.toString(), isJson: true );
+    ///TEST
     if (_logosList.isNotEmpty) {
       notifyListeners();
       return true;
@@ -145,12 +147,14 @@ class LogosController extends ChangeNotifier {
 
     /// Data to the server
     Map<String, dynamic> map = {
-      'lastLangID': lastLangKey,
-      'lastUpdate': lastUpdate,
-      'langCode': langCode,
-      'env': ENVIRONMENT
+      'lastLangID'  : lastLangKey,
+      'lastUpdate'  : lastUpdate,
+      'langCode'    : langCode,
+      'env'         : ENVIRONMENT
     };
 
+    //_log(msg: 'Data To Server', json: jsonDecode( map.toString() ) );
+    
     _log(msg: "Kickoff: Data to server -> \n " + map.toString());
     _log(msg: map.toString() );
 
@@ -159,19 +163,13 @@ class LogosController extends ChangeNotifier {
             '/kickoff.php',
         map: map
     );
-    print( ' ######################### map ###########################');
-    map.forEach( (key, value) {
-      print( 'key: ' + key + '        value: ' + value.toString() );
-    });
-    print( ' ######################### map ###########################');
-
-    _log(msg: '', map: map, isJson: true );
 
     /// Language Options
     var newLanguageOptionsDecoded = jsonDecode( result )[ 'newLanguagesOptions' ] as List;
 
     if( newLanguageOptionsDecoded.isNotEmpty ) {
-      _log(msg: 'We have new language options', shout: true );
+      _log(msg: 'newLanguageOptions', json: result );
+      
       List<LangVO> newLangList = newLanguageOptionsDecoded.map((e) => LangVO.fromJson(e)).toList();
 
       /// Update local DB with newLanguage list.
@@ -429,18 +427,10 @@ class LogosController extends ChangeNotifier {
     //print( msg );
   }
 
-  static bool isDebug = true;
-  static void _log( { required String msg, String title = '', Map<String, dynamic>? map, bool isJson=false, bool shout=false, bool fail=false } ) {
+  static const bool isDebug = true;
+  static void _log( { required String msg, String title='', String json='', bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )
-      EOL.log(
-        msg: msg,
-        title: title,
-        map: map,
-        isJson: isJson,
-        shout: shout,
-        fail: fail,
-        color: EOL.comboGreen_White,
-      );
+      EOL.log( msg: msg, title: title, json: json, shout: shout, fail: fail, color: EOL.comboGreen_White );
   }
 }
 
