@@ -63,7 +63,7 @@ class LogosController extends ChangeNotifier {
     /// 2: get all of the language options from the local DB.
     LanguageController().languageOptionsList = await LogosDB().getLanguageOptionsList();
 
-    _log(msg: 'Language options: ' + LanguageController().languageOptionsList.toString());
+    _log(msg: 'Language options: ' + LanguageController().languageOptionsList.toString() );
 
     /// 3: get language data from local DB.
     _logosList = await LogosDB().getLogosDataFromLocalDB( langCode: LanguageController().selectedAppLanguageCode.toString() );
@@ -74,7 +74,6 @@ class LogosController extends ChangeNotifier {
     /// 5: Set the EditingLanguage Code to be the same as the viewing language code.
     LanguageController().editingLanguageCode = LanguageController().selectedAppLanguageCode;
 
-    //_log(msg: _logosList.isNotEmpty.toString(), isJson: true );
     ///TEST
     if (_logosList.isNotEmpty) {
       notifyListeners();
@@ -100,7 +99,7 @@ class LogosController extends ChangeNotifier {
       'env': ENVIRONMENT
     };
 
-    _log(msg: "signIn: Data to server -> \n " + map.toString());
+    _log(msg: "signIn: Data to server -> \n " + map.toString() );
 
     String result = await NetworkHelper.sendPostRequest(
         url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/signin.php',
@@ -150,13 +149,11 @@ class LogosController extends ChangeNotifier {
       'lastLangID'  : lastLangKey,
       'lastUpdate'  : lastUpdate,
       'langCode'    : langCode,
-      'env'         : ENVIRONMENT
+      'env'         : ENVIRONMENT,
+      'someList'    :  ['Inception', 'Heat', 'Spider Man', ]// In December 2020, Congress passed an extension of the ITC, which provides a 26% tax credit for systems installed in 2020-2022, and 22% for systems installed in 2023. (Systems installed before December 31, 2019 were eligible for a 30% tax credit.) The tax credit expires starting in 2024 unless Congress renews it.'],
     };
 
-    //_log(msg: 'Data To Server', json: jsonDecode( map.toString() ) );
-    
-    _log(msg: "Kickoff: Data to server -> \n " + map.toString());
-    _log(msg: map.toString() );
+    _log(msg: 'Data To Server', map: map );
 
     String result = await NetworkHelper.sendPostRequest(
         url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION +
@@ -427,10 +424,10 @@ class LogosController extends ChangeNotifier {
     //print( msg );
   }
 
-  static const bool isDebug = true;
-  static void _log( { required String msg, String title='', String json='', bool shout=false, bool fail=false } ) {
+  static const bool isDebug = false;
+  static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )
-      EOL.log( msg: msg, title: title, json: json, shout: shout, fail: fail, color: EOL.comboGreen_White );
+      EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboGreen_White );
   }
 }
 

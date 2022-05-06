@@ -160,7 +160,7 @@ class EOL {
                 (match) => "${match.group(0)} $borderSide$_reset\n$color| ");
       }
 
-      //try {
+      try {
       String fnName = '';
       String fileName = '';
       String currentClass = '';
@@ -197,7 +197,6 @@ class EOL {
       _print(s: 'Fn: ' + fnName + '()', color: color, borderSide: borderSide);
       _logFile += '\n' + s;
 
-      /// Called from FILE
       _print(
         s: fileName,
         color: color,
@@ -207,9 +206,8 @@ class EOL {
 
       _previousNow = DateTime.now();
 
-
       if( json != '' ) {
-        printJson(
+        _printJson(
           msg: msg,
           color: color,
           borderSide: borderSide,
@@ -218,7 +216,14 @@ class EOL {
       }
 
       if( map != null ) {
-        /// FINISH
+
+        //_print(s: map.toString(), color: color, borderSide: borderSide);
+        _printMap(
+          msg: msg,
+          color: color,
+          borderSide: borderSide,
+          map: map,
+        );
       }
 
 
@@ -252,7 +257,7 @@ class EOL {
 
       /// Reset the previousNow so we can keep track of time between steps. Not time from app startup.
       _previousNow = DateTime.now();
-      /*} catch (error) {
+      } catch (error) {
         _print(
             s: "\n<<<<<<<<<<\nLOG TRY/CATCH: " +
                 error.toString() +
@@ -262,11 +267,68 @@ class EOL {
             color: color,
             borderSide: borderSide);
         _logFile += '\nOUTPUT ERROR';
-      }*/
+      }
     }
   }
 
-  static dynamic printJson( {
+  static dynamic _printMap( {
+    required String msg,
+    required String color,
+    required String borderSide,
+    required Map<String, dynamic> map } ) {
+
+    _print(
+        s: _spaces.substring( 0, ((_lineWidth - msg.length - 12) / 2).round())
+            + '{ { { ' + msg.toUpperCase() + ' } } }',
+        color: color,
+        borderSide: borderSide);
+
+    String type = map.runtimeType.toString();
+    print( 'TYPE TYPE TYPE TYPE : ' + type );
+
+    if( type == '_InternalLinkedHashMap<String, dynamic>' ) {
+
+      /// Get the string length of the longest key for formatting.
+      int longestKey = 0;
+      map.forEach( ( key, value ) {
+        if( key.length > longestKey )
+          longestKey = key.length;
+      });
+
+      map.forEach( ( key, value ) {
+        String type = value.runtimeType.toString();
+        if( type.contains( 'List' ) ) {
+
+          int _len = value.length;
+          for( int i = 0; i < _len; i++ ) {
+            _printJsonLine( key: ( i == 0)? key : '', value: '\b\b- ' + value[i], color: color, borderSide: borderSide, longestKey: longestKey );
+          }
+
+        } else {
+          _printJsonLine( key: key, value: value, color: color, borderSide: borderSide, longestKey: longestKey );
+        }
+      });
+
+    } else if( type.contains( 'List' ) == true ) {
+
+      int _len = map.length;
+      for( int i = 0; i < _len; i++ ) {
+        _printMap(
+            msg: msg,
+            color: color,
+            borderSide: borderSide,
+            map: map[i]
+        );
+      }
+
+    } else {
+      _print(s: 'UNKNOWN TYPE: ' + type, color: color, borderSide: borderSide );
+    }
+
+    return json;
+  }
+
+  static dynamic _printJson( {
     required String msg,
     required String color,
     required String borderSide,
@@ -277,7 +339,6 @@ class EOL {
             + '{ { { ' + msg.toUpperCase() + ' } } }',
         color: color,
         borderSide: borderSide);
-
 
     String type = json.runtimeType.toString();
     if( type == '_InternalLinkedHashMap<String, dynamic>' ) {
@@ -294,7 +355,7 @@ class EOL {
       json.forEach( ( key, value ) {
 
         if( value.runtimeType.toString().contains( 'List' ) == true ) {
-          printJson(msg: key, color: color, borderSide: borderSide, json: value );
+          _printJson(msg: key, color: color, borderSide: borderSide, json: value );
         } else {
 
           _printJsonLine(
@@ -310,7 +371,7 @@ class EOL {
 
       int _len = json.length;
       for( int i = 0; i < _len; i++ ) {
-        printJson(
+        _printJson(
             msg: msg,
             color: color,
             borderSide: borderSide,
@@ -333,7 +394,7 @@ class EOL {
     required int longestKey,
   }) {
 
-    String keyValueLine = key + _spaces.substring( 0, longestKey - key.length + 1 ) + ': ' + value;
+    String keyValueLine = key + _spaces.substring( 0, longestKey - key.length + 1 ) + ': ' + value.toString();
 
     /// Check to see if this line is longer than _lineWidth.
     if( keyValueLine.length > _lineWidth ) {
@@ -343,7 +404,6 @@ class EOL {
       String currentLine = '';
       int _len = words.length;
       for( int i = 0; i < _len; i++ ) {
-
 
         if( i == 0 ) {
           /// First word with key     :
@@ -372,8 +432,6 @@ class EOL {
         borderSide: borderSide,
       );
     }
-
-
   }
 
   static String addEmptySpaces({ required String msg, String borderSide = '|'}) {

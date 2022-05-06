@@ -105,8 +105,8 @@ class DBHelpers {
   }
 
   static const bool isDebug = false;
-  static void _log( { required String msg, String title='', String json='', bool shout=false, bool fail=false } ) {
+  static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )
-      EOL.log( msg: msg, title: title, json: json, shout: shout, fail: fail, color: EOL.BG_LiteBlue );
+      EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboBlue_LightYellow );
   }
 }
