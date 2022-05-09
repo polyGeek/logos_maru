@@ -14,6 +14,9 @@ import 'package:package_info_plus/package_info_plus.dart';
  * Move to AWS
  * LastUpdate sends "lastLangID": "1" for a new DB. Make sure the remote DB sends everything >= that ID.
  *
+ * If isRichTxt is disabled, check to see if there is RichTxt formatting and if so provide a warning and
+ * option to remove all <tags>
+ *
  *
 */
 

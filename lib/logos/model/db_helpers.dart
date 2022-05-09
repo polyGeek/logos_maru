@@ -100,8 +100,7 @@ class DBHelpers {
     try {
       await db.rawQuery( "ALTER TABLE logos_$langCode ADD COLUMN isRich INTEGER DEFAULT 0;" );
       await db.rawQuery( "ALTER TABLE logos_$langCode ADD COLUMN style VARCHAR(32) DEFAULT 'body';" );
-    } catch( e ) {
-    }
+    } catch( e ) {}
   }
 
   static const bool isDebug = false;

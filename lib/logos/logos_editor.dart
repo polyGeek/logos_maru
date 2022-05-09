@@ -1,11 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/ancillary.dart';
+import 'package:logos_maru/logos/logos_editor_parts/formatting_btn.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
-import 'package:logos_maru/logos/model/rich_txt.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 
@@ -44,7 +43,6 @@ class _LogosEditorState extends State<LogosEditor> {
   }
 
   void _update() {
-    EOL.log(msg: "EDITOR SET STATE");
     _logosVO = LogosController().getEditLogos( logosID: widget.logosID );
     _tecTxt.text = _logosVO.txt;
     _tecNote.text = _logosVO.note;
@@ -59,38 +57,59 @@ class _LogosEditorState extends State<LogosEditor> {
   }
 
   void formatCallback( String formatChar ) {
-
-    int selectionStart = _tecTxt.selection.start;
-    int selectionEnd = _tecTxt.selection.extent.offset;
-
-    String txt = _tecTxt.text;
-    String t1 = '';
-    String t2 = '';
     String newTxt = '';
+    int selectionEnd = 0;
 
-    if( selectionStart == selectionEnd ) {
-      /// Insert one character where the cursor is.
-      t1 = txt.substring( 0, selectionStart );
-      t2 = txt.substring( selectionStart, txt.length );
-      newTxt = t1 + '<' + formatChar + '>' + t2;
-      selectionEnd += formatChar.length + 2;
+    if (formatChar == '<>') {
+      newTxt = _tecTxt.text;
+      RegExp exp = RegExp(
+          r"<[^>]*>",
+          multiLine: true,
+          caseSensitive: true
+      );
 
+      newTxt = newTxt.replaceAll(exp, '');
+      selectionEnd = newTxt.length;
     } else {
-      /// Insert formatChar around the text selection.
-      String t1 = txt.substring( 0, selectionStart );
-      String s  = txt.substring( selectionStart, selectionEnd );
-      String t2 = txt.substring( selectionEnd, txt.length );
-      newTxt = t1 + '<' + formatChar + '>' + s + '</' + formatChar + '>' + t2;
-      selectionEnd += ( formatChar.length * 2 ) + 5;
+
+      int selectionStart = _tecTxt.selection.start;
+      selectionEnd = _tecTxt.selection.extent.offset;
+
+      String txt = _tecTxt.text;
+      String t1 = '';
+      String t2 = '';
+
+      if ( selectionStart == selectionEnd ) {
+        /// Insert one character where the cursor is.
+        t1 = txt.substring(0, selectionStart);
+        t2 = txt.substring(selectionStart, txt.length);
+        newTxt = t1 + '<' + formatChar + '>' + t2;
+        selectionEnd += formatChar.length + 2;
+      } else {
+
+        /// Insert formatChar around the text selection.
+        String t1 = txt.substring(0, selectionStart);
+        String s = txt.substring(selectionStart, selectionEnd);
+        String t2 = txt.substring(selectionEnd, txt.length);
+        newTxt = t1 + '<' + formatChar + '>' + s + '</' + formatChar + '>' + t2;
+        selectionEnd += ( formatChar.length * 2 ) + 5;
+      }
     }
 
     _tecTxt.value = TextEditingValue(
       text: newTxt,
       selection: TextSelection.fromPosition(
-        TextPosition( offset: selectionEnd ),
+        TextPosition(offset: selectionEnd),
       ),
     );
-    _update();
+  }
+
+  /// If the txt contains a closing HTML tag then make sure update is called
+  /// so that if the user toggles isRichTxt off the app will display an Alert
+  /// asking if they want to remove the HTML tags in their text.
+  void onChange( String txt ) {
+    if( txt.contains( '</' ) == true )
+      _update();
   }
 
   void callbackHashtag( bool value ) {
@@ -155,61 +174,20 @@ class _LogosEditorState extends State<LogosEditor> {
 
             SizedBox( height: 10,),
 
-            Wrap(
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: [
-
-                Checkbox(
-                    value: ( _logosVO.isRich == 1 )? true : false,
-                    onChanged: ( bool? value ) {
-                      LogosController().setEditingLogoVOisRich( logosID: widget.logosID, isRich: value! );
-                    }
-                ),
-
-                GestureDetector(
-                    onTap: () {
-                      bool newValue = ( _logosVO.isRich == 1 )? false : true;
-                      LogosController().setEditingLogoVOisRich( logosID: widget.logosID, isRich: newValue );
-                    },
-                    child: Text( 'isRichTxt' )
-                ),
-
-                SizedBox( width: 8 ,),
-
-                _FormattingBtn(
-                  tag: 'em',
-                  formattedCharacter: 'italic',
-                  callback: formatCallback,
-                ),
-
-                _FormattingBtn(
-                  tag: 'strong',
-                  formattedCharacter: 'bold',
-                  callback: formatCallback,
-                ),
-
-                _FormattingBtn(
-                  tag: 'u',
-                  formattedCharacter: 'u',
-                  callback: formatCallback,
-                ),
-
-                _FormattingBtn(
-                  tag: 'title',
-                  formattedCharacter: 'title',
-                  callback: formatCallback,
-                ),
-
-                _FormattingBtn(
-                  tag: 'link',
-                  formattedCharacter: 'link',
-                  callback: formatCallback,
-                ),
-
-              ],
+            FormattingRow(
+                logosVO: _logosVO,
+                txt: _tecTxt.text,
+                callback: formatCallback
             ),
 
-            SizedBox( height:  25,),
+            SizedBox( height:  35,),
+
+            /*TxtField(
+                tec: _tecTxt,
+                labelTxt: LanguageController().getLanguageNameFromCode(
+                    langCode: LanguageController().editingLanguageCode
+                ),
+            ),*/
 
             TextField(
               minLines: 1, /// Normal textInputField will be displayed
@@ -231,6 +209,7 @@ class _LogosEditorState extends State<LogosEditor> {
                   ),
                 ),
               ),
+              //onChanged: onChange,
             ),
 
             SizedBox( height: 15,),
@@ -311,42 +290,3 @@ class _LogosEditorState extends State<LogosEditor> {
   }
 }
 
-class _FormattingBtn extends StatelessWidget {
-
-  final String formattedCharacter;
-  final String tag;
-  final void Function( String s ) callback;
-
-  _FormattingBtn( {
-    required this.formattedCharacter,
-    required this.tag,
-    required this.callback,
-  });
-
-  @override
-  Widget build( BuildContext context ) {
-    return Padding(
-      padding: const EdgeInsets.only( right: 12.0 ),
-      child: OutlinedButton(
-        onPressed: () {
-          callback( tag );
-        },
-
-        child: IntrinsicWidth(
-          child: Row(
-            children: [
-              Text( '<', style: TextStyle( color: Colors.white ), ),
-
-              RichTxt(
-                txt: '<' + tag + '>' + formattedCharacter + '</' + tag + '>',
-                style: TxtStyles.body,
-              ),
-
-              Text( '>', style: TextStyle( color: Colors.white ), ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}

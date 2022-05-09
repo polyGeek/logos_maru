@@ -218,3 +218,52 @@ class _RadioBtnLabelState extends State<RadioBtnLabel> {
     );
   }
 }
+
+
+/** ===============================================
+ *  Text Field Input
+ *  ===============================================*/
+
+class TxtField extends StatelessWidget {
+
+  final TextEditingController tec;
+  final void Function(String)? onChangeCallback;
+  final String labelTxt;
+  final int minLines;
+  final int maxLines;
+  final bool autoFocus;
+
+  TxtField( {
+    required this.tec,
+    required this.labelTxt,
+
+    this.onChangeCallback,
+    this.minLines = 1,
+    this.maxLines = 5,
+    this.autoFocus = false,
+  } );
+
+  @override
+  Widget build( BuildContext context ) {
+    return TextField(
+      minLines: 1, /// Normal textInputField will be displayed
+      maxLines: 7, /// When user presses enter it will adapt to it
+      autofocus: false,
+      controller: tec,
+      autocorrect: false,
+      onChanged: onChangeCallback,
+      decoration: InputDecoration(
+        errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
+        border: OutlineInputBorder(),
+        labelText: labelTxt,
+        focusedBorder: OutlineInputBorder(
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.blue,
+          ),
+        ),
+      ),
+    );
+  }
+}

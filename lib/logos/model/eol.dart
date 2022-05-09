@@ -207,6 +207,7 @@ class EOL {
       _previousNow = DateTime.now();
 
       if( json != '' ) {
+
         _printJson(
           msg: msg,
           color: color,
@@ -217,7 +218,6 @@ class EOL {
 
       if( map != null ) {
 
-        //_print(s: map.toString(), color: color, borderSide: borderSide);
         _printMap(
           msg: msg,
           color: color,
@@ -240,6 +240,7 @@ class EOL {
         _print(s: '', color: color, borderSide: borderSide);
         _logFile += '\n';
       } else {
+        _print(s: msg, color: color, borderSide: borderSide);
         /// Display the time duration from last call.
         DateTime now = DateTime.now();
         s = '  #' +
@@ -284,7 +285,6 @@ class EOL {
         borderSide: borderSide);
 
     String type = map.runtimeType.toString();
-    print( 'TYPE TYPE TYPE TYPE : ' + type );
 
     if( type == '_InternalLinkedHashMap<String, dynamic>' ) {
 
@@ -334,11 +334,14 @@ class EOL {
     required String borderSide,
     required dynamic json } ) {
 
-    _print(
-        s: _spaces.substring( 0, ((_lineWidth - msg.length - 12) / 2).round())
-            + '{ { { ' + msg.toUpperCase() + ' } } }',
-        color: color,
-        borderSide: borderSide);
+    if( msg != ''){
+      _print(
+          s: _spaces.substring( 0, ((_lineWidth - msg.length - 12) / 2).round())
+              + '{ { { ' + msg.toUpperCase() + ' } } }',
+          color: color,
+          borderSide: borderSide
+      );
+    }
 
     String type = json.runtimeType.toString();
     if( type == '_InternalLinkedHashMap<String, dynamic>' ) {

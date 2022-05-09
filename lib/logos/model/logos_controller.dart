@@ -24,6 +24,13 @@ class LogosController extends ChangeNotifier {
   bool _isEditable = false;
   bool get isEditable => _isEditable;
 
+  /// Selected LogosVO for editing.
+  LogosVO _editingLogosVO;
+  LogosVO get editingLogosVO => _editingLogosVO;
+  void setEditingLogosVO( { required LogosVO logosVO } ) {
+    _editingLogosVO = logosVO;
+  }
+
   /// Places a #hashtag# at the beginning and ending of all text
   /// so that developer can tell where Logos is applied and where
   /// there is raw text.
@@ -149,8 +156,7 @@ class LogosController extends ChangeNotifier {
       'lastLangID'  : lastLangKey,
       'lastUpdate'  : lastUpdate,
       'langCode'    : langCode,
-      'env'         : ENVIRONMENT,
-      'someList'    :  ['Inception', 'Heat', 'Spider Man', ]// In December 2020, Congress passed an extension of the ITC, which provides a 26% tax credit for systems installed in 2020-2022, and 22% for systems installed in 2023. (Systems installed before December 31, 2019 were eligible for a 30% tax credit.) The tax credit expires starting in 2024 unless Congress renews it.'],
+      'env'         : ENVIRONMENT
     };
 
     _log(msg: 'Data To Server', map: map );
@@ -384,7 +390,9 @@ class LogosController extends ChangeNotifier {
 
 
 
-  void setEditingLogoVOisRich( { required int logosID, required bool isRich } ) {
+  void setEditingLogoVOisRich( {
+    required int logosID,
+    required bool isRich } ) {
     LogosVO logosVO = getEditLogos( logosID: logosID );
     logosVO.isRich = ( isRich == true )? 1 : 0;
     updateEditLogosList( logosVO: logosVO );

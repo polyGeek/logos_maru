@@ -14,6 +14,12 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
   TextEditingController _tec    = TextEditingController();
   bool                  _isBusy = false;
 
+  @override
+  void initState() {
+    super.initState();
+    _tec.text = 'dan@octocodipus.com';
+  }
+
   void _update() {
     setState(() {});
   }

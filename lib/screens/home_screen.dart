@@ -149,7 +149,12 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox( height: 10,),
 
               LogosTxt(
-                comment: '• Add a new language to your application without updating the app in the app stores. | ',
+                comment: '• Add a new language to your application without updating the app in the app stores. | language support',
+                logosID: 19,
+              ),
+
+              /*LogosTxt(
+                comment: '• Add a new language to your application without updating the app in the app stores.',
                 logosID: 20,
               ),
               SizedBox( height: 10,),
@@ -175,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
               LogosTxt(
                 comment: '• Include and change text styles with the translations. | Add text styles dynamically.',
                 logosID: 24,
-              ),
+              ),*/
               SizedBox( height: 10,),
 
               Text( "• Add special formatting to your text.\n" ),
