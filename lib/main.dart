@@ -7,15 +7,12 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 /**
  * todo:
- * When someone becomes an editor download all the language updates.
+ * When someone becomes authenticates as editor download all the language updates.
  * Store "My Name" in DBch and test that retrieved data updates widget.
  *
  * On the server:
  * Move to AWS
  * LastUpdate sends "lastLangID": "1" for a new DB. Make sure the remote DB sends everything >= that ID.
- *
- * If isRichTxt is disabled, check to see if there is RichTxt formatting and if so provide a warning and
- * option to remove all <tags>
  *
  *
 */
