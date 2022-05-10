@@ -143,11 +143,12 @@ class _LogosUpdateTxt extends StatelessWidget {
   void openEditor( { required BuildContext context } ) {
     if( LogosController().isEditable == true ) {
       callback();
+      LogosController().setEditingLogosVO(logosVO: logosVO );
       showDialog<void> (
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return LogosEditor( logosID: logosVO.logosID, );
+            return LogosEditor();// logosID: logosVO.logosID, );
           }
       );
     }

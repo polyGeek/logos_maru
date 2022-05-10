@@ -25,8 +25,8 @@ class LogosController extends ChangeNotifier {
   bool get isEditable => _isEditable;
 
   /// Selected LogosVO for editing.
-  LogosVO _editingLogosVO;
-  LogosVO get editingLogosVO => _editingLogosVO;
+  LogosVO? _editingLogosVO;
+  LogosVO? get editingLogosVO => _editingLogosVO;
   void setEditingLogosVO( { required LogosVO logosVO } ) {
     _editingLogosVO = logosVO;
   }
@@ -388,14 +388,11 @@ class LogosController extends ChangeNotifier {
     });
   }
 
-
-
-  void setEditingLogoVOisRich( {
-    required int logosID,
-    required bool isRich } ) {
-    LogosVO logosVO = getEditLogos( logosID: logosID );
-    logosVO.isRich = ( isRich == true )? 1 : 0;
-    updateEditLogosList( logosVO: logosVO );
+  void setEditingLogoVOisRich( { required bool isRich } ) {
+    //LogosVO logosVO = getEditLogos( logosID: logosID );
+    //logosVO.isRich = ( isRich == true )? 1 : 0;
+    _editingLogosVO!.isRich = ( isRich == true )? 1 : 0;
+    //updateEditLogosList( logosVO: logosVO );
     update();
   }
 

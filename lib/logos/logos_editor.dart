@@ -9,8 +9,8 @@ import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 
 class LogosEditor extends StatefulWidget {
-  final int logosID;
-  LogosEditor( { required this.logosID } );
+  /*final int logosID;
+  LogosEditor( { required this.logosID } );*/
 
   @override
   State<LogosEditor> createState() => _LogosEditorState();
@@ -21,14 +21,15 @@ class _LogosEditorState extends State<LogosEditor> {
   final _tecTxt   = TextEditingController();
   final _tecNote  = TextEditingController();
 
-  late LogosVO _logosVO;
+  //late LogosVO _logosVO;
   bool _isBusy = false;
 
   @override
   void initState() {
     super.initState();
-    _logosVO = LogosController().getEditLogos( logosID: widget.logosID );
-    _tecTxt.text = _logosVO.txt;
+
+    //_logosVO = LogosController().getEditLogos( logosID: widget.logosID );
+    _tecTxt.text = LogosController().editingLogosVO!.txt;// _logosVO.txt;
 
     LogosController().addListener(() { _update(); });
     LanguageController().addListener(() { _update(); });
@@ -43,9 +44,9 @@ class _LogosEditorState extends State<LogosEditor> {
   }
 
   void _update() {
-    _logosVO = LogosController().getEditLogos( logosID: widget.logosID );
-    _tecTxt.text = _logosVO.txt;
-    _tecNote.text = _logosVO.note;
+    //_logosVO = LogosController().getEditLogos( logosID: widget.logosID );
+    //_tecTxt.text = LogosController().editingLogosVO!.txt;//_logosVO.txt;
+    //_tecNote.text = LogosController().editingLogosVO!.note;//_logosVO.note;
 
     if( mounted )
       setState(() {});
@@ -71,7 +72,6 @@ class _LogosEditorState extends State<LogosEditor> {
       newTxt = newTxt.replaceAll(exp, '');
       selectionEnd = newTxt.length;
     } else {
-
       int selectionStart = _tecTxt.selection.start;
       selectionEnd = _tecTxt.selection.extent.offset;
 
@@ -79,20 +79,19 @@ class _LogosEditorState extends State<LogosEditor> {
       String t1 = '';
       String t2 = '';
 
-      if ( selectionStart == selectionEnd ) {
+      if (selectionStart == selectionEnd) {
         /// Insert one character where the cursor is.
         t1 = txt.substring(0, selectionStart);
         t2 = txt.substring(selectionStart, txt.length);
         newTxt = t1 + '<' + formatChar + '>' + t2;
         selectionEnd += formatChar.length + 2;
       } else {
-
         /// Insert formatChar around the text selection.
         String t1 = txt.substring(0, selectionStart);
         String s = txt.substring(selectionStart, selectionEnd);
         String t2 = txt.substring(selectionEnd, txt.length);
         newTxt = t1 + '<' + formatChar + '>' + s + '</' + formatChar + '>' + t2;
-        selectionEnd += ( formatChar.length * 2 ) + 5;
+        selectionEnd += (formatChar.length * 2) + 5;
       }
     }
 
@@ -102,6 +101,8 @@ class _LogosEditorState extends State<LogosEditor> {
         TextPosition(offset: selectionEnd),
       ),
     );
+
+    _update();
   }
 
   /// If the txt contains a closing HTML tag then make sure update is called
@@ -149,7 +150,7 @@ class _LogosEditorState extends State<LogosEditor> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
 
-                Text( 'logosID: ' + widget.logosID.toString(), ),
+                Text( 'logosID: ' + LogosController().editingLogosVO!.logosID.toString() ),// widget.logosID.toString(), ),
 
                 Expanded(child: SizedBox() ),
 
@@ -157,37 +158,30 @@ class _LogosEditorState extends State<LogosEditor> {
               ],
             ),
 
-            Text( 'Description: ' + _logosVO.description ),
+            Text( 'Description: ' + LogosController().editingLogosVO!.description, ),// _logosVO.description ),
 
             SizedBox( height: 5,),
 
             Row(
               children: [
 
-                Text( 'Tags: ' + _logosVO.tags ),
+                Text( 'Tags: ' + LogosController().editingLogosVO!.tags ),// _logosVO.tags ),
 
                 Expanded(child: SizedBox() ),
 
-                StyleChooser( logosID: widget.logosID, ),
+                StyleChooser( logosID: LogosController().editingLogosVO!.logosID, ),// widget.logosID, ),
               ],
             ),
 
             SizedBox( height: 10,),
 
             FormattingRow(
-                logosVO: _logosVO,
+                logosVO: LogosController().editingLogosVO!,//_logosVO,
                 txt: _tecTxt.text,
                 callback: formatCallback
             ),
 
             SizedBox( height:  35,),
-
-            /*TxtField(
-                tec: _tecTxt,
-                labelTxt: LanguageController().getLanguageNameFromCode(
-                    langCode: LanguageController().editingLanguageCode
-                ),
-            ),*/
 
             TextField(
               minLines: 1, /// Normal textInputField will be displayed
@@ -195,6 +189,7 @@ class _LogosEditorState extends State<LogosEditor> {
               autofocus: false,
               controller: _tecTxt,
               autocorrect: false,
+              onChanged: onChange,
               decoration: InputDecoration(
                 errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
                 border: OutlineInputBorder(),
@@ -209,7 +204,6 @@ class _LogosEditorState extends State<LogosEditor> {
                   ),
                 ),
               ),
-              //onChanged: onChange,
             ),
 
             SizedBox( height: 15,),
@@ -271,11 +265,13 @@ class _LogosEditorState extends State<LogosEditor> {
             ElevatedButton(
               onPressed: () {
 
-                _logosVO.txt = _tecTxt.text;
-                _logosVO.note = _tecNote.text;
+                LogosController().editingLogosVO!.txt = _tecTxt.text;
+                //_logosVO.txt = _tecTxt.text;
+                LogosController().editingLogosVO!.note = _tecNote.text;
+                //_logosVO.note = _tecNote.text;
 
                 LogosController().updateLogosDatabase(
-                  logosVO: _logosVO,
+                  logosVO: LogosController().editingLogosVO!,// _logosVO,
                   langCode: LanguageController().editingLanguageCode,
                 );
 

@@ -62,10 +62,7 @@ class _FormattingRowState extends State<FormattingRow> {
                 Checkbox(
                     value: ( widget.logosVO.isRich == 1 )? true : false,
                     onChanged: ( bool? value ) {
-                      LogosController().setEditingLogoVOisRich(
-                          logosID: widget.logosVO.logosID,
-                          isRich: value!
-                      );
+                      LogosController().setEditingLogoVOisRich( isRich: value! );
                       FormattingBtnController().update();
                       removeFormattingAlert( isRich: value );
                     }
@@ -73,8 +70,9 @@ class _FormattingRowState extends State<FormattingRow> {
 
                 GestureDetector(
                     onTap: () {
-                      bool newValue = ( widget.logosVO.isRich == 1 )? false : true;
-                      LogosController().setEditingLogoVOisRich( logosID: widget.logosVO.logosID, isRich: newValue );
+                      bool newValue = ( LogosController().editingLogosVO!.isRich == 1 )? false : true;
+
+                      LogosController().setEditingLogoVOisRich( isRich: newValue );
                       FormattingBtnController().update();
                       removeFormattingAlert( isRich: newValue );
                     },
