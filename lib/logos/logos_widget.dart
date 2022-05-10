@@ -148,7 +148,7 @@ class _LogosUpdateTxt extends StatelessWidget {
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return LogosEditor();// logosID: logosVO.logosID, );
+            return LogosEditor();
           }
       );
     }
