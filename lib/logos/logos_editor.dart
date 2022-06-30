@@ -4,13 +4,10 @@ import 'package:logos_maru/logos/logos_editor_parts/formatting_btn.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
-import 'package:logos_maru/logos/model/logos_vo.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 
 class LogosEditor extends StatefulWidget {
-  /*final int logosID;
-  LogosEditor( { required this.logosID } );*/
 
   @override
   State<LogosEditor> createState() => _LogosEditorState();
