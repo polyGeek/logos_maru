@@ -1,5 +1,3 @@
-/// 2022-06-30
-
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
@@ -9,21 +7,22 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 /**
  * todo:
- * When someone becomes authenticates as editor download all the language updates.
+ * When someone authenticates as editor download all the language updates.
  * Store "My Name" in DBch and test that retrieved data updates widget.
  *
  * On the server:
  * Move to AWS
  * LastUpdate sends "lastLangID": "1" for a new DB. Make sure the remote DB sends everything >= that ID.
  *
- *
-*/
+ * Add a 'lastUpdate' field to the prefs table and get updates based on last update instead
+ * of last key in case there are changes to existing data.
+ */
 
 void main() {
-  runApp( MyApp() );
+  runApp( _MyApp() );
 }
 
-class MyApp extends StatelessWidget {
+class _MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
@@ -55,10 +54,10 @@ class MyApp extends StatelessWidget {
         checkboxTheme: CheckboxThemeData(
           side: MaterialStateBorderSide.resolveWith(
                   (_) => const BorderSide(
-                      width: 1,
-                      color: Colors.black54,
-                      style: BorderStyle.solid
-                  )
+                  width: 1,
+                  color: Colors.black54,
+                  style: BorderStyle.solid
+              )
           ),
           fillColor: MaterialStateProperty.all( Colors.lightGreenAccent ),
           checkColor: MaterialStateProperty.all( Colors.black ),
@@ -109,7 +108,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     LogosController().addListener(() { _update(); } );
 
-    if( await LogosController().init() == true ) {
+    if( await LogosController().init(
+      apiPath: 'https://runpee.net/logos_api/',
+      apiVersion: '0.0',
+    ) == true ) {
       _body = HomeScreen();
     } else {
       _body = Scaffold( body: Center( child: Column(

@@ -30,6 +30,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/.
+    - assets/flags/.
     - assets/logos_AR.db
     - assets/logos_CN.db
     - assets/logos_EN.db

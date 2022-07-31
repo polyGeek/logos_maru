@@ -65,11 +65,11 @@ class _LogosTxtState extends State<LogosTxt> {
       logosVO     : _logosVO,
       callback    : _waitingForUpdate,
       vars        : widget.vars,
-      child       : widget.child,
       txtStyle    : LogosVO.chooseStyle(
           fromWidget: widget.txtStyle,
           fromLogos: textStyle
       ),
+      child       : widget.child,
     );
 
     LogosController().addListener(() { _textUpdated(); });
@@ -101,11 +101,11 @@ class _LogosTxtState extends State<LogosTxt> {
       logosVO         : _logosVO,
       callback        : _waitingForUpdate,
       vars            : widget.vars,
-      child           : widget.child,
       txtStyle        : LogosVO.chooseStyle(
           fromWidget  : widget.txtStyle,
           fromLogos   : textStyle
       ),
+      child           : widget.child,
     );
     _update();
   }

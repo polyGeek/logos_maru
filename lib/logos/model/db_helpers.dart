@@ -40,6 +40,7 @@ class DBHelpers {
             "langID 				  INTEGER PRIMARY KEY, "
             "isSelected       INT, "
             "langCode         VARCHAR(4), "
+            "countryCode      VARCHAR(8) DEFAULT '', "
             "name             VARCHAR(32)"
             " )";
 
@@ -100,6 +101,8 @@ class DBHelpers {
     try {
       await db.rawQuery( "ALTER TABLE logos_$langCode ADD COLUMN isRich INTEGER DEFAULT 0;" );
       await db.rawQuery( "ALTER TABLE logos_$langCode ADD COLUMN style VARCHAR(32) DEFAULT 'body';" );
+
+      await db.rawQuery( "ALTER TABLE pref ADD COLUMN countryCode VARCHAR(8) DEFAULT '';" );
     } catch( e ) {}
   }
 

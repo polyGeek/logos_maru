@@ -51,10 +51,22 @@ class LogosController extends ChangeNotifier {
   int? _userID;
   String? _userName;
 
+  /// API path and version
+  String _apiPath = '';
+  String get api => _apiPath;
+  String _apiVersion = '';
+  String get apiVersion => _apiVersion;
+
   /**********************
    *** Initialization ***
    ***********************/
-  Future<bool> init() async {
+  Future<bool> init( {
+    required String apiPath,
+    required String apiVersion
+  } ) async {
+
+    _apiPath = apiPath;
+    _apiVersion = apiVersion;
 
     /// 0: Copy databases from assets folder
     DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_pref.db' );
@@ -109,7 +121,8 @@ class LogosController extends ChangeNotifier {
     _log(msg: "signIn: Data to server -> \n " + map.toString() );
 
     String result = await NetworkHelper.sendPostRequest(
-        url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/signin.php',
+        //url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/signin.php',
+        url: _apiPath + _apiVersion + '/signin.php',
         map: map
     );
 
@@ -162,8 +175,7 @@ class LogosController extends ChangeNotifier {
     _log(msg: 'Data To Server', map: map );
 
     String result = await NetworkHelper.sendPostRequest(
-        url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION +
-            '/kickoff.php',
+        url: _apiPath + _apiVersion + '/kickoff.php',
         map: map
     );
 
@@ -340,7 +352,9 @@ class LogosController extends ChangeNotifier {
     _log(msg: "Data to server: " + map.toString() );
 
     String result = await NetworkHelper.sendPostRequest(
-        url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/add-new.php', map: map
+        //url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/add-new.php',
+      url: _apiPath + _apiVersion + '/add-new.php',
+        map: map
     );
 
     if( result.contains( '#ABORT#' ) ) {

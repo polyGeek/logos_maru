@@ -47,7 +47,13 @@ class LanguageController extends ChangeNotifier {
   /** ===============================================
    *  List of language options for app
    *  ===============================================*/
-  List<LangVO> _languageOptionsList = [ LangVO(langID: 1, langCode: 'EN', name: 'English') ];
+  List<LangVO> _languageOptionsList = [ LangVO(
+      langID: 1,
+      langCode: 'EN',
+      countryCode: 'en',
+      name: 'English')
+  ];
+
   List<LangVO> get languageOptionsList => _languageOptionsList;
   set languageOptionsList(  List<LangVO> languageOptionsList ) {
     _languageOptionsList = languageOptionsList;
@@ -56,7 +62,13 @@ class LanguageController extends ChangeNotifier {
   /** ===============================================
    *  List of language options for EDITING
    *  ===============================================*/
-  List<LangVO> _editingLanguageOptionsList = [ LangVO(langID: 1, langCode: 'EN', name: 'English') ];
+  List<LangVO> _editingLanguageOptionsList = [ LangVO(
+      langID: 1,
+      langCode: 'EN',
+      countryCode: 'en',
+      name: 'English')
+  ];
+
   List<LangVO> get permittedLanguageOptionsList => _editingLanguageOptionsList;
   set permittedLanguageOptionsList(  List<LangVO> editingLanguageOptionsList ) {
     _editingLanguageOptionsList = editingLanguageOptionsList;

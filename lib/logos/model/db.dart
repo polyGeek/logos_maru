@@ -106,11 +106,13 @@ class LogosDB {
             "langID, "
             "isSelected, "
             "langCode, "
+            "countryCode,"
             "name "
             " ) VALUES ( "
             + langVO.langID.toString() + ', '
             + "0, " /// isSelected
             + "'" + langVO.langCode.toString() + "', "
+            + "'" + langVO.countryCode.toString() + "', "
             + "'" + langVO.name.toString() + "' "
             + ' ) '
         );
@@ -119,6 +121,7 @@ class LogosDB {
 
         await db.rawQuery( "UPDATE `pref` SET "
             + "langCode = '" + langVO.langCode + "', "
+            + "countryCode = '" + langVO.countryCode + "', "
             + "name = '" + langVO.name + "' "
             + "WHERE langID = " + langVO.langID.toString()
         );
@@ -255,9 +258,13 @@ class LogosDB {
     }
   }
 
+  /** ===============================================
+  *  Change this to using lastUpdate instead of lastKey.
+   *  Just in case there are changes to existing data.
+  *  ===============================================*/
   Future<int> getLastLangKey() async {
     Database db = await DBHelpers.openLanguagePreference();
-    List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT `langID` FROM `pref` ORDER BY `langID` ASC LIMIT 1" );
+    List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT `langID` FROM `pref` ORDER BY `langID` DESC LIMIT 1" );
 
     _log( msg: 'last langID = ' + maps.toString() );
 
@@ -275,14 +282,14 @@ class LogosDB {
     if( maps.isEmpty ) {
 
       /// Default to EN.
-      return [ LangVO(langID: 1, langCode: 'EN', name: 'English' ) ];
+      return [ LangVO( langID: 1, langCode: 'EN', countryCode: 'en', name: 'English' ) ];
     } else {
 
       List<LangVO> list = List.generate( maps.length, (i) {
-
         return LangVO(
           langID      : maps[i][ 'langID' ],
           langCode    : maps[i][ 'langCode' ],
+          countryCode : maps[i][ 'countryCode' ],
           name        : maps[i][ 'name' ],
         );
       });
