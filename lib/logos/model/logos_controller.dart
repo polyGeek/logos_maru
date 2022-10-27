@@ -15,7 +15,7 @@ class LogosController extends ChangeNotifier {
   factory LogosController() => _logosController;
   LogosController._internal();
 
-  static const ENVIRONMENT = "HT";
+  String _environment = '';
 
   List<LogosVO> _logosList = [];
   List<LogosVO> _editingLogosList = [];
@@ -62,16 +62,16 @@ class LogosController extends ChangeNotifier {
    ***********************/
   Future<bool> init( {
     required String apiPath,
-    required String apiVersion
+    required String apiVersion,
+    required String environment,
   } ) async {
 
-    _apiPath = apiPath;
-    _apiVersion = apiVersion;
+    _apiPath      = apiPath;
+    _apiVersion   = apiVersion;
+    _environment  = environment;
 
     /// 0: Copy databases from assets folder
     DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_pref.db' );
-    DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_AR.db' );
-    DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_CN.db' );
     DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_EN.db' );
     DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_ES.db' );
 
@@ -115,7 +115,7 @@ class LogosController extends ChangeNotifier {
     Map<String, dynamic> map = {
       'userName': userName.toLowerCase(),
       'passCode': passCode.toLowerCase(),
-      'env': ENVIRONMENT
+      'env': _environment,
     };
 
     _log(msg: "signIn: Data to server -> \n " + map.toString() );
@@ -169,7 +169,7 @@ class LogosController extends ChangeNotifier {
       'lastLangID'  : lastLangKey,
       'lastUpdate'  : lastUpdate,
       'langCode'    : langCode,
-      'env'         : ENVIRONMENT
+      'env'         : _environment
     };
 
     _log(msg: 'Data To Server', map: map );
@@ -336,7 +336,7 @@ class LogosController extends ChangeNotifier {
 
     /// Data to the server
     Map<String, dynamic> map = {
-      'env'         : ENVIRONMENT,
+      'env'         : _environment,
       'langCode'    : langCode,
       'logosID'     : logosVO.logosID,
       'userID'      : _userID.toString(),

@@ -24,15 +24,13 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^1.0.0
-
 flutter:
   uses-material-design: true
   assets:
     - assets/.
-    - assets/flags/.
-    - assets/logos_AR.db
-    - assets/logos_CN.db
-    - assets/logos_EN.db
-    - assets/logos_ES.db
-    - assets/logos_pref.db
+    - assets/logosmaru/.
+    - assets/logosmaru/flags/.
+
+#    - assets/logosmaru/logos_EN.db
+#    - assets/logosmaru/logos_ES.db
+#    - assets/logosmaru/logos_pref.db

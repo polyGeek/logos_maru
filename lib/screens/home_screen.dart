@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logos_maru/alert_dialogs.dart';
 import 'package:logos_maru/logos/language_dropdown/dropdown.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
+import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/screens/drawer.dart';
 import 'package:logos_maru/utils/data_controller.dart';
@@ -50,7 +51,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
 
               LogosTxt(
-                  comment: 'LogosMaru',
+                  comment: 'RunPee tag line',
                   logosID: 1
               ),
 
@@ -95,8 +96,13 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
 
+              LogosTxt(
+                comment: "RunPee: because movie theaters don't have pause buttons. | RunPee tagline",
+                logosID: 1,
+              ),
 
-             /* RichTxt(
+
+              /* RichTxt(
                 txt: "This is <strong>some bold text</strong> text. This is <em>italics</em> text. This is <tag>something</tag>!",
                 style: TxtStyles.header,
               ),
@@ -113,85 +119,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox( height: 20,),
 
-              LogosTxt(
-                comment: 'Welcome to LogosMaru. | Intro to app',
-                logosID: 14,
-              ),
-
-              LogosTxt(
-                comment: 'This is a demo app to show you how easy it is to create a multi-language application using our service. | Description of the LogosMaru Demo app',
-                logosID: 15,
-              ),
-
-              SizedBox( height: 20,),
-
-              LogosTxt(
-                comment: 'Key benefits: | Header',
-                logosID: 16,
-              ),
-              SizedBox( height: 10,),
-
-              LogosTxt(
-                comment: '• Authorized users can edit any text, in any language, from within your client side app. This way translators have access the context and display where their translation will go. ',
-                logosID: 17,
-              ),
-              SizedBox( height: 10,),
-
-              LogosTxt(
-                comment: '• Update the text/translations in your application without updating the app. Once a change has been approved by the administrator, using the LogosMaru Admin app, the next user who starts your app will see the latest text changes instead of waiting to submit and get approval from the app stores. | ',
-                logosID: 18,
-              ),
-              SizedBox( height: 10,),
-
-              LogosTxt(
-                comment: '• Update the text/translations in your application without updating the app. Once a change has been approved by the administrator, using the LogosMaru Admin app, the next user who starts your app will see the latest text changes instead of waiting to submit and get approval from the app stores. | ',
-                logosID: 18,
-              ),
-              SizedBox( height: 10,),
-
-              LogosTxt(
-                comment: '• Add a new language to your application without updating the app in the app stores. | language support',
-                logosID: 19,
-              ),
-
-              /*LogosTxt(
-                comment: '• Add a new language to your application without updating the app in the app stores.',
-                logosID: 20,
-              ),
-              SizedBox( height: 10,),
-
-              LogosTxt(
-                comment: '• Get access to hundreds of pre-translated common words and phrases used in most apps, like: Submit, Send, Cancel, Close... | Feature description: access to pre-translated common words.',
-                logosID: 21,
-              ),
-              SizedBox( height: 10,),
-
-              LogosTxt(
-                comment: '• Let trusted users help you with translations in their native language. | Feature',
-                logosID: 22,
-              ),
-              SizedBox( height: 10,),
-
-              LogosTxt(
-                comment: '• Include multiple variables in the text, like names and dates that may be dynamic in your applicati... | Logos variables',
-                logosID: 23,
-              ),
-              SizedBox( height: 10,),
-
-              LogosTxt(
-                comment: '• Include and change text styles with the translations. | Add text styles dynamically.',
-                logosID: 24,
-              ),*/
-              SizedBox( height: 10,),
-
-              Text( "• Add special formatting to your text.\n" ),
-              SizedBox( height: 10,),
-
-              const SizedBox( height: 20, ),
 
               Align(
                   alignment: Alignment.center,
-                  child: ChangeLanguageDropdown()
+                  child: ChangeLanguageDropdown(
+                    childOptions: DropDownChildOptions.flagAndCountryCode,
+                  )
               ),
 
               SizedBox( height: 20, ),
@@ -202,6 +135,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  Widget DropdownChild( LangVO value ) {
+    return Row(
+      children: [
+        Text( value.name ),
+        SizedBox( width: 10, ),
+        Image.asset( 'assets/logosmaru/flags/' + value.countryCode + '.png', width: 30, ),
+      ],
+    );
+  }
+
 }
 
 
