@@ -14,6 +14,7 @@ enum DropDownChildOptions {
   flagAndCountryCode,
   countryFullNameOnly,
   countryFullNameAndCountryCode,
+  worldIconCountryCodeLangCode,
 }
 
 Widget DropDownChild_FlagOnly( LangVO value, double width ) {
@@ -50,7 +51,7 @@ class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
   Widget build( BuildContext context ) {
     return DropdownButton<String>(
       value: _dropdownValue,
-      icon: const Icon(Icons.arrow_downward),
+      //icon: const Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
       underline: Container(
@@ -95,6 +96,14 @@ class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
                     Text( value.name ),
                     SizedBox( width: 10 ),
                     Text( value.countryCode ),
+                  ],
+                );
+              else if( widget.childOptions == DropDownChildOptions.worldIconCountryCodeLangCode )
+                return Row(
+                  children: [
+                    Icon( Icons.language ),
+                    SizedBox( width: 10 ),
+                    Text( value.countryCode.toUpperCase() + ' [' + value.langCode + ']'),
                   ],
                 );
               else {

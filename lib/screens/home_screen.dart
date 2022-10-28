@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Align(
                   alignment: Alignment.center,
                   child: ChangeLanguageDropdown(
-                    childOptions: DropDownChildOptions.flagAndCountryCode,
+                    childOptions: DropDownChildOptions.worldIconCountryCodeLangCode,
                   )
               ),
 
