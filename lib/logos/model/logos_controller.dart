@@ -71,9 +71,9 @@ class LogosController extends ChangeNotifier {
     _environment  = environment;
 
     /// 0: Copy databases from assets folder
-    DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_pref.db' );
-    DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_EN.db' );
-    DBHelpers.copyEmbeddedDatabase( filename: 'logosmaru/logos_ES.db' );
+    DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_pref.db' );
+    DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_EN.db' );
+    DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_ES.db' );
 
     /// 1: get the selected langCode from the local DB.
     LanguageController().selectedAppLanguageCode = await LogosDB().getSavedLanguagePreference();

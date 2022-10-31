@@ -37,6 +37,8 @@ class Styles {
         return TxtStyles.header.gold;
       case 'link':
         return TxtStyles.body.blue.underline;
+      case 'gold':
+        return TxtStyles.body.gold;
       default:
         return TxtStyles.body;
     }
