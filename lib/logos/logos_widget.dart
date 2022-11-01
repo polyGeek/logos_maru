@@ -41,7 +41,7 @@ class LogosTxt extends StatefulWidget {
   LogosTxt.dynamic( {
     required String txt,
     required String tag,
-  } ) : this.logosID = LogosController().getDynamicLogos(txt: txt, tag: tag).logosID,
+  } ) : this.logosID = LogosController().getDynamicLogos( txt: txt, tag: tag ).logosID,
         this.comment = tag,
         this.vars = null,
         this.child = null,

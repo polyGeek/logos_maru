@@ -18,6 +18,7 @@ class LogosController extends ChangeNotifier {
   String _environment = '';
 
   List<LogosVO> _logosList = [];
+  List<LogosVO> _logosList_EN = [];
   List<LogosVO> _editingLogosList = [];
 
   /// Is editable
@@ -70,6 +71,7 @@ class LogosController extends ChangeNotifier {
     _apiVersion   = apiVersion;
     _environment  = environment;
 
+    // todo: the translation files should be passed as a list in the init() call.
     /// 0: Copy databases from assets folder
     DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_pref.db' );
     DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_EN.db' );
@@ -86,6 +88,7 @@ class LogosController extends ChangeNotifier {
 
     /// 3: get language data from local DB.
     _logosList = await LogosDB().getLogosDataFromLocalDB( langCode: LanguageController().selectedAppLanguageCode.toString() );
+    _logosList_EN = await LogosDB().getLogosDataFromLocalDB( langCode: 'EN' );
 
     /// 4: get any changes approved by the remote DB.
     getRemoteChanges( langCode: LanguageController().selectedAppLanguageCode );
@@ -255,7 +258,7 @@ class LogosController extends ChangeNotifier {
   } ) {
 
     if( _lastTagList.isEmpty || _lastTagList[0].tags != tag ) {
-      _lastTagList = _logosList.where((element) => element.tags == tag).toList();
+      _lastTagList = _logosList_EN.where((element) => element.tags == tag).toList();
     }
 
     for (int i = 0; i < _lastTagList.length; i++) {
