@@ -41,11 +41,11 @@ class LogosTxt extends StatefulWidget {
   LogosTxt.dynamic( {
     required String txt,
     required String tag,
+    this.txtStyle,
+    this.vars,
+    this.child,
   } ) : this.logosID = LogosController().getDynamicLogos( txt: txt, tag: tag ).logosID,
-        this.comment = tag,
-        this.vars = null,
-        this.child = null,
-        this.txtStyle = null;
+        this.comment = tag;
 
   @override
   _LogosTxtState createState() => _LogosTxtState();
