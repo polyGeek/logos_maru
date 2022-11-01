@@ -48,6 +48,20 @@ class LogosVO {
     this.note = unEscapeTxt( s: note );
   }
 
+  LogosVO.error( {
+    required this.txt,
+    this.logosID = 0,
+    this.tags = '',
+    this.note = '',
+    this.description = '',
+    this.langCode = '',
+    this.lastUpdate = '',
+    this.style = '',
+    this.isRich = 0
+  } ) {
+    this.txt = txt;
+  }
+
   LogosVO fromMap( { required Map map } ) {
     return LogosVO(
         logosID			: map[ 'logosID' ],

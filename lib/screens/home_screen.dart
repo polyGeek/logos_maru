@@ -101,6 +101,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 logosID: 1,
               ),
 
+              Builder(builder: (BuildContext context) {
+
+
+                List<String> days = [ 'Monday', 'Tuesday', 'Wednesday' ];
+                List<Widget> dayChildren = [];
+
+                days.forEach( (element) {
+                  dayChildren.add(
+
+                    LogosTxt.dynamic(
+                      tag: 'week-day',
+                      txt: element,
+                    ),
+                  );
+                });
+
+                return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: dayChildren,
+                );
+              }),
+
+
 
               /* RichTxt(
                 txt: "This is <strong>some bold text</strong> text. This is <em>italics</em> text. This is <tag>something</tag>!",

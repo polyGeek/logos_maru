@@ -121,7 +121,6 @@ class LogosController extends ChangeNotifier {
     _log(msg: "signIn: Data to server -> \n " + map.toString() );
 
     String result = await NetworkHelper.sendPostRequest(
-        //url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/signin.php',
         url: _apiPath + _apiVersion + '/signin.php',
         map: map
     );
@@ -247,6 +246,27 @@ class LogosController extends ChangeNotifier {
     }
 
     return 'ERROR: #' + logosID.toString();
+  }
+
+  List<LogosVO> _lastTagList = [];
+  LogosVO getDynamicLogos( {
+    required String txt,
+    required String tag,
+  } ) {
+
+    if( _lastTagList.isEmpty || _lastTagList[0].tags != tag ) {
+      _lastTagList = _logosList.where((element) => element.tags == tag).toList();
+    }
+
+    for (int i = 0; i < _lastTagList.length; i++) {
+      LogosVO logosVO = _lastTagList.elementAt(i);
+
+      if ( logosVO.txt == txt ) {
+        return logosVO;
+      }
+    }
+    return LogosVO.error( txt: '###ERROR\n'
+        'no match found for:\n' + txt + '\nwith tag: ' + tag );
   }
 
   LogosVO getLogosVO( {

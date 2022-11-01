@@ -28,6 +28,25 @@ class LogosTxt extends StatefulWidget {
     this.txtStyle,
   } );
 
+  /// Allows dynamic creation of a translation based on the EN txt and a tag.
+  ///
+  /// For instance, if you have the days of the week generated dynamically
+  /// you can create translations for each day of the week and tag them with 'weekdays'.
+  /// Then, as an example, if you pass 'Monday', 'weekdays' then LogosMaru will find
+  /// all of the tags for 'weekdays' and return the translation for 'Monday'.
+  ///
+  /// Note: all of the translations with this tag will be retained in a list so that
+  /// the next request for 'Tuesday' will not have to find all of the translations with
+  /// the tag 'weekdays' again.
+  LogosTxt.dynamic( {
+    required String txt,
+    required String tag,
+  } ) : this.logosID = LogosController().getDynamicLogos(txt: txt, tag: tag).logosID,
+        this.comment = tag,
+        this.vars = null,
+        this.child = null,
+        this.txtStyle = null;
+
   @override
   _LogosTxtState createState() => _LogosTxtState();
 }

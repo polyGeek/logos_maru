@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if( await LogosController().init(
       apiPath: 'https://runpee.net/logos_api/',
       apiVersion: '0.0',
-      environment: 'RP',
+      environment: 'HT',
     ) == true ) {
       _body = HomeScreen();
     } else {
