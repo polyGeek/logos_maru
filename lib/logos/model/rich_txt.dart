@@ -112,7 +112,7 @@ class RichTxt extends StatefulWidget {
   RichTxt( {
     required this.txt,
     required this.style,
-    this.textAlign = TextAlign.left,
+    this.textAlign = TextAlign.start,
     this.maxLines = 10000 } );
 
   @override
@@ -149,7 +149,7 @@ class _RichTxtState extends State<RichTxt> {
       _spans = Styles().makeRichTxt(
           txt: widget.txt,
           txtStyle: widget.style,
-          textAlign: widget.textAlign
+          textAlign: widget.textAlign,
       );
 
       _txtSpan = TextSpan(

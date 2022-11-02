@@ -19,6 +19,7 @@ class LogosTxt extends StatefulWidget {
   final Map?          vars;
   final TextStyle?    txtStyle;
   final Widget?       child;
+  final TextAlign    textAlign;
 
   LogosTxt( {
     required this.logosID,
@@ -26,6 +27,7 @@ class LogosTxt extends StatefulWidget {
     this.child,
     this.vars,
     this.txtStyle,
+    this.textAlign = TextAlign.start,
   } );
 
   /// Allows dynamic creation of a translation based on the EN txt and a tag.
@@ -44,6 +46,7 @@ class LogosTxt extends StatefulWidget {
     this.txtStyle,
     this.vars,
     this.child,
+    this.textAlign = TextAlign.start,
   } ) : this.logosID = LogosController().getDynamicLogos( txt: txt, tag: tag ).logosID,
         this.comment = tag;
 
@@ -88,6 +91,7 @@ class _LogosTxtState extends State<LogosTxt> {
           fromWidget: widget.txtStyle,
           fromLogos: textStyle
       ),
+      textAlign   : widget.textAlign,
       child       : widget.child,
     );
 
@@ -147,6 +151,7 @@ class _LogosUpdateTxt extends StatelessWidget {
   final Map?          vars;
   final TextStyle     txtStyle;
   final Widget?       child;
+  final TextAlign    textAlign;
   late final LogosVO _logosVO;
 
   _LogosUpdateTxt( {
@@ -155,6 +160,7 @@ class _LogosUpdateTxt extends StatelessWidget {
     required this.txtStyle,
     this.child,
     this.vars,
+    this.textAlign = TextAlign.start,
   } ) {
     _logosVO = LogosController().getLogosVO( logosID: logosVO.logosID );
   }
@@ -190,10 +196,12 @@ class _LogosUpdateTxt extends StatelessWidget {
               ? Text(
             LogosController().getLogos( logosID: logosVO.logosID, vars: vars, comment: '' ),
             style: txtStyle,
+            textAlign: textAlign,
           )
               : RichTxt(
             txt: LogosController().getLogos( logosID: logosVO.logosID, vars: vars, comment: '' ),
             style: txtStyle,
+            textAlign: textAlign,
           );
 
         } else {
