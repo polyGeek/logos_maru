@@ -17,7 +17,7 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
   @override
   void initState() {
     super.initState();
-    _tec.text = 'dan@octocodipus.com';
+    _tec.text = 'dan@runpee.com';
   }
 
   void _update() {

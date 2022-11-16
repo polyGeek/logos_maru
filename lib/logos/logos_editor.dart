@@ -42,9 +42,10 @@ class _LogosEditorState extends State<LogosEditor> {
 
   void _update() {
     //_logosVO = LogosController().getEditLogos( logosID: widget.logosID );
-    //_tecTxt.text = LogosController().editingLogosVO!.txt;//_logosVO.txt;
-    //_tecNote.text = LogosController().editingLogosVO!.note;//_logosVO.note;
+    _tecTxt.text = LogosController().editingLogosVO!.txt;//_logosVO.txt;
+    _tecNote.text = LogosController().editingLogosVO!.note;//_logosVO.note;
 
+    /// todo: this update is called multiple times when editing language changes.
     if( mounted )
       setState(() {});
   }

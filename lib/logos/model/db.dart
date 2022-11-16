@@ -184,7 +184,7 @@ class LogosDB {
             + "id = '" + dataVO.id.toString() + "', "
             + "name = '" + dataVO.name + "', "
             + "description = '" + dataVO.description + "', "
-            + "lastUpdated = " + dataVO.lastUpdated
+            + "lastUpdated = '" + dataVO.lastUpdated + "' "
             + "WHERE id = " + dataVO.id.toString()
         );
       }

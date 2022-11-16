@@ -50,10 +50,10 @@ class DrawerMenu extends StatelessWidget {
                     return AuthenticateEditor();
                   });
             },
-            child:LogosTxt(
+            child: Text( 'Authenticate as Editor')/*LogosTxt(
               comment: 'Authenticate as Editor',
               logosID: 11,
-            ),
+            ),*/
           ),
 
           SizedBox( height: 20 ,),
