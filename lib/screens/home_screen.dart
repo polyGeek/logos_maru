@@ -52,7 +52,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
               LogosTxt(
                   comment: 'RunPee tag line',
-                  logosID: 1
+                  logosID: 1,
+                txtStyle: TextStyle(
+                  fontSize: 20,
+                  color: Colors.white,
+                ),
               ),
 
               Builder(builder: (BuildContext context) {
@@ -102,16 +106,14 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               Builder(builder: (BuildContext context) {
-
-
-                List<String> days = [ 'Monday', 'Tuesday', 'Wednesday' ];
+                List<String> days = [ 'January', 'February', 'March', 'April', 'May' ];
                 List<Widget> dayChildren = [];
 
                 days.forEach( (element) {
                   dayChildren.add(
 
                     LogosTxt.dynamic(
-                      tag: 'week-day',
+                      tag: 'month',
                       txt: element,
                     ),
                   );

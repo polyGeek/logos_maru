@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
+import 'package:logos_maru/logos/model/data_vo.dart';
 import 'package:logos_maru/logos/model/db.dart';
 import 'package:logos_maru/logos/model/db_helpers.dart';
 import 'package:logos_maru/logos/model/eol.dart';
@@ -20,6 +21,8 @@ class LogosController extends ChangeNotifier {
   List<LogosVO> _logosList = [];
   List<LogosVO> _logosList_EN = [];
   List<LogosVO> _editingLogosList = [];
+  List<DataVO>  _tagList = [];
+  List<DataVO>  _screenList = [];
 
   /// Is editable
   bool _isEditable = false;
@@ -84,7 +87,7 @@ class LogosController extends ChangeNotifier {
     /// 2: get all of the language options from the local DB.
     LanguageController().languageOptionsList = await LogosDB().getLanguageOptionsList();
 
-    _log(msg: 'Language options: ' + LanguageController().languageOptionsList.toString() );
+    _log( msg: 'Language options: ' + LanguageController().languageOptionsList.toString() );
 
     /// 3: get language data from local DB.
     _logosList = await LogosDB().getLogosDataFromLocalDB( langCode: LanguageController().selectedAppLanguageCode.toString() );
@@ -96,7 +99,12 @@ class LogosController extends ChangeNotifier {
     /// 5: Set the EditingLanguage Code to be the same as the viewing language code.
     LanguageController().editingLanguageCode = LanguageController().selectedAppLanguageCode;
 
-    ///TEST
+    /// 6: get the tag list from the local DB.
+    _tagList = await LogosDB().getDataListFromLocalDB( dataManagerType: DataManagerType.tags );
+
+    /// 7: get the screen list from the local DB.
+    _screenList = await LogosDB().getDataListFromLocalDB( dataManagerType: DataManagerType.screens );
+
     if (_logosList.isNotEmpty) {
       notifyListeners();
       return true;
@@ -166,12 +174,20 @@ class LogosController extends ChangeNotifier {
     /// so we can check for additions in the remote DB.
     int lastLangKey = await LogosDB().getLastLangKey();
 
+    /// Get the last update timestamp from the tagsDB.
+    String lastTagUpdate = await LogosDB().getLastTagUpdate();
+
+    /// Get the last update timestamp from the screensDB.
+    String lastScreenUpdate = await LogosDB().getLastScreensUpdate();
+
     /// Data to the server
     Map<String, dynamic> map = {
-      'lastLangID'  : lastLangKey,
-      'lastUpdate'  : lastUpdate,
-      'langCode'    : langCode,
-      'env'         : _environment
+      'lastLangID'        : lastLangKey,
+      'lastUpdate'        : lastUpdate,
+      'langCode'          : langCode,
+      'lastTagUpdate'     : lastTagUpdate,
+      'lastScreenUpdate'  : lastScreenUpdate,
+      'env'               : _environment
     };
 
     _log(msg: 'Data To Server', map: map );
@@ -218,6 +234,32 @@ class LogosController extends ChangeNotifier {
       }
       notifyListeners();
     }
+
+    /// Update tagsDB
+    var tagsDecoded = jsonDecode(result)[ 'tags' ] as List;
+    if( tagsDecoded.isNotEmpty ) {
+      _log( msg: "New tags", shout: true );
+      List<DataVO> tagsList = tagsDecoded.map((e) => DataVO.fromJson(e)).toList();
+
+      /// Update database
+      await LogosDB().updateData(
+          dataManagerType: DataManagerType.tags,
+          newData: tagsList
+      );
+    }
+
+    /// Update screensDB
+    var screensDecoded = jsonDecode(result)[ 'screens' ] as List;
+    if( screensDecoded.isNotEmpty ) {
+      _log( msg: "New screens", shout: true );
+      List<DataVO> screensList = screensDecoded.map((e) => DataVO.fromJson(e)).toList();
+
+      /// Update database
+      await LogosDB().updateData(
+          dataManagerType: DataManagerType.screens,
+          newData: screensList
+      );
+    }
   }
 
   bool doesHaveLogos() {
@@ -261,13 +303,25 @@ class LogosController extends ChangeNotifier {
       _lastTagList = _logosList_EN.where((element) => element.tags == tag).toList();
     }
 
-    for (int i = 0; i < _lastTagList.length; i++) {
-      LogosVO logosVO = _lastTagList.elementAt(i);
-
-      if ( logosVO.txt == txt ) {
-        return logosVO;
+    int tagID = 0;
+    /// Go through the _tagList and find the matching name.
+    for( int i = 0; i < _tagList.length; i++ ) {
+      if( _tagList[i].name == tag ) {
+        tagID = _tagList[i].id;
+        break;
       }
     }
+
+    for (int i = 0; i < _logosList_EN.length; i++) {
+      LogosVO logosVO = _logosList_EN.elementAt(i);
+
+      if( logosVO.tags.contains( tagID.toString() ) ) {
+        if( logosVO.txt == txt ) {
+          return logosVO;
+        }
+      }
+    }
+
     return LogosVO.error( txt: '###ERROR\n'
         'no match found for:\n' + txt + '\nwith tag: ' + tag );
   }

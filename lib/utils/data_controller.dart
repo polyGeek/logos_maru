@@ -10,7 +10,7 @@ class DataController extends ChangeNotifier {
   static String version        = version      = '';
   static String buildNumber    = buildNumber  = '';
 
-  String? _userName = '';
+  String? _userName = 'Dan';
   String get userName => _userName!;
   void setUserName( { required String userName } ) {
     _userName = userName;

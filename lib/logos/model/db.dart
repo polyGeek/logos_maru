@@ -1,3 +1,4 @@
+import 'package:logos_maru/logos/model/data_vo.dart';
 import 'package:logos_maru/logos/model/db_helpers.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
@@ -124,6 +125,67 @@ class LogosDB {
             + "countryCode = '" + langVO.countryCode + "', "
             + "name = '" + langVO.name + "' "
             + "WHERE langID = " + langVO.langID.toString()
+        );
+      }
+    }
+
+    return getLanguageOptionsList();
+  }
+
+  Future<List<LangVO>> updateData( {
+    required List newData,
+    required DataManagerType dataManagerType
+  } ) async {
+
+    late Database db;
+    String tableName = '';
+    if( dataManagerType == DataManagerType.tags ) {
+      db = await DBHelpers.openTags();
+      tableName = 'tags';
+    } else if( dataManagerType == DataManagerType.screens ) {
+      db = await DBHelpers.openScreens();
+      tableName = 'screens';
+    }
+
+
+    late List<Map<String, dynamic>> maps;
+
+    for( int i = 0; i < newData.length; i++ ) {
+
+      DataVO dataVO = newData.elementAt( i );
+
+      _log( msg: "updating changes: " + dataVO.id.toString() + " : " + dataVO.name );
+
+      if( dataManagerType == DataManagerType.tags ) {
+        maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = '" + dataVO.id.toString() + "'", );
+      } else if( dataManagerType == DataManagerType.screens ) {
+        maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = '" + dataVO.id.toString() + "'", );
+      }
+      //maps = await db.rawQuery( "SELECT * FROM `pref` WHERE `langID` = '" + dataVO.langID.toString() + "'", );
+
+      if( maps.isEmpty ) {
+
+        await db.rawQuery( "INSERT INTO `$tableName` ( "
+            "id, "
+            "name, "
+            "description, "
+            "lastUpdated "
+            " ) VALUES ( "
+            + dataVO.id.toString() + ', '
+            + "'" + dataVO.name.toString() + "', "
+            + "'" + dataVO.description.toString() + "', "
+            + "'" + dataVO.lastUpdated.toString() + "' "
+            + ' ) '
+        );
+
+      } else {
+
+        await db.rawQuery( "UPDATE `$tableName` SET "
+            + "id = '" + dataVO.id.toString() + "', "
+            + "name = '" + dataVO.name + "', "
+            + "description = '" + dataVO.description + "', "
+            + "lastUpdated = " + dataVO.lastUpdated
+            + "WHERE id = " + dataVO.id.toString()
         );
       }
     }
@@ -258,10 +320,7 @@ class LogosDB {
     }
   }
 
-  /** ===============================================
-  *  Change this to using lastUpdate instead of lastKey.
-   *  Just in case there are changes to existing data.
-  *  ===============================================*/
+  /// todo: Change this to using lastUpdate instead of lastKey. Just in case there are changes to existing data.
   Future<int> getLastLangKey() async {
     Database db = await DBHelpers.openLanguagePreference();
     List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT `langID` FROM `pref` ORDER BY `langID` DESC LIMIT 1" );
@@ -273,6 +332,34 @@ class LogosDB {
     } else {
 
       return maps[0][ 'langID' ] as int;
+    }
+  }
+
+  Future<String> getLastTagUpdate() async {
+    Database db = await DBHelpers.openTags();
+    List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT `lastUpdated` FROM `tags` ORDER BY `lastUpdated` DESC LIMIT 1" );
+
+    _log( msg: 'last tag update = ' + maps.toString() );
+
+    if( maps.isEmpty == true ) {
+      return '2000-01-01 00:00:00';
+    } else {
+
+      return maps[0][ 'lastUpdated' ];
+    }
+  }
+
+  Future<String> getLastScreensUpdate() async {
+    Database db = await DBHelpers.openScreens();
+    List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT `lastUpdated` FROM `screens` ORDER BY `lastUpdated` DESC LIMIT 1" );
+
+    _log( msg: 'last tag update = ' + maps.toString() );
+
+    if( maps.isEmpty == true ) {
+      return '2000-01-01 00:00:00';
+    } else {
+
+      return maps[0][ 'lastUpdated' ];
     }
   }
 
@@ -296,6 +383,40 @@ class LogosDB {
 
       return list;
     }
+  }
+
+  /// Return list of Tags or Screens.
+  Future<List<DataVO>> getDataListFromLocalDB( { required DataManagerType dataManagerType } ) async {
+
+    late String tableName;
+    late Database db;
+
+    if( dataManagerType == DataManagerType.tags ) {
+      db = await DBHelpers.openTags();
+      tableName = 'tags';
+    } else if( dataManagerType == DataManagerType.screens ) {
+      db = await DBHelpers.openScreens();
+      tableName = 'screens';
+    }
+
+    List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT * FROM `$tableName`" );
+
+    if( maps.isNotEmpty ) {
+      List<DataVO> list = List.generate( maps.length, (i) {
+        return DataVO(
+          id            : maps[i][ 'id' ],
+          name          : maps[i][ 'name' ],
+          description   : maps[i][ 'description' ],
+          lastUpdated   : maps[i][ 'lastUpdated' ],
+        );
+      });
+
+      return list;
+    } else {
+      return [];
+    }
+
+
   }
 
   static const bool isDebug = false;

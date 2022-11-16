@@ -50,6 +50,46 @@ class DBHelpers {
     );
   }
 
+  static dynamic openTags() async {
+
+    return openDatabase(
+
+      join( await getDatabasesPath(), 'logos_tags.db' ),
+
+      onCreate: ( db, version ) {
+        String sql = "CREATE TABLE `tags` ( "
+            "id 				  INTEGER PRIMARY KEY, "
+            "name         VARCHAR(32), "
+            "description  TEXT, "
+            "lastUpdated   datetime"
+            " )";
+
+        db.execute( sql );
+      },
+      version: 1,
+    );
+  }
+
+  static dynamic openScreens() async {
+
+    return openDatabase(
+
+      join( await getDatabasesPath(), 'logos_screens.db' ),
+
+      onCreate: ( db, version ) {
+        String sql = "CREATE TABLE `screens` ( "
+            "id 				  INTEGER PRIMARY KEY, "
+            "name         VARCHAR(32), "
+            "description  TEXT, "
+            "lastUpdated   datetime"
+            " )";
+
+        db.execute( sql );
+      },
+      version: 1,
+    );
+  }
+
   static Future<bool> copyEmbeddedDatabase( { required String filename } ) async {
     /// TESTING: This forces the code to recreate the database.
     ///return true;
