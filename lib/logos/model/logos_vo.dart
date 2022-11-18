@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
+import 'package:logos_maru/my_styles.dart';
 
 enum TxtStyleOptions {
   body,
@@ -140,20 +141,15 @@ class LogosVO {
     }
   }
 
+  /// Returns the TextStyle for the given style name
+  /// If the style name is not found, returns the default style (body).
   static TextStyle getStyle( { required String style } ) {
-    switch( style ) {
-      case 'title':
-        return TxtStyles.title;
-      case 'header':
-        return TxtStyles.header;
-      case 'subHeader':
-        return TxtStyles.subHeader;
-      case 'strong':
-        return TxtStyles.strong;
-      case 'emphasis':
-        return TxtStyles.emphasis;
-      default:
-        return TxtStyles.body;
+    final myStyles = MyStyles().toJson();
+
+    try {
+      return myStyles[ style ] as TextStyle;
+    } catch (e) {
+      return MyStyles.bodySm;
     }
   }
 
@@ -163,7 +159,7 @@ class LogosVO {
 
     if( fromLogos == TxtStyles.body
         && fromWidget != null
-        && fromWidget != TxtStyles.body) {
+        && fromWidget != TxtStyles.body ) {
       return fromWidget;
     } else {
       return fromLogos;
