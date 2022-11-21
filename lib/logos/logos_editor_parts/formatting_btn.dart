@@ -203,7 +203,7 @@ class _FormattingBtnState extends State<FormattingBtn> {
 
               RichTxt(
                 txt: '<' + widget.tag + '>' + widget.formattedCharacter + '</' + widget.tag + '>',
-                style: TxtStyles.body,
+                txtStyle: TxtStyles.body,
               ),
 
               Text( '>', style: TextStyle( color: Colors.white ), ),

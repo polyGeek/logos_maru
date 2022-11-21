@@ -1,10 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class MyStyles {
-  static const TextStyle title = TextStyle(
-    color: Colors.blue,
+class LogosStyles {
+
+  static TextStyle fixedGoogle = GoogleFonts.robotoMono(
+      letterSpacing: 1.2,
+      fontSize: 20,
+  );
+
+  static TextStyle title = TextStyle(
+    fontFamily: 'RobotoMono',
     fontWeight: FontWeight.w500,
-    fontSize: 30,
+    fontSize: 20,
   );
 
   static const TextStyle titleLight = TextStyle(
@@ -31,13 +38,20 @@ class MyStyles {
     fontSize: 10,
   );
 
+  static const TextStyle strong = TextStyle(
+    color: Colors.yellowAccent,
+    fontWeight: FontWeight.bold,
+  );
+
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['title']         = MyStyles.title;
-    data['titleLight']    = MyStyles.titleLight;
-    data['header']        = MyStyles.header;
-    data['body']          = MyStyles.body;
-    data['bodySm']        = MyStyles.bodySm;
+    data['title']         = LogosStyles.title;
+    data['titleLight']    = LogosStyles.titleLight;
+    data['header']        = LogosStyles.header;
+    data['body']          = LogosStyles.body;
+    data['bodySm']        = LogosStyles.bodySm;
+
+    data['strong']        = LogosStyles.strong;
     return data;
   }
 }

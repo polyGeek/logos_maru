@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
+import 'package:logos_maru/logos/model/logos_vo.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 class Styles {
@@ -9,51 +10,18 @@ class Styles {
   factory Styles() => _styles;
   Styles._internal();
 
-  static TextStyle fixedGoogle = GoogleFonts.robotoMono(
-      letterSpacing: 1.2
-  );
-
   static const Color c_RPYellow           = Color(0xe6fca905);
   static const Color c_bone               = Color(0xff000000);
-  static const Color c_primaryColor       = Color(0xff000000);
   static const Color c_greenAccent        = Color( 0xff05FC2E ); /// Colors.lightGreenAccent;
-  static const Color c_redAccent          = Colors.redAccent;      /// Color( 0xffFC05D4 );
-
-  static const double PADDING = 10;
+  static const Color c_redAccent          = Colors.redAccent;    /// Color( 0xffFC05D4 );
 
   static double iconSize      = 10;
 
-  TextStyle getTxtStyle( { required String tag } ) {
-    switch( tag ) {
-      case 'strong':
-        return TxtStyles.strong;
-      case 'b':
-        return TxtStyles.strong;
-      case 'em':
-        return TxtStyles.emphasis;
-      case 'u':
-        return TxtStyles.body.underline;
-      case 'title':
-        return TxtStyles.header.gold;
-      case 'link':
-        return TxtStyles.body.blue.underline;
-      case 'gold':
-        return TxtStyles.body.gold;
-      default:
-        return TxtStyles.body;
-    }
-  }
-
-
   List<TextSpan> makeRichTxt( {
     required String txt,
+    required TextStyle txtStyle,
     TextAlign textAlign = TextAlign.left,
-    TextStyle? txtStyle,
   }) {
-
-
-    if( txtStyle == null )
-      txtStyle = TxtStyles.body;
 
     List<TextSpan> spans  = [];
     String tag            = '';
@@ -63,7 +31,7 @@ class Styles {
       int n = txt.indexOf( '<' );
 
       if( n == -1 ) {
-        spans.add( TextSpan( text: txt, style: TxtStyles.body ) );
+        spans.add( TextSpan( text: txt, style: txtStyle ) );
         return spans;
       }
 
@@ -90,10 +58,10 @@ class Styles {
           txt = '';
         }
 
-        spans.add( TextSpan( text: snip, style: TxtStyles.body ) );
-        spans.add( TextSpan( text: styledTxt, style: getTxtStyle( tag: tag ) ) );
+        spans.add( TextSpan( text: snip, style: txtStyle ) );
+        spans.add( TextSpan( text: styledTxt, style: LogosVO.getStyle( style: tag ).merge( txtStyle )  ) );
       } else {
-        spans.add( TextSpan( text: txt, style: TxtStyles.body ) );
+        spans.add( TextSpan( text: txt, style: txtStyle ) );
         return spans;
       }
 
@@ -107,11 +75,11 @@ class RichTxt extends StatefulWidget {
   final String txt;
   final TextAlign textAlign;
   final int maxLines;
-  final TextStyle style;
+  final TextStyle txtStyle;
 
   RichTxt( {
     required this.txt,
-    required this.style,
+    required this.txtStyle,
     this.textAlign = TextAlign.start,
     this.maxLines = 10000 } );
 
@@ -132,6 +100,13 @@ class _RichTxtState extends State<RichTxt> {
   void initState() {
     super.initState();
 
+    _txtSpan = TextSpan(
+      children: null,
+      style: widget.txtStyle,
+    );
+
+    print( 'RichTxt TextStyle:  ' + widget.txtStyle.toString() );
+
     FontSizeController().addListener( _update );
     LogosController().addListener( refresh );
     _update();
@@ -148,13 +123,13 @@ class _RichTxtState extends State<RichTxt> {
     if( mounted ) {
       _spans = Styles().makeRichTxt(
           txt: widget.txt,
-          txtStyle: widget.style,
+          txtStyle: widget.txtStyle,
           textAlign: widget.textAlign,
       );
 
       _txtSpan = TextSpan(
         children: _spans,
-        style: widget.style,
+        style: widget.txtStyle,
       );
       setState(() {});
 

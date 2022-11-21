@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
-import 'package:logos_maru/my_styles.dart';
+import 'package:logos_maru/logos_styles.dart';
 
 enum TxtStyleOptions {
   body,
@@ -144,13 +144,18 @@ class LogosVO {
   /// Returns the TextStyle for the given style name
   /// If the style name is not found, returns the default style (body).
   static TextStyle getStyle( { required String style } ) {
-    final myStyles = MyStyles().toJson();
+    final myStyles = LogosStyles().toJson();
+
+    TextStyle ts = LogosStyles.body;
 
     try {
-      return myStyles[ style ] as TextStyle;
+      ts = myStyles[ style ] as TextStyle;
+      _log( msg: 'Got Style: ' + ts.toString() );
     } catch (e) {
-      return MyStyles.bodySm;
+      _log(msg: 'ERROR GETTING STYLE : $e' );
     }
+
+    return ts;
   }
 
   static TextStyle chooseStyle( {

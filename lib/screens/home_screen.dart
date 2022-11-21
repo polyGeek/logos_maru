@@ -4,6 +4,7 @@ import 'package:logos_maru/logos/language_dropdown/dropdown.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
+import 'package:logos_maru/logos_styles.dart';
 import 'package:logos_maru/screens/drawer.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 
@@ -50,15 +51,13 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
 
-              LogosTxt(
+              /*LogosTxt(
                   comment: 'RunPee tag line',
                   logosID: 1,
-                txtStyle: TextStyle(
-                  fontSize: 20,
-                  color: Colors.white,
-                ),
-              ),
+              ),*/
 
+              /*
+              Sign in
               Builder(builder: (BuildContext context) {
 
                 if ( DataController().userName == '' ) {
@@ -82,7 +81,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   );
                 }
-              }),
+              }),*/
 
             ],
           )
@@ -103,6 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
               LogosTxt(
                 comment: "RunPee: because movie theaters don't have pause buttons. | RunPee tagline",
                 logosID: 1,
+                txtStyle: LogosStyles.fixedGoogle,
               ),
 
               Builder(builder: (BuildContext context) {

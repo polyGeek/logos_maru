@@ -18,15 +18,13 @@ class _LogosEditorState extends State<LogosEditor> {
   final _tecTxt   = TextEditingController();
   final _tecNote  = TextEditingController();
 
-  //late LogosVO _logosVO;
   bool _isBusy = false;
 
   @override
   void initState() {
     super.initState();
 
-    //_logosVO = LogosController().getEditLogos( logosID: widget.logosID );
-    _tecTxt.text = LogosController().editingLogosVO!.txt;// _logosVO.txt;
+    _tecTxt.text = LogosController().editingLogosVO!.txt;
 
     LogosController().addListener(() { _update(); });
     LanguageController().addListener(() { _update(); });
@@ -41,9 +39,8 @@ class _LogosEditorState extends State<LogosEditor> {
   }
 
   void _update() {
-    //_logosVO = LogosController().getEditLogos( logosID: widget.logosID );
-    _tecTxt.text = LogosController().editingLogosVO!.txt;//_logosVO.txt;
-    _tecNote.text = LogosController().editingLogosVO!.note;//_logosVO.note;
+    _tecTxt.text = LogosController().editingLogosVO!.txt;
+    _tecNote.text = LogosController().editingLogosVO!.note;
 
     /// todo: this update is called multiple times when editing language changes.
     if( mounted )
@@ -148,7 +145,7 @@ class _LogosEditorState extends State<LogosEditor> {
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
 
-                Text( 'logosID: ' + LogosController().editingLogosVO!.logosID.toString() ),// widget.logosID.toString(), ),
+                Text( 'logosID: ' + LogosController().editingLogosVO!.logosID.toString() ),
 
                 Expanded(child: SizedBox() ),
 
@@ -156,25 +153,25 @@ class _LogosEditorState extends State<LogosEditor> {
               ],
             ),
 
-            Text( 'Description: ' + LogosController().editingLogosVO!.description, ),// _logosVO.description ),
+            Text( 'Description: ' + LogosController().editingLogosVO!.description, ),
 
             SizedBox( height: 5,),
 
             Row(
               children: [
 
-                Text( 'Tags: ' + LogosController().editingLogosVO!.tags ),// _logosVO.tags ),
+                Text( 'Tags: ' + LogosController().editingLogosVO!.tags ),
 
                 Expanded(child: SizedBox() ),
 
-                StyleChooser( logosID: LogosController().editingLogosVO!.logosID, ),// widget.logosID, ),
+                StyleChooser( logosID: LogosController().editingLogosVO!.logosID, ),
               ],
             ),
 
             SizedBox( height: 10,),
 
             FormattingRow(
-                logosVO: LogosController().editingLogosVO!,//_logosVO,
+                logosVO: LogosController().editingLogosVO!,
                 txt: _tecTxt.text,
                 callback: formatCallback
             ),
@@ -264,12 +261,10 @@ class _LogosEditorState extends State<LogosEditor> {
               onPressed: () {
 
                 LogosController().editingLogosVO!.txt = _tecTxt.text;
-                //_logosVO.txt = _tecTxt.text;
                 LogosController().editingLogosVO!.note = _tecNote.text;
-                //_logosVO.note = _tecNote.text;
 
                 LogosController().updateLogosDatabase(
-                  logosVO: LogosController().editingLogosVO!,// _logosVO,
+                  logosVO: LogosController().editingLogosVO!,
                   langCode: LanguageController().editingLanguageCode,
                 );
 
