@@ -1,4 +1,3 @@
-
 import 'package:logos_maru/logos/model/eol.dart';
 
 enum DataManagerType {
@@ -86,6 +85,6 @@ class DataVO {
   static const bool isDebug = true;
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
     if ( isDebug == true || EOL.isDEBUG == true )
-      EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboMagenta_White );
+      EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboPurple_Black );
   }
 }

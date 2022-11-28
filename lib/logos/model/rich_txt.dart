@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
-import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 class Styles {
   static final Styles _styles = Styles._internal();
@@ -15,7 +13,7 @@ class Styles {
   static const Color c_greenAccent        = Color( 0xff05FC2E ); /// Colors.lightGreenAccent;
   static const Color c_redAccent          = Colors.redAccent;    /// Color( 0xffFC05D4 );
 
-  static double iconSize      = 10;
+  //static double iconSize      = 10;
 
   List<TextSpan> makeRichTxt( {
     required String txt,
@@ -59,7 +57,7 @@ class Styles {
         }
 
         spans.add( TextSpan( text: snip, style: txtStyle ) );
-        spans.add( TextSpan( text: styledTxt, style: LogosVO.getStyle( style: tag ).merge( txtStyle )  ) );
+        spans.add( TextSpan( text: styledTxt, style: txtStyle.merge( LogosVO.getStyle( styleName: tag ) )  ) );
       } else {
         spans.add( TextSpan( text: txt, style: txtStyle ) );
         return spans;

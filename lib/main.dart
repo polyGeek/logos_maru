@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
-import 'package:logos_maru/logos/model/txt_utilities.dart';
+import 'package:logos_maru/logos/model/logos_service.dart';
+import 'package:logos_maru/logos_styles.dart';
 import 'package:logos_maru/screens/home_screen.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -16,6 +17,8 @@ import 'package:package_info_plus/package_info_plus.dart';
  *
  * Add a 'lastUpdate' field to the prefs table and get updates based on last update instead
  * of last key in case there are changes to existing data.
+ *
+ * If a use for 'bits' isn't found for the settings table then remove it.
  */
 
 void main() {
@@ -50,7 +53,7 @@ class _MyApp extends StatelessWidget {
           splashColor: Colors.white70,
           textTheme: ButtonTextTheme.primary, ///  <-- this auto selects the right color
         ),
-        textTheme: TextTheme( bodyText1: TxtStyles.body, bodyText2: TxtStyles.body ),
+        textTheme: TextTheme( bodyText1: LogosStyles.body, bodyText2: LogosStyles.body ),
         checkboxTheme: CheckboxThemeData(
           side: MaterialStateBorderSide.resolveWith(
                   (_) => const BorderSide(
@@ -109,8 +112,8 @@ class _MyHomePageState extends State<MyHomePage> {
     LogosController().addListener(() { _update(); } );
 
     if( await LogosController().init(
-      apiPath: 'https://runpee.net/logos_api/',
-      apiVersion: '0.0',
+      apiPath: NetworkHelper.API_LOCATION,//'https://runpee.net/logos_api/',
+      apiVersion: NetworkHelper.API_VERSION,//'0.0',
       environment: 'RP',
     ) == true ) {
       _body = HomeScreen();
@@ -125,10 +128,10 @@ class _MyHomePageState extends State<MyHomePage> {
 
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
-    DataController.appName      = packageInfo.appName;
-    DataController.packageName  = packageInfo.packageName;
-    DataController.version      = packageInfo.version;
-    DataController.buildNumber  = packageInfo.buildNumber;
+    AppController.appName      = packageInfo.appName;
+    AppController.packageName  = packageInfo.packageName;
+    AppController.version      = packageInfo.version;
+    AppController.buildNumber  = packageInfo.buildNumber;
 
     _update();
   }

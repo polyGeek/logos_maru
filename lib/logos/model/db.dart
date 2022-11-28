@@ -1,4 +1,4 @@
-import 'package:logos_maru/logos/model/data_vo.dart';
+import 'package:logos_maru/logos/model/data_tags/data_vo.dart';
 import 'package:logos_maru/logos/model/db_helpers.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';

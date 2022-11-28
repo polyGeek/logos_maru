@@ -1,27 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 import 'package:logos_maru/logos_styles.dart';
-
-enum TxtStyleOptions {
-  body,
-  title,
-  header,
-  subHeader,
-  strong,
-  em
-}
-
-/*extension on Styles {
-  String get name => describeEnum(this);
-}*/
-
-/*String describeEnum(Object enumEntry) {
-  final String description = enumEntry.toString();
-  final int indexOfDot = description.indexOf('.');
-  assert(indexOfDot != -1 && indexOfDot < description.length - 1);
-  return description.substring(indexOfDot + 1);
-}*/
 
 class LogosVO {
   int logosID;
@@ -124,35 +105,20 @@ class LogosVO {
     return logosVO;
   }
 
-  static TxtStyleOptions getStyleName( { required String style } ) {
-    switch( style ) {
-      case 'title':
-        return TxtStyleOptions.title;
-      case 'header':
-        return TxtStyleOptions.header;
-      case 'subHeader':
-        return TxtStyleOptions.subHeader;
-      case 'strong':
-        return TxtStyleOptions.strong;
-      case 'em':
-        return TxtStyleOptions.em;
-      default:
-        return TxtStyleOptions.body;
-    }
-  }
-
   /// Returns the TextStyle for the given style name
   /// If the style name is not found, returns the default style (body).
-  static TextStyle getStyle( { required String style } ) {
-    final myStyles = LogosStyles().toJson();
+  static TextStyle getStyle( { required String styleName } ) {
+    Map<dynamic, dynamic> myStyles = LogosStyles().toJson();
 
     TextStyle ts = LogosStyles.body;
-
+    print( ' ts.fontSize: ' + ts.fontSize.toString() );
     try {
-      ts = myStyles[ style ] as TextStyle;
-      _log( msg: 'Got Style: ' + ts.toString() );
+      ts = myStyles[ styleName ] as TextStyle;
+      double fontSize = ( ts.fontSize == null )? LogosStyles.body.fontSize! : ts.fontSize!;
+      ts = ts.copyWith( fontSize: fontSize * FontSizeController().userScale );
+      _log( msg: 'Got Style: $styleName ---' + ts.toString() );
     } catch (e) {
-      _log(msg: 'ERROR GETTING STYLE : $e' );
+      _log( msg: 'ERROR GETTING STYLE : $styleName \n $e' );
     }
 
     return ts;
@@ -162,9 +128,9 @@ class LogosVO {
     required TextStyle? fromWidget,
     required TextStyle fromLogos } ) {
 
-    if( fromLogos == TxtStyles.body
+    if( fromLogos == LogosAdminTxtStyles.body
         && fromWidget != null
-        && fromWidget != TxtStyles.body ) {
+        && fromWidget != LogosAdminTxtStyles.body ) {
       return fromWidget;
     } else {
       return fromLogos;

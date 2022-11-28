@@ -91,13 +91,12 @@ class _UserNameAlertState extends State<UserNameAlert> {
 
         ElevatedButton(
           onPressed: () {
-            DataController().setUserName( userName: _tec.text );
+            AppController().setUserName( userName: _tec.text );
             LogosController().update();
             Navigator.of( context ).pop();
           },
           child: LogosTxt(
             comment: 'SUBMIT btn label',
-            txtStyle: TxtStyles.btn,
             logosID: 6,
           ),
         ),
@@ -180,7 +179,7 @@ class ViewLogsDialog extends StatelessWidget {
           child: LogosTxt(
             comment: 'CLOSE: Close button',
             logosID: 13,
-            txtStyle: TxtStyles.btn,
+            txtStyle: LogosAdminTxtStyles.btn,
           ),
         ),
 

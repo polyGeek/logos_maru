@@ -1,7 +1,9 @@
 import 'dart:convert';
-
 import 'package:flutter/cupertino.dart';
-import 'package:logos_maru/logos/model/data_vo.dart';
+import 'package:logos_maru/logos/model/data_tags/data_vo.dart';
+import 'package:logos_maru/logos/model/data_tags/screens_controller.dart';
+import 'package:logos_maru/logos/model/data_tags/styles_controller.dart';
+import 'package:logos_maru/logos/model/data_tags/tag_controller.dart';
 import 'package:logos_maru/logos/model/db.dart';
 import 'package:logos_maru/logos/model/db_helpers.dart';
 import 'package:logos_maru/logos/model/eol.dart';
@@ -9,6 +11,7 @@ import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_service.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
+import 'package:logos_maru/logos/model/settings_controller.dart';
 
 
 class LogosController extends ChangeNotifier {
@@ -22,7 +25,7 @@ class LogosController extends ChangeNotifier {
   List<LogosVO> _logosList_EN = [];
   List<LogosVO> _editingLogosList = [];
   List<DataVO>  _tagList = [];
-  List<DataVO>  _screenList = [];
+  //List<DataVO>  _screenList = [];
 
   /// Is editable
   bool _isEditable = false;
@@ -80,6 +83,9 @@ class LogosController extends ChangeNotifier {
     DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_EN.db' );
     DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_ES.db' );
 
+    /// 0.1: Init the SettingsController where the fontScale is set.
+    SettingsController().initSettings();
+
     /// 1: get the selected langCode from the local DB.
     LanguageController().selectedAppLanguageCode = await LogosDB().getSavedLanguagePreference();
     _log(msg: '_selectedLangCode: ' + LanguageController().selectedAppLanguageCode.toString());
@@ -103,7 +109,7 @@ class LogosController extends ChangeNotifier {
     _tagList = await LogosDB().getDataListFromLocalDB( dataManagerType: DataManagerType.tags );
 
     /// 7: get the screen list from the local DB.
-    _screenList = await LogosDB().getDataListFromLocalDB( dataManagerType: DataManagerType.screens );
+    //_screenList = await LogosDB().getDataListFromLocalDB( dataManagerType: DataManagerType.screens );
 
     if (_logosList.isNotEmpty) {
       notifyListeners();
@@ -156,6 +162,27 @@ class LogosController extends ChangeNotifier {
 
         LanguageController().permittedLanguageOptionsList =
             permittedLangCodesDecoded.map((e) => LangVO.fromJson(e)).toList();
+      }
+
+      /// Style Options
+      var stylesDecoded = jsonDecode( result )[ 'styles' ] as List;
+      if( stylesDecoded.isNotEmpty ) {
+        _log(msg: 'Styles\n' + stylesDecoded.toString() );
+        StylesController().setDataList( dataList: stylesDecoded.map( (e) => DataVO.fromJson(e) ).toList() );
+      }
+
+      /// Screen Options
+      var screensDecoded = jsonDecode( result )[ 'screens' ] as List;
+      if( stylesDecoded.isNotEmpty ) {
+        _log(msg: 'screens\n' + screensDecoded.toString() );
+        ScreensController().setDataList( dataList: screensDecoded.map( (e) => DataVO.fromJson( e ) ).toList() );
+      }
+
+      /// Tag Options
+      var tagsDecoded = jsonDecode( result )[ 'tags' ] as List;
+      if( tagsDecoded.isNotEmpty ) {
+        _log(msg: 'Tags\n' + tagsDecoded.toString() );
+        TagController().setDataList( dataList: tagsDecoded.map( (e) => DataVO.fromJson(e) ).toList() );
       }
 
       return true;

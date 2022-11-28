@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/logos_editor.dart';
+import 'package:logos_maru/logos/model/adjust_font.dart';
+import 'package:logos_maru/logos/model/data_tags/styles_controller.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
@@ -67,14 +69,7 @@ class _LogosTxtState extends State<LogosTxt> {
 
     _logosVO = LogosController().getLogosVO( logosID: widget.logosID );
 
-    /// If the Logos widget has a txtStyle then use it.
-    if( widget.txtStyle != null ) {
-      ts = widget.txtStyle!;
-    } else {
-      /// The Logos style will always be defined.
-      ts = LogosVO.getStyle( style: _logosVO.style );
-    }
-
+   _getStyle();
 
     if (_logosVO.logosID == 1) {
       print('.\n..\n#############################################');
@@ -98,22 +93,26 @@ class _LogosTxtState extends State<LogosTxt> {
       child: widget.child,
     );
 
-    LogosController().addListener(() {
-      _textUpdated();
-    });
-    LanguageController().addListener(() {
-      _selectedLanguageChanged();
-    });
+    LogosController().addListener(() { _textUpdated(); });
+    LanguageController().addListener(() { _selectedLanguageChanged(); });
+    FontSizeController().addListener(() { _textUpdated(); });
+  }
+
+  void _getStyle() {
+    /// If the Logos widget has a txtStyle then use it.
+    if( widget.txtStyle != null ) {
+      ts = widget.txtStyle!;
+    } else {
+      /// The Logos style will always be defined.
+      ts = LogosVO.getStyle( styleName: _logosVO.style );
+    }
   }
 
   @override
   void dispose() {
-    LogosController().removeListener(() {
-      _textUpdated;
-    });
-    LanguageController().removeListener(() {
-      _selectedLanguageChanged();
-    });
+    LogosController().removeListener(() { _textUpdated; });
+    LanguageController().removeListener(() { _selectedLanguageChanged(); });
+    FontSizeController().removeListener(() { _textUpdated(); });
     super.dispose();
   }
 
@@ -127,12 +126,17 @@ class _LogosTxtState extends State<LogosTxt> {
   }
 
   void _textUpdated() {
+    TextStyle _ts = ts;
+    _ts = LogosVO.getStyle( styleName: _logosVO.style );
+    if( ts.fontSize != null ) {
+      _ts = ts.copyWith( fontSize: ts.fontSize! * FontSizeController().userScale );
+    }
 
     _body = _LogosUpdateTxt(
       logosVO: _logosVO,
       callback: _waitingForUpdate,
       vars: widget.vars,
-      txtStyle: ts,
+      txtStyle: _ts,
       child: widget.child,
     );
     _update();

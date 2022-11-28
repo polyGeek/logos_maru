@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 
-class DataController extends ChangeNotifier {
-  static final DataController _dataController = DataController._internal();
-  factory DataController() => _dataController;
-  DataController._internal();
+class AppController extends ChangeNotifier {
+  static final AppController _dataController = AppController._internal();
+  factory AppController() => _dataController;
+  AppController._internal();
 
   static String appName        = appName      = '';
   static String packageName    = packageName  = '';

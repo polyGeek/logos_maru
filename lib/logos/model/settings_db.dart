@@ -6,27 +6,35 @@ import 'package:sqflite/sqflite.dart';
 
 class SettingsDB {
 
-	void updateBits( String bits ) async {
+	/*void updateBits( String bits ) async {
 		Database db = await DBHelpers.openUserSettingsDatabase();
 		String sql = "UPDATE settings set bits = '$bits' WHERE uKey = 1";
 		await db.rawQuery( sql );
-	}
+	}*/
 	
 	void setFontScale( { required double fontScale } ) async {
 		Database db = await DBHelpers.openUserSettingsDatabase();
-		String sql = "UPDATE settings set fontScale = $fontScale WHERE uKey = 1";
-		_log( msg: 'DBuserSettings.setFontScale-> ' + sql );
+		String sql = "UPDATE `settings` set fontScale = $fontScale WHERE uKey = 1";
+		//_log( msg: 'DBuserSettings.setFontScale-> ' + sql );
 		await db.rawQuery( sql );
 		
-		sql = "SELECT fontScale FROM settings WHERE uKey = 1";
+		sql = "SELECT bits, fontScale FROM `settings` WHERE uKey = 1";
 		List<Map<String, dynamic>> maps = await db.rawQuery( sql );
-		
-		SettingsVO sVO = SettingsVO(
-			bits					: maps[0][ 'bits' ],
-			fontScale			: maps[0][ 'fontScale' ],
-		);
-		
-		_log( msg: 'fontScale stored in DB: ' + sVO.fontScale.toString() );
+
+		if( maps.isNotEmpty ) {
+			SettingsVO sVO = SettingsVO(
+				bits					: maps[0][ 'bits' ],
+				fontScale			: maps[0][ 'fontScale' ],
+			);
+
+			_log( msg: 'fontScale stored in DB: ' + sVO.fontScale.toString() );
+		} /*else {
+			/// Set defaults.
+			getUserSettings();
+			sql = "INSERT INTO `settings` ( uKey, bits, fontScale ) VALUES ( 1, '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000', 1 )";
+			print( sql );
+			await db.rawQuery( sql );
+		}*/
 	}
 	
 	Future<SettingsVO> getUserSettings() async {
@@ -35,7 +43,7 @@ class SettingsDB {
 		String sql = "SELECT * FROM settings WHERE uKey = 1";
 		List<Map<String, dynamic>> maps = await db.rawQuery( sql );
 		
-		if( maps.length == 0 ) {
+		if( maps.isEmpty ) {
 			
 			/// Insert default values.
 			await db.rawQuery( "INSERT INTO settings ( "
@@ -57,12 +65,6 @@ class SettingsDB {
 			bits    					: maps[0][ 'bits' ],
 			fontScale					: maps[0][ 'fontScale' ],
 		);
-	}
-	
-	void incrementAppStart() async {
-		Database db = await DBHelpers.openUserSettingsDatabase();
-		String sql = "UPDATE settings SET `app_starts` = `app_starts` + 1 WHERE uKey = 1";
-		db.rawQuery( sql );
 	}
 
 	static const bool isDebug = false;

@@ -11,13 +11,13 @@ class AuthenticateEditor extends StatefulWidget {
 
 class AuthenticateEditorState extends State<AuthenticateEditor> {
 
-  TextEditingController _tec    = TextEditingController();
+  TextEditingController _tecUsername    = TextEditingController();
   bool                  _isBusy = false;
 
   @override
   void initState() {
     super.initState();
-    _tec.text = 'dan@runpee.com';
+    _tecUsername.text = 'dan@runpee.com';
   }
 
   void _update() {
@@ -46,7 +46,7 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
     _update();
 
     bool success = await LogosController().signIn(
-        userName: _tec.text,
+        userName: _tecUsername.text,
         passCode: passCode
     );
 
@@ -94,10 +94,10 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
                   },
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.blueGrey,
+                      color: Colors.white38,
                       borderRadius: BorderRadius.all( Radius.circular( 4 ))
                     ),
-                      child: Icon( Icons.close, color: Colors.white, )
+                      child: Icon( Icons.close, color: Colors.black, )
                   )
               ),
             ),
@@ -106,18 +106,26 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
               padding: const EdgeInsets.symmetric( horizontal: 8 ),
               child: TextField(
                 minLines: 1, /// Normal textInputField will be displayed
-                maxLines: 5, /// When user presses enter it will adapt to it
-                autofocus: false,
-                controller: _tec,
+                maxLines: 1, /// When user presses enter it will adapt to it
+                autofocus: true,
+                controller: _tecUsername,
                 autocorrect: false,
+                style: LogosAdminTxtStyles.body,
                 decoration: InputDecoration(
+                  labelStyle: LogosAdminTxtStyles.body.small,
                   errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
                   border: OutlineInputBorder(),
-                  labelText: LogosController().getLogos( logosID: 7, comment: 'User name: hint on TextInput' ),
-                  focusedBorder: OutlineInputBorder(),
+                  labelText: 'Username',
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.amber,
+                      width: 2,
+                    ),
+                  ),
                   enabledBorder: OutlineInputBorder(
                     borderSide: BorderSide(
-                      color: Colors.blue,
+                      color: Colors.greenAccent,
+                      width: 2,
                     ),
                   ),
                 ),
@@ -158,11 +166,9 @@ class AuthenticateEditorState extends State<AuthenticateEditor> {
               padding: const EdgeInsets.symmetric( horizontal: 8 ),
               child: ElevatedButton(
                   onPressed: _onSubmit,
-                  child: LogosTxt(
-                    comment: 'SUBMIT: btn label',
-                    logosID: 6,
-                    txtStyle: TxtStyles.btn,
-                  ),
+
+                  style: LogosAdminWidgetStyles().elevatedBtnStyle,
+                  child: Text( 'SUBMIT' )
               ),
             )
 

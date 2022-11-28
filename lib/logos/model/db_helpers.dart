@@ -125,12 +125,16 @@ class DBHelpers {
 
     return openDatabase(
 
-      join( await getDatabasesPath(), 'settings.db' ),
+      join( await getDatabasesPath(), 'logos_settings.db' ),
 
       onCreate: ( db, version ) {
-        String sql = "CREATE TABLE settings ( "
-            "uKey 								INTEGER PRIMARY KEY, "
-            "fontScale						REAL DEFAULT 1 )";
+        String sql = "CREATE TABLE `settings` ( "
+            "uKey				  INTEGER PRIMARY KEY, "
+            "bits         VARCHAR(256), "
+            "fontScale    REAL DEFAULT 1 "
+            " )";
+
+        print( sql );
         db.execute( sql );
       },
       version: 1,
@@ -141,7 +145,6 @@ class DBHelpers {
     try {
       await db.rawQuery( "ALTER TABLE logos_$langCode ADD COLUMN isRich INTEGER DEFAULT 0;" );
       await db.rawQuery( "ALTER TABLE logos_$langCode ADD COLUMN style VARCHAR(32) DEFAULT 'body';" );
-
       await db.rawQuery( "ALTER TABLE pref ADD COLUMN countryCode VARCHAR(8) DEFAULT '';" );
     } catch( e ) {}
   }

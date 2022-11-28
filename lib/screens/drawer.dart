@@ -5,6 +5,8 @@ import 'package:logos_maru/logos/language_dropdown/dropdown.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
+import 'package:logos_maru/logos/model/txt_utilities.dart';
+import 'package:logos_maru/logos_styles.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 
 class DrawerMenu extends StatelessWidget {
@@ -50,10 +52,8 @@ class DrawerMenu extends StatelessWidget {
                     return AuthenticateEditor();
                   });
             },
-            child: Text( 'Authenticate as Editor')/*LogosTxt(
-              comment: 'Authenticate as Editor',
-              logosID: 11,
-            ),*/
+            child: Text( 'Authenticate as Editor',
+            style: LogosStyles.fixedGoogle.gold,)
           ),
 
           SizedBox( height: 20 ,),
@@ -79,13 +79,13 @@ class DrawerMenu extends StatelessWidget {
           LogosTxt(
             comment: 'App version label',
             logosID: 8,
-            vars: { 'version': DataController.version },
+            vars: { 'version': AppController.version },
           ),
 
           LogosTxt(
               comment: 'application build number',
               logosID: 9,
-              vars: { 'build': DataController.buildNumber }
+              vars: { 'build': AppController.buildNumber }
           ),
 
         ],

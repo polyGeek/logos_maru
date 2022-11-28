@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:logos_maru/logos/model/data_tags/data_vo.dart';
+import 'package:logos_maru/logos/model/data_tags/styles_controller.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
@@ -87,12 +89,12 @@ class StyleChooser extends StatefulWidget {
 
 class _StyleChooserState extends State<StyleChooser> {
 
-  TxtStyleOptions _dropdownValue = TxtStyleOptions.body;
+  String _dropdownValue = 'body'; /// Default to body style
 
   @override
   void initState() {
     LogosVO logosVO = LogosController().getEditLogos( logosID: widget.logosID );
-    _dropdownValue = LogosVO.getStyleName( style: logosVO.style );
+    _dropdownValue = logosVO.style;
     super.initState();
   }
 
@@ -108,7 +110,10 @@ class _StyleChooserState extends State<StyleChooser> {
 
   @override
   Widget build( BuildContext context ) {
-    return DropdownButton<TxtStyleOptions>(
+    return DropdownButton<String>(
+        isExpanded: true,
+        itemHeight: 120,
+        borderRadius: BorderRadius.circular( 10 ),
         icon: const Icon(Icons.arrow_downward),
         iconSize: 24,
         elevation: 16,
@@ -117,19 +122,47 @@ class _StyleChooserState extends State<StyleChooser> {
           color: Colors.amber,
         ),
         value: _dropdownValue,
-        onChanged: ( TxtStyleOptions? value ){
+        onChanged: ( String? value ){
           _dropdownValue = value!;
           print( _dropdownValue.toString() );
           LogosController().setEditingLogoVOstyle(
               logosID: widget.logosID,
-              style: _dropdownValue.toString().split( '.')[1]
+              style: _dropdownValue.toString(),//.split( '.')[0]
           );
           _update();
         },
-        items: TxtStyleOptions.values.map((TxtStyleOptions styles) {
-          return DropdownMenuItem<TxtStyleOptions>(
-              value: styles,
-              child: Text( styles.toString().split( '.' )[1] ));
+        items: StylesController().dataList.map<DropdownMenuItem<String>>(( DataVO value ) {
+          return DropdownMenuItem<String>(
+            value: value.name,
+            child: Padding(
+              padding: const EdgeInsets.symmetric( vertical: 8.0, horizontal: 0.0 ),
+              child: Container(
+                decoration: BoxDecoration(
+                  color: ( value.id % 2 == 0 )? Colors.white10 : Colors.white24,
+                  borderRadius: BorderRadius.circular( 4 ),
+                ),
+                width: MediaQuery.of( context ).size.width * 0.95,
+
+                child: Padding(
+                  padding: const EdgeInsets.symmetric( vertical: 2, horizontal: 5 ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        value.name,
+                        style: LogosAdminTxtStyles.body.bold,
+                      ),
+                      Text( value.description,
+                        style: LogosVO.getStyle(styleName: value.name ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          );
         }).toList() );
   }
 }
@@ -192,12 +225,17 @@ class _RadioBtnLabelState extends State<RadioBtnLabel> {
 
   @override
   Widget build( BuildContext context ) {
-    return Column(
+    return Row(
 
       children: [
 
         Checkbox(
             value: _localBool,
+            side: BorderSide(
+              strokeAlign: StrokeAlign.outside,
+              color: Colors.white,
+              width: 2,
+            ),
             onChanged: ( bool? value ) {
               _localBool = value!;
               widget.callback( value );
@@ -211,8 +249,12 @@ class _RadioBtnLabelState extends State<RadioBtnLabel> {
               widget.callback( _localBool );
               _update();
             },
-            child: Text( widget.label, style: TxtStyles.body, )
+            child: Text( widget.label, style: LogosAdminTxtStyles.body, )
         ),
+
+        SizedBox( width: 10, ),
+        /// Todo: Make help icon dynamic.
+        Icon( Icons.help ),
 
       ],
     );

@@ -1,7 +1,10 @@
-
+import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/settings_db.dart';
 
 class SettingsController {
+	static final SettingsController _settingsController = SettingsController._internal();
+	factory SettingsController() => _settingsController;
+	SettingsController._internal();
 
 	static bool isDebug = false;
 
@@ -9,14 +12,13 @@ class SettingsController {
 	static late SettingsVO _settingsVO;
 	static SettingsVO get settingsVO => _settingsVO;
 
-	static void initSettings() async {
-
+	void initSettings() async {
 		_settingsVO = await _settingsDB.getUserSettings();
-		_settingsDB.incrementAppStart();
+		FontSizeController().userScale = _settingsVO.fontScale;
 	}
 
 
-	static void setFontScale( { required double fontScale } ) async {
+	void setFontScale( { required double fontScale } ) async {
 		_settingsDB.setFontScale( fontScale: fontScale );
 	}
 }

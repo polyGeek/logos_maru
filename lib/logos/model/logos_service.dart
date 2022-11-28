@@ -7,8 +7,8 @@ class NetworkHelper {
   /** ===============================================
    *  API LOCATION
    *  ===============================================*/
-  //static const String API_LOCATION = 'https://runpee.net/logos_api/';
-  //static const String API_VERSION  = '0.0';
+  static const String API_LOCATION = 'https://runpee.net/logos_api/';
+  static const String API_VERSION  = '0.0';
 
 
   /** ===============================================

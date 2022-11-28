@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:logos_maru/alert_dialogs.dart';
 import 'package:logos_maru/logos/language_dropdown/dropdown.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
+import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
-import 'package:logos_maru/logos_styles.dart';
 import 'package:logos_maru/screens/drawer.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 
@@ -18,13 +17,13 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    DataController().addListener(() { _update(); } );
+    AppController().addListener(() { _update(); } );
     LogosController().addListener(() { _update(); } );
   }
 
   @override
   void dispose() {
-    DataController().removeListener(() { _update(); } );
+    AppController().removeListener(() { _update(); } );
     LogosController().removeListener(() { _update(); } );
     super.dispose();
   }
@@ -34,14 +33,14 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {});
   }
 
-  void _onSigninTap() {
+  /*void _onSigninTap() {
     showDialog<void>(
         context: context,
         barrierDismissible: true,
         builder: (BuildContext context) {
           return UserNameAlert();
         });
-  }
+  }*/
 
   @override
   Widget build( BuildContext context ) {
@@ -84,7 +83,14 @@ class _HomeScreenState extends State<HomeScreen> {
               }),*/
 
             ],
-          )
+          ),
+
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only( right: 15.0),
+                child: ShowAdjustFontScale( width: 30, height: 30,),
+              ),
+            ],
       ),
 
       drawer: Drawer(
@@ -102,7 +108,7 @@ class _HomeScreenState extends State<HomeScreen> {
               LogosTxt(
                 comment: "RunPee: because movie theaters don't have pause buttons. | RunPee tagline",
                 logosID: 1,
-                txtStyle: LogosStyles.fixedGoogle,
+                //txtStyle: LogosStyles.fixedGoogle,
               ),
 
               Builder(builder: (BuildContext context) {
@@ -115,6 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     LogosTxt.dynamic(
                       tag: 'month',
                       txt: element,
+                      //txtStyle: LogosStyles.fixedGoogle,
                     ),
                   );
                 });

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:logos_maru/logos/model/data_tags/data_vo.dart';
+import 'package:logos_maru/logos/model/data_tags/styles_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
 import 'package:logos_maru/logos/model/rich_txt.dart';
@@ -24,6 +26,30 @@ class FormattingRow extends StatefulWidget {
 }
 
 class _FormattingRowState extends State<FormattingRow> {
+
+  List<Widget> _formattingBtns = [];
+
+  @override
+  void initState() {
+    _formattingBtns = createFormattingBtnsList();
+    super.initState();
+  }
+
+  List<Widget> createFormattingBtnsList() {
+
+    List<Widget> list = [];
+    for( int i = 0; i < StylesController().dataList.length; i++ ) {
+      DataVO dataVO = StylesController().dataList[i];
+      list.add( FormattingBtn(
+        tag: dataVO.name,
+        formattedCharacter: dataVO.name,
+        logosVO: widget.logosVO,
+        callback: widget.callback,
+      ), );
+    }
+
+    return list;
+  }
 
   void removeFormattingAlert( { required bool isRich } ) {
     print( 'widget.txt: ' + widget.txt );
@@ -88,43 +114,7 @@ class _FormattingRowState extends State<FormattingRow> {
         Expanded(
           child: Wrap(
             crossAxisAlignment: WrapCrossAlignment.center,
-            children: [
-              FormattingBtn(
-                tag: 'em',
-                formattedCharacter: 'italic',
-                logosVO: widget.logosVO,
-                callback: widget.callback,
-              ),
-
-              FormattingBtn(
-                tag: 'strong',
-                formattedCharacter: 'bold',
-                logosVO: widget.logosVO,
-                callback: widget.callback,
-              ),
-
-              FormattingBtn(
-                tag: 'u',
-                formattedCharacter: 'u',
-                logosVO: widget.logosVO,
-                callback: widget.callback,
-              ),
-
-              FormattingBtn(
-                tag: 'title',
-                formattedCharacter: 'title',
-                logosVO: widget.logosVO,
-                callback: widget.callback,
-              ),
-
-              FormattingBtn(
-                tag: 'link',
-                formattedCharacter: 'link',
-                logosVO: widget.logosVO,
-                callback: widget.callback,
-              ),
-
-            ],
+            children: _formattingBtns,
           ),
         ),
 
@@ -134,8 +124,8 @@ class _FormattingRowState extends State<FormattingRow> {
 }
 
 /** ===============================================
-*  RichTxt styling button
-*  ===============================================*/
+ *  RichTxt styling button
+ *  ===============================================*/
 class FormattingBtn extends StatefulWidget {
 
   final String formattedCharacter;
@@ -203,7 +193,7 @@ class _FormattingBtnState extends State<FormattingBtn> {
 
               RichTxt(
                 txt: '<' + widget.tag + '>' + widget.formattedCharacter + '</' + widget.tag + '>',
-                txtStyle: TxtStyles.body,
+                txtStyle: LogosAdminTxtStyles.body,
               ),
 
               Text( '>', style: TextStyle( color: Colors.white ), ),
@@ -224,48 +214,48 @@ class FormattingAlert extends StatelessWidget {
 
   FormattingAlert( { required this.callback } );
 
-    @override
-    Widget build( BuildContext context ) {
-        return AlertDialog(
-          scrollable: true,
-          insetPadding: EdgeInsets.all( 10 ),
-          contentPadding: EdgeInsets.all( 10 ),
-          title: Center(
-            child: Text(
-              'Remove Formatting?',
-            ),
-          ),
+  @override
+  Widget build( BuildContext context ) {
+    return AlertDialog(
+      scrollable: true,
+      insetPadding: EdgeInsets.all( 10 ),
+      contentPadding: EdgeInsets.all( 10 ),
+      title: Center(
+        child: Text(
+          'Remove Formatting?',
+        ),
+      ),
 
-          content: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+      content: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
 
-              children: [
-                Text( 'The text includes <formatting>, but isRichTxt is turned off.',
-                  style: TxtStyles.body,
-                )
-              ]
+          children: [
+            Text( 'The text includes <formatting>, but isRichTxt is turned off.',
+              style: LogosAdminTxtStyles.body,
+            )
+          ]
 
-          ),
+      ),
 
-          actions: [
+      actions: [
 
-            TextButton(
-                onPressed: (){
-                  Navigator.of( context ).pop();
-                },
-                child: Text( 'CLOSE', style: TxtStyles.btn,)
-            ),
+        TextButton(
+            onPressed: (){
+              Navigator.of( context ).pop();
+            },
+            child: Text( 'CLOSE', style: LogosAdminTxtStyles.btn,)
+        ),
 
-            ElevatedButton(
-                onPressed: () {
-                  callback( '<>' );
-                  Navigator.of( context ).pop();
-                },
-                child: Text( 'REMOVE FORMATTING', style: TxtStyles.btn,)
-            ),
-          ],
-        );
-    }
+        ElevatedButton(
+            onPressed: () {
+              callback( '<>' );
+              Navigator.of( context ).pop();
+            },
+            child: Text( 'REMOVE FORMATTING', style: LogosAdminTxtStyles.btn,)
+        ),
+      ],
+    );
+  }
 }
 
 

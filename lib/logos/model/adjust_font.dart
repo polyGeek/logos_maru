@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/settings_controller.dart';
-import 'package:logos_maru/logos/model/rich_txt.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
+import 'package:logos_maru/logos_styles.dart';
 
 
 class ShowAdjustFontScale extends StatelessWidget {
+
+    final double width;
+    final double height;
+
+    ShowAdjustFontScale( { required this.width, required this.height } );
 
     @override
     Widget build(BuildContext context) {
@@ -19,8 +25,8 @@ class ShowAdjustFontScale extends StatelessWidget {
                     }
                 );
             },
-            child: Image.asset( 'assets/logosmaru//fontsize-adjust-icon.png',
-                width: Styles.iconSize / 2, height: Styles.iconSize / 2,)
+            child: Image.asset( 'assets/logos_maru/fontsize-adjust-icon.png',
+                width: width, height: height,)
         );
     }
 }
@@ -54,9 +60,11 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
     @override
     Widget build( BuildContext context ) {
         return AlertDialog(
+            insetPadding: EdgeInsets.all( 30 ),
+            contentPadding: EdgeInsets.all( 10 ),
+
             title: Text(
                 'Font Scale = ' + FontSizeController().userScale.toString(),
-                style: TextStyle( fontSize: 18, fontFamily: MyFontTypes.body ),
             ),
             content: SingleChildScrollView(
                 child: ListBody(
@@ -66,13 +74,15 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
                         SizedBox(
                             width: double.infinity,
                             height: MediaQuery.of(context).size.height / 3,
-                            child: Text(
-                                'This is sample text to show you the default font scale as you make adjustments.',
-                                maxLines: 4,
-                                overflow: TextOverflow.ellipsis,
-                                style: TxtStyles.body,
-
+                            child: LogosTxt(
+                                comment: "This is sample text to show you the default font scale as you make adjustments.!!! | Text shown on the *Adjust Font Size* popup for readers to guage fontSize changes.",
+                                logosID: 30,
+                                txtStyle: LogosStyles.titleLight,
+                                //maxLines: 4,
+                                //overflow: TextOverflow.ellipsis,
                             ),
+
+                            /// todo: set maxLines and overflow.
                         ),
 
                         const SizedBox( height: 20 ,),
@@ -84,25 +94,21 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
 
                                 GestureDetector(
                                     onTap: (){
-                                        if( FontSizeController().userScale >= 0.5 ) {
-                                            FontSizeController().adjustFontScale( scaleAdjustment: -0.1 );
-                                        }
+                                        FontSizeController().adjustFontScale( scale: -0.1 );
                                     },
                                     child: Icon(
                                         Icons.remove_circle_outline,
-                                        size: Styles.iconSize,
+                                        size: 60,
                                     )
                                 ),
 
                                 GestureDetector(
                                     onTap: (){
-                                        if( FontSizeController().userScale <= 2.0 ) {
-                                            FontSizeController().adjustFontScale( scaleAdjustment: 0.1 );
-                                        }
+                                        FontSizeController().adjustFontScale( scale: 0.1 );
                                     },
                                     child: Icon(
                                         Icons.add_circle_outline,
-                                        size: Styles.iconSize,
+                                        size: 60,
                                     )
                                 ),
 
@@ -117,7 +123,7 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
                     onPressed: () {
                         Navigator.of(context).pop();
                     },
-                    child: Text( 'CLOSE', style: TxtStyles.btn ),
+                    child: Text( 'CLOSE', style: LogosAdminTxtStyles.btn ),
                 ),
             ],
         );
@@ -136,50 +142,67 @@ class FontSizeController extends ChangeNotifier {
             _titleScale = 1 + ( ( _userScale - 1 ) / 2 );
         }
 
-        FontSizeController().adjustFontScale( scaleAdjustment: 0 );
+        FontSizeController().adjustFontScale( scale: 0 );
     }
 
     double _userScale = 1.0;
     double get userScale => _userScale;
+    set userScale( double value ) {
+        _userScale = value;
+        notifyListeners();
+    }
 
     double _titleScale = 1.0;
     double get titleScale => _titleScale;
 
-    void adjustUserScale( { required double scale } ) {
+    /*void adjustUserScale( { required double scale } ) {
 
         double newScale = double.parse( ( _userScale + scale ).toStringAsFixed( 1 ) );
 
-        if( newScale >= 0.5 && newScale < 2.0 ) {
+        if( newScale >= 0.5 && newScale <= 2.0 ) {
             _userScale = newScale;
 
             if( _userScale > 1 ) {
                 _titleScale = 1 + ( ( _userScale - 1 ) / 2 );
             }
             EOL.log( msg: "SETTING FONT SCALE = " + _userScale.toString() + ' : titleScale = ' + _titleScale.toString() );
-        } else if( _userScale >= 2.0 ) {
+        } else if( _userScale > 2.0 ) {
             _userScale = 1;
             EOL.log( msg: "RESETTING FONT SCALE = 1 \nInstead of " + newScale.toString(), fail: true );
         }
-    }
+    }*/
 
     /**original*/
-    double get title       => 28 * _titleScale;
+    /*double get title       => 28 * _titleScale;
     double get heading     => 20 * _titleScale;
     double get subHeading  => 18 * _userScale;
     double get bodySize    => 16 * _userScale;
     double get bodySm      => 12 * _userScale;
-    double get bodySubSm   => 10 * _userScale;
+    double get bodySubSm   => 10 * _userScale;*/
 
-    void adjustFontScale( { required double scaleAdjustment } ) async {
+    void adjustFontScale( { required double scale } ) async {
 
-        if( scaleAdjustment >= 0 && userScale < 2 ) {
-            adjustUserScale( scale: scaleAdjustment );
-        } else if( scaleAdjustment < 0 && userScale > 0.5 ) {
-            adjustUserScale( scale: scaleAdjustment );
+        scale = double.parse( ( _userScale + scale ).toStringAsFixed( 1 ) );
+
+        if( scale >= 0.5 && scale <= 2.0 ) {
+            _userScale = scale;
+
+            if( _userScale > 1 ) {
+                _titleScale = 1 + ( ( _userScale - 1 ) / 2 );
+            }
+            EOL.log( msg: "SETTING FONT SCALE = " + _userScale.toString() + ' : titleScale = ' + _titleScale.toString() );
         }
+
+        /// Keep the _userScale within the range of 0.5 to 2.0.
+        if( _userScale > 2.0 ) {
+            _userScale = 2.0;
+        } else if( _userScale < 0.5 ) {
+            _userScale = 0.5;
+        }
+
         notifyListeners();
 
-        /**Store the fontScale in the UserSettings.*/
-        SettingsController.setFontScale( fontScale: FontSizeController().userScale );
+        /// Store the fontScale in the UserSettings.
+        SettingsController().setFontScale( fontScale: FontSizeController().userScale );
     }
 }
