@@ -46,19 +46,9 @@ class SettingsDB {
 		if( maps.isEmpty ) {
 			
 			/// Insert default values.
-			await db.rawQuery( "INSERT INTO settings ( "
-			"uKey, "
-			"bits, "
-			"fontScale, "
-					" ) VALUES ( "
-					"null, "				/// uKey
-					"'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000"
-					"0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000' "				/// bits
-					"1.0, "					/// fontScale
-			);
-			
-			sql = "SELECT * FROM settings WHERE uKey = 1";
-			maps = await db.rawQuery( sql );
+			await db.rawQuery( "INSERT INTO settings ( uKey, bits, fontScale ) VALUES ( null, '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000', 1.0 )" );
+
+			maps = await db.rawQuery( "SELECT * FROM settings WHERE uKey = 1" );
 		}
 		
 		return SettingsVO(
