@@ -28,7 +28,10 @@ class LogosMaruShowAdjustFontScale extends StatelessWidget {
                 );
             },
             child: Image.asset( fontsizeAdjustIcon,
-                width: iconSize, height: iconSize,)
+                width: iconSize,
+                height: iconSize,
+                package: 'logos_maru',
+            )
         );
     }
 }
