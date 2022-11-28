@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/ancillary.dart';
-import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 

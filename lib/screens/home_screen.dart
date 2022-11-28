@@ -79,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: [
               Padding(
                 padding: const EdgeInsets.only( right: 15.0),
-                child: LogosMaruShowAdjustFontScale( width: 30, height: 30,),
+                child: LogosMaruShowAdjustFontScale( iconSize: 30 ),
               ),
             ],
       ),

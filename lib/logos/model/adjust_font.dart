@@ -8,12 +8,12 @@ import 'package:logos_maru/logos_styles.dart';
 
 class LogosMaruShowAdjustFontScale extends StatelessWidget {
 
-    final double width;
-    final double height;
+    /// The icon is square, so the width and height are the same.
+    final double iconSize;
 
     static const String fontsizeAdjustIcon = 'assets/logos_maru/fontsize-adjust-icon.png';
 
-    LogosMaruShowAdjustFontScale( { required this.width, required this.height } );
+    LogosMaruShowAdjustFontScale( { required this.iconSize } );
 
     @override
     Widget build(BuildContext context) {
@@ -28,7 +28,7 @@ class LogosMaruShowAdjustFontScale extends StatelessWidget {
                 );
             },
             child: Image.asset( fontsizeAdjustIcon,
-                width: width, height: height,)
+                width: iconSize, height: iconSize,)
         );
     }
 }
@@ -80,8 +80,6 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
                                 comment: "This is sample text to show you the default font scale as you make adjustments.!!! | Text shown on the *Adjust Font Size* popup for readers to guage fontSize changes.",
                                 logosID: 30,
                                 txtStyle: LogosStyles.titleLight,
-                                //maxLines: 4,
-                                //overflow: TextOverflow.ellipsis,
                             ),
 
                             /// todo: set maxLines and overflow.

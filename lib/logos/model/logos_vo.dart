@@ -118,7 +118,7 @@ class LogosVO {
       ts = ts.copyWith( fontSize: fontSize * FontSizeController().userScale );
       _log( msg: 'Got Style: $styleName ---' + ts.toString() );
     } catch (e) {
-      _log( msg: 'ERROR GETTING STYLE : $styleName \n $e' );
+      _log( msg: 'ERROR GETTING STYLE : $styleName \n $e', fail: true );
     }
 
     return ts;
