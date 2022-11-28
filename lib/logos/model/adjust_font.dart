@@ -11,6 +11,8 @@ class LogosMaruShowAdjustFontScale extends StatelessWidget {
     final double width;
     final double height;
 
+    static const String fontsizeAdjustIcon = 'assets/logos_maru/fontsize-adjust-icon.png';
+
     LogosMaruShowAdjustFontScale( { required this.width, required this.height } );
 
     @override
@@ -25,7 +27,7 @@ class LogosMaruShowAdjustFontScale extends StatelessWidget {
                     }
                 );
             },
-            child: Image.asset( 'assets/logos_maru/fontsize-adjust-icon.png',
+            child: Image.asset( fontsizeAdjustIcon,
                 width: width, height: height,)
         );
     }
