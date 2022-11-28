@@ -6,12 +6,12 @@ import 'package:logos_maru/logos/model/txt_utilities.dart';
 import 'package:logos_maru/logos_styles.dart';
 
 
-class ShowAdjustFontScale extends StatelessWidget {
+class LogosMaruShowAdjustFontScale extends StatelessWidget {
 
     final double width;
     final double height;
 
-    ShowAdjustFontScale( { required this.width, required this.height } );
+    LogosMaruShowAdjustFontScale( { required this.width, required this.height } );
 
     @override
     Widget build(BuildContext context) {

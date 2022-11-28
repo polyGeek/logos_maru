@@ -33,15 +33,6 @@ class _HomeScreenState extends State<HomeScreen> {
       setState(() {});
   }
 
-  /*void _onSigninTap() {
-    showDialog<void>(
-        context: context,
-        barrierDismissible: true,
-        builder: (BuildContext context) {
-          return UserNameAlert();
-        });
-  }*/
-
   @override
   Widget build( BuildContext context ) {
     return Scaffold(
@@ -88,7 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: [
               Padding(
                 padding: const EdgeInsets.only( right: 15.0),
-                child: ShowAdjustFontScale( width: 30, height: 30,),
+                child: LogosMaruShowAdjustFontScale( width: 30, height: 30,),
               ),
             ],
       ),
