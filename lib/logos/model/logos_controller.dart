@@ -76,7 +76,7 @@ class LogosController extends ChangeNotifier {
     required String apiPath,
     required String apiVersion,
     required String environment,
-    required LogosFontStyles logosFontStyles
+    required dynamic logosFontStyles
   } ) async {
 
     _apiPath          = apiPath;
