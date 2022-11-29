@@ -12,6 +12,7 @@ import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_service.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
 import 'package:logos_maru/logos/model/settings_controller.dart';
+import 'package:logos_maru/logos_styles.dart';
 
 
 class LogosController extends ChangeNotifier {
@@ -64,6 +65,10 @@ class LogosController extends ChangeNotifier {
   String _apiVersion = '';
   String get apiVersion => _apiVersion;
 
+  /// Reference to the LogosFontStyles class
+  LogosFontStyles1? _logosFontStyles;
+  LogosFontStyles1? get logosFontStyles => _logosFontStyles;
+
   /**********************
    *** Initialization ***
    ***********************/
@@ -71,11 +76,13 @@ class LogosController extends ChangeNotifier {
     required String apiPath,
     required String apiVersion,
     required String environment,
+    required LogosFontStyles1 logosFontStyles
   } ) async {
 
-    _apiPath      = apiPath;
-    _apiVersion   = apiVersion;
-    _environment  = environment;
+    _apiPath          = apiPath;
+    _apiVersion       = apiVersion;
+    _environment      = environment;
+    _logosFontStyles  = logosFontStyles;
 
     // todo: the translation files should be passed as a list in the init() call.
     /// 0: Copy databases from assets folder

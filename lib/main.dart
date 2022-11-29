@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
-import 'package:logos_maru/logos/model/logos_service.dart';
 import 'package:logos_maru/logos_styles.dart';
 import 'package:logos_maru/screens/home_screen.dart';
 import 'package:logos_maru/utils/data_controller.dart';
@@ -53,7 +52,7 @@ class _MyApp extends StatelessWidget {
           splashColor: Colors.white70,
           textTheme: ButtonTextTheme.primary, ///  <-- this auto selects the right color
         ),
-        textTheme: TextTheme( bodyText1: LogosStyles.body, bodyText2: LogosStyles.body ),
+        textTheme: TextTheme( bodyText1: LogosController().logosFontStyles!.body, bodyText2: LogosController().logosFontStyles!.body ),
         checkboxTheme: CheckboxThemeData(
           side: MaterialStateBorderSide.resolveWith(
                   (_) => const BorderSide(
@@ -112,9 +111,10 @@ class _MyHomePageState extends State<MyHomePage> {
     LogosController().addListener(() { _update(); } );
 
     if( await LogosController().init(
-      apiPath: NetworkHelper.API_LOCATION,//'https://runpee.net/logos_api/',
-      apiVersion: NetworkHelper.API_VERSION,//'0.0',
+      apiPath: 'https://runpee.net/logos_api/',
+      apiVersion: '0.0',
       environment: 'RP',
+      logosFontStyles: LogosFontStyles1(),
     ) == true ) {
       _body = HomeScreen();
     } else {

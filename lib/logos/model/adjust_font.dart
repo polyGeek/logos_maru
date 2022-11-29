@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/settings_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
-import 'package:logos_maru/logos_styles.dart';
 
 
 class LogosMaruShowAdjustFontScale extends StatelessWidget {
@@ -82,7 +82,7 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
                             child: LogosTxt(
                                 comment: "This is sample text to show you the default font scale as you make adjustments.!!! | Text shown on the *Adjust Font Size* popup for readers to guage fontSize changes.",
                                 logosID: 30,
-                                txtStyle: LogosStyles.titleLight,
+                                txtStyle: LogosController().logosFontStyles!.titleLight,
                             ),
 
                             /// todo: set maxLines and overflow.

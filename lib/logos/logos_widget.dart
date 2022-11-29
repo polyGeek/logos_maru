@@ -7,7 +7,6 @@ import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
 import 'package:logos_maru/logos/model/rich_txt.dart';
-import 'package:logos_maru/logos_styles.dart';
 
 /* ===============================================
 *  This root class has two states:
@@ -60,7 +59,7 @@ class _LogosTxtState extends State<LogosTxt> {
   late LogosVO _logosVO;
 
   /// Set to the default. (body)
-  TextStyle ts = LogosStyles.body;
+  TextStyle ts = LogosController().logosFontStyles!.body;
 
   @override
   void initState() {

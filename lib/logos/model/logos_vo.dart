@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
-import 'package:logos_maru/logos_styles.dart';
 
 class LogosVO {
   int logosID;
@@ -108,13 +108,13 @@ class LogosVO {
   /// Returns the TextStyle for the given style name
   /// If the style name is not found, returns the default style (body).
   static TextStyle getStyle( { required String styleName } ) {
-    Map<dynamic, dynamic> myStyles = LogosStyles().toJson();
+    Map<dynamic, dynamic> myStyles = LogosController().logosFontStyles!.toJson();
 
-    TextStyle ts = LogosStyles.body;
+    TextStyle ts = LogosController().logosFontStyles!.body;
     print( ' ts.fontSize: ' + ts.fontSize.toString() );
     try {
       ts = myStyles[ styleName ] as TextStyle;
-      double fontSize = ( ts.fontSize == null )? LogosStyles.body.fontSize! : ts.fontSize!;
+      double fontSize = ( ts.fontSize == null )? LogosController().logosFontStyles!.body.fontSize! : ts.fontSize!;
       ts = ts.copyWith( fontSize: fontSize * FontSizeController().userScale );
       _log( msg: 'Got Style: $styleName ---' + ts.toString() );
     } catch (e) {
