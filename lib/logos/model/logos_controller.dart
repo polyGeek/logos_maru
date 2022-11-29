@@ -66,8 +66,8 @@ class LogosController extends ChangeNotifier {
   String get apiVersion => _apiVersion;
 
   /// Reference to the LogosFontStyles class
-  LogosFontStyles1? _logosFontStyles;
-  LogosFontStyles1? get logosFontStyles => _logosFontStyles;
+  LogosFontStyles? _logosFontStyles;
+  LogosFontStyles? get logosFontStyles => _logosFontStyles;
 
   /**********************
    *** Initialization ***
@@ -76,7 +76,7 @@ class LogosController extends ChangeNotifier {
     required String apiPath,
     required String apiVersion,
     required String environment,
-    required LogosFontStyles1 logosFontStyles
+    required LogosFontStyles logosFontStyles
   } ) async {
 
     _apiPath          = apiPath;

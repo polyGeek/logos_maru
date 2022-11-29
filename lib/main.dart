@@ -114,7 +114,7 @@ class _MyHomePageState extends State<MyHomePage> {
       apiPath: 'https://runpee.net/logos_api/',
       apiVersion: '0.0',
       environment: 'RP',
-      logosFontStyles: LogosFontStyles1(),
+      logosFontStyles: LogosFontStyles(),
     ) == true ) {
       _body = HomeScreen();
     } else {
