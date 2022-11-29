@@ -66,8 +66,8 @@ class LogosController extends ChangeNotifier {
   String get apiVersion => _apiVersion;
 
   /// Reference to the LogosFontStyles class
-  LogosFontStyles? _logosFontStyles;
-  LogosFontStyles? get logosFontStyles => _logosFontStyles;
+  LogosTextStyles? _logosFontStyles;
+  LogosTextStyles? get logosFontStyles => _logosFontStyles;
 
   /**********************
    *** Initialization ***
@@ -76,13 +76,13 @@ class LogosController extends ChangeNotifier {
     required String apiPath,
     required String apiVersion,
     required String environment,
-    required dynamic logosFontStyles
+    required dynamic logosTextStyles
   } ) async {
 
     _apiPath          = apiPath;
     _apiVersion       = apiVersion;
     _environment      = environment;
-    _logosFontStyles  = logosFontStyles;
+    _logosFontStyles  = logosTextStyles;
 
     // todo: the translation files should be passed as a list in the init() call.
     /// 0: Copy databases from assets folder

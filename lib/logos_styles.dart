@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 
-class LogosFontStyles {
+class LogosTextStyles {
 
   /// Note: Body MUST have a declared font size.
   TextStyle body = GoogleFonts.cabin(
