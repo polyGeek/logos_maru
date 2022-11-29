@@ -1,4 +1,5 @@
 import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:logos_maru/logos/model/data_tags/data_vo.dart';
 import 'package:logos_maru/logos/model/data_tags/screens_controller.dart';
@@ -12,7 +13,6 @@ import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_service.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
 import 'package:logos_maru/logos/model/settings_controller.dart';
-import 'package:logos_maru/logos_styles.dart';
 
 
 class LogosController extends ChangeNotifier {
@@ -66,8 +66,8 @@ class LogosController extends ChangeNotifier {
   String get apiVersion => _apiVersion;
 
   /// Reference to the LogosFontStyles class
-  LogosTextStyles? _logosFontStyles;
-  LogosTextStyles? get logosFontStyles => _logosFontStyles;
+  dynamic _logosFontStyles;
+  dynamic get logosFontStyles => _logosFontStyles;
 
   /**********************
    *** Initialization ***

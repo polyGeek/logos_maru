@@ -5,7 +5,6 @@ import 'package:logos_maru/logos/language_dropdown/dropdown.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
-import 'package:logos_maru/logos/model/txt_utilities.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 
 class DrawerMenu extends StatelessWidget {
