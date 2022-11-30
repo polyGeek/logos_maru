@@ -114,6 +114,7 @@ class DBHelpers {
         return true;
 
       } catch ( e ) {
+        _log(msg: 'Error: ' + e.toString() );
         return false;
       }
 
