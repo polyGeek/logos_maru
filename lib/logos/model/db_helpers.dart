@@ -90,13 +90,14 @@ class DBHelpers {
     );
   }
 
-  static Future<bool> copyEmbeddedDatabase( { required String filename } ) async {
+  static Future<bool> copyEmbeddedDatabase( { required String assetPath } ) async {
     /// TESTING: This forces the code to recreate the database.
     ///return true;
 
-    _log( msg: 'Get DB: ' + filename );
+    _log( msg: 'Get DB: ' + assetPath );
 
-    String dbPath = join( await getDatabasesPath(), filename );
+    String fileName = assetPath.split( '/' ).last;
+    String dbPath = join( await getDatabasesPath(), fileName );
     bool doesDbExist = await File( dbPath ).exists();
 
     _log(msg: 'Does DB exist: ' + doesDbExist.toString() );
@@ -105,7 +106,7 @@ class DBHelpers {
 
       try {
 
-        ByteData data = await rootBundle.load( join( filename ) );
+        ByteData data = await rootBundle.load( join( assetPath ) );
         _log(msg: 'ByteData lengthInBytes: ' + data.lengthInBytes.toString() );
         List<int> bytes = data.buffer.asUint8List( data.offsetInBytes, data.lengthInBytes );
         File file = await File( dbPath ).writeAsBytes( bytes );

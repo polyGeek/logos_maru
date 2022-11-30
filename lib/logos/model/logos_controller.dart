@@ -87,7 +87,7 @@ class LogosController extends ChangeNotifier {
     // todo: the translation files should be passed as a list in the init() call.
     /// 0: Copy databases from assets folder
     embeddedDatabases.forEach( (embeddedDatabase) async {
-      await DBHelpers.copyEmbeddedDatabase( filename: embeddedDatabase );
+      await DBHelpers.copyEmbeddedDatabase( assetPath: embeddedDatabase );
       print( 'LogosController.init() - Copied embedded database: $embeddedDatabase' );
     } );
     /*DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_pref.db' );
