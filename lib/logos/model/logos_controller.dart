@@ -75,7 +75,8 @@ class LogosController extends ChangeNotifier {
     required String apiPath,
     required String apiVersion,
     required String environment,
-    required dynamic logosTextStyles
+    required dynamic logosTextStyles,
+    required List<String> embeddedDatabases,
   } ) async {
 
     _apiPath          = apiPath;
@@ -85,9 +86,13 @@ class LogosController extends ChangeNotifier {
 
     // todo: the translation files should be passed as a list in the init() call.
     /// 0: Copy databases from assets folder
-    DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_pref.db' );
+    embeddedDatabases.forEach( (embeddedDatabase) async {
+      await DBHelpers.copyEmbeddedDatabase( filename: embeddedDatabase );
+      print( 'LogosController.init() - Copied embedded database: $embeddedDatabase' );
+    } );
+    /*DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_pref.db' );
     DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_EN.db' );
-    DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_ES.db' );
+    DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_ES.db' );*/
 
     /// 0.1: Init the SettingsController where the fontScale is set.
     await SettingsController().initSettings();
