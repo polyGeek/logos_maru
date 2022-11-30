@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 
 class LogosTextStyles {
@@ -9,31 +8,30 @@ class LogosTextStyles {
   TextStyle body = GoogleFonts.cabin(
     color: Colors.white,
     fontWeight: FontWeight.w100,
-    fontSize: 20 * FontSizeController().userScale,
+    fontSize: 20,
   );
 
   TextStyle title = GoogleFonts.cabin(
     color: Colors.greenAccent,
     fontWeight: FontWeight.w500,
-    fontSize: 20 * FontSizeController().userScale,
+    fontSize: 30,
   );
 
   TextStyle header = GoogleFonts.cabin(
     color: Colors.purple,
     fontWeight: FontWeight.w500,
-    fontSize: 18 * FontSizeController().userScale,
+    fontSize: 30,
   );
 
   TextStyle subHeader = GoogleFonts.cabin(
     color: Colors.purple,
     fontWeight: FontWeight.w500,
-    fontSize: 16 * FontSizeController().userScale,
+    fontSize: 26,
   );
 
   TextStyle strong = GoogleFonts.cabin(
     color: Colors.yellowAccent,
     fontWeight: FontWeight.bold,
-    fontSize: 20 * FontSizeController().userScale,
   );
 
   TextStyle emphasis = GoogleFonts.cabin(
@@ -59,19 +57,18 @@ class LogosTextStyles {
   TextStyle bodySm = GoogleFonts.cabin(
     color: Colors.yellowAccent,
     fontWeight: FontWeight.w300,
-    fontSize: 10 * FontSizeController().userScale,
+    fontSize: 16,
   );
 
   TextStyle fixedGoogle = GoogleFonts.jetBrainsMono(
     color: Colors.blue,
     letterSpacing: 1.8,
-    fontSize: 30 * FontSizeController().userScale,
+    fontSize: 22,
   );
 
   TextStyle titleLight = GoogleFonts.cabin(
-    color: Colors.red,
     fontWeight: FontWeight.w100,
-    fontSize: 20 * FontSizeController().userScale,
+    fontSize: 26,
   );
 
   Map<String, dynamic> toJson() {

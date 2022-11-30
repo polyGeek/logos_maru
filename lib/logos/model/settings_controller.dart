@@ -12,14 +12,16 @@ class SettingsController {
 	static late SettingsVO _settingsVO;
 	static SettingsVO get settingsVO => _settingsVO;
 
-	void initSettings() async {
+	Future<void> initSettings() async {
 		_settingsVO = await _settingsDB.getUserSettings();
-		FontSizeController().userScale = _settingsVO.fontScale;
+
+		//FontSizeController().fontSizeAdjustment = _settingsVO.fontSizeAdjustment;
+		FontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: _settingsVO.fontSizeAdjustment );
 	}
 
 
-	void setFontScale( { required double fontScale } ) async {
-		_settingsDB.setFontScale( fontScale: fontScale );
+	void setFontSizeAdjustment( { required int fontSizeAdjustment } ) async {
+		_settingsDB.setFontScale( fontSizeAdjustment: fontSizeAdjustment );
 	}
 }
 
@@ -28,21 +30,21 @@ class SettingsVO {
 
 	bool isDebug = false;
 
-	double 					fontScale			= 1.0;
-	String 					bits =
-			'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
-			'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';
+	int 					fontSizeAdjustment			= 0;
+	String 				bits = '';
+			/*'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000'
+			'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000';*/
 
 
 	SettingsVO( {
-		required this.fontScale,
+		required this.fontSizeAdjustment,
 		required this.bits,
 	} );
 
 	Map<String, dynamic> toMap() {
 		return {
-			'fontScale'		: fontScale,
-			'bits'				: bits,
+			'fontSizeAdjustment'		: fontSizeAdjustment,
+			'bits'									: bits,
 		};
 	}
 

@@ -179,7 +179,7 @@ class ViewLogsDialog extends StatelessWidget {
           child: LogosTxt(
             comment: 'CLOSE: Close button',
             logosID: 13,
-            txtStyle: LogosAdminTxtStyles.btn,
+            textStyle: LogosAdminTxtStyles.btn,
           ),
         ),
 

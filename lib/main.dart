@@ -52,7 +52,10 @@ class _MyApp extends StatelessWidget {
           splashColor: Colors.white70,
           textTheme: ButtonTextTheme.primary, ///  <-- this auto selects the right color
         ),
-        textTheme: TextTheme( bodyText1: LogosController().logosFontStyles!.body, bodyText2: LogosController().logosFontStyles!.body ),
+        textTheme: TextTheme(
+            bodyText1: LogosTextStyles().body,
+            bodyText2: LogosTextStyles().body
+        ),
         checkboxTheme: CheckboxThemeData(
           side: MaterialStateBorderSide.resolveWith(
                   (_) => const BorderSide(

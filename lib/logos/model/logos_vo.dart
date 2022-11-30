@@ -107,21 +107,35 @@ class LogosVO {
 
   /// Returns the TextStyle for the given style name
   /// If the style name is not found, returns the default style (body).
+  static Map<dynamic, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
   static TextStyle getStyle( { required String styleName } ) {
-    Map<dynamic, dynamic> myStyles = LogosController().logosFontStyles!.toJson();
 
-    TextStyle ts = LogosController().logosFontStyles!.body;
-    print( ' ts.fontSize: ' + ts.fontSize.toString() );
-    try {
-      ts = myStyles[ styleName ] as TextStyle;
-      double fontSize = ( ts.fontSize == null )? LogosController().logosFontStyles!.body.fontSize! : ts.fontSize!;
-      ts = ts.copyWith( fontSize: fontSize * FontSizeController().userScale );
-      _log( msg: 'Got Style: $styleName ---' + ts.toString() );
-    } catch (e) {
-      _log( msg: 'ERROR GETTING STYLE : $styleName \n $e', fail: true );
+    if( _txtStyles.isEmpty ) {
+      Map<dynamic, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
     }
 
-    return ts;
+
+    TextStyle ts;// = LogosController().logosFontStyles!.body;
+
+    try {
+      ts = _txtStyles[ styleName ] as TextStyle;
+      print( ' ----------------------- ');
+      print( 'getStyle: $styleName' );
+      print( 'pre fontSize: ${ts.fontSize}' );
+
+      //double fontSize = ( ts.fontSize == null )? LogosController().logosFontStyles!.body.fontSize! : ts.fontSize!;
+      //double fontSize = ts.fontSize ?? LogosController().logosFontStyles!.body.fontSize!;
+      ts = ts.copyWith( fontSize: ts.fontSize! + FontSizeController().fontSizeAdjustment );
+      print( 'post fontSize: ${ts.fontSize}' );
+      print( '~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+      //_log( msg: 'Got Style: $styleName --- fontsize: ' + ts.fontSize.toString() );
+      return ts;
+    } catch (e) {
+      _log( msg: 'ERROR GETTING STYLE : $styleName \n $e', fail: true );
+      return LogosController().logosFontStyles!.body;
+    }
+
+    //return ts;
   }
 
   static TextStyle chooseStyle( {

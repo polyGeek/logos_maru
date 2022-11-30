@@ -7,19 +7,19 @@ class LogosAdminTxtStyles {
 
   static TextStyle body = GoogleFonts.robotoMono(
     letterSpacing: 1.2,
-    fontSize: 20 * FontSizeController().userScale,
+    fontSize: (20 + FontSizeController().fontSizeAdjustment).toDouble(),
     //fontWeight: FontWeight.w300,
     height: 1.3,
   ).white;
 
   static TextStyle get btn =>
-      body.copyWith( fontSize: FontSizeController().userScale * 16 ).black.bold;
+      body.copyWith( fontSize: FontSizeController().fontSizeAdjustment + 16 ).black.bold;
 
   static TextStyle get btnSub =>
-      body.copyWith( fontSize: FontSizeController().userScale * 14 ).white;
+      body.copyWith( fontSize: FontSizeController().fontSizeAdjustment + 14 ).white;
 
   static TextStyle get title =>
-      body.copyWith( fontSize: FontSizeController().userScale * 22 ).bold;
+      body.copyWith( fontSize: FontSizeController().fontSizeAdjustment + 22 ).bold;
 
 
 
@@ -29,26 +29,12 @@ class LogosAdminTxtStyles {
 
 extension LogosAdminTextStyleHelpers on TextStyle {
   TextStyle get bold          => copyWith( fontWeight: FontWeight.bold );
-  //TextStyle get boldHeavy     => copyWith( fontWeight: FontWeight.w900 );
-  //TextStyle get boldMild      => copyWith( fontWeight: FontWeight.w500 );
-  //TextStyle get boldLight     => copyWith( fontWeight: FontWeight.w100 );
   TextStyle get gold          => copyWith( color: Styles.c_RPYellow );
   TextStyle get black         => copyWith( color: Colors.black87 );
   TextStyle get white         => copyWith( color: Colors.white );
   TextStyle get offWhite      => copyWith( color: Colors.white70 );
-
-  //TextStyle get heading       => copyWith( fontSize: 28 * FontSizeController().userScale );
-  //TextStyle get big           => copyWith( fontSize: FontSizeController().userScale * 20 );
-  //TextStyle get body          => copyWith( fontSize: FontSizeController().userScale * 16);
-  TextStyle get small         => copyWith( fontSize: FontSizeController().userScale * 14 );
-  //TextStyle get subSmall      => copyWith( fontSize: FontSizeController().userScale * 12 );
+  TextStyle get small         => copyWith( fontSize: FontSizeController().fontSizeAdjustment + 14 );
   TextStyle get italic        => copyWith( fontStyle: FontStyle.italic );
-  //TextStyle get underline     => copyWith( decoration: TextDecoration.underline );
-  //TextStyle get spacedOut     => copyWith( letterSpacing: 1.5 );
-  //TextStyle get enabled       => copyWith( color: Colors.lightGreenAccent );
-  //TextStyle get disabled      => copyWith( color: Colors.redAccent );
-  //TextStyle get light         => copyWith( fontWeight: FontWeight.w100 );
-
   TextStyle letterSpace( double v ) => copyWith( letterSpacing: v );
 }
 

@@ -26,7 +26,6 @@ class LogosController extends ChangeNotifier {
   List<LogosVO> _logosList_EN = [];
   List<LogosVO> _editingLogosList = [];
   List<DataVO>  _tagList = [];
-  //List<DataVO>  _screenList = [];
 
   /// Is editable
   bool _isEditable = false;
@@ -66,8 +65,8 @@ class LogosController extends ChangeNotifier {
   String get apiVersion => _apiVersion;
 
   /// Reference to the LogosFontStyles class
-  dynamic _logosFontStyles;
-  dynamic get logosFontStyles => _logosFontStyles;
+  dynamic _logosTextStyles;
+  dynamic get logosFontStyles => _logosTextStyles;
 
   /**********************
    *** Initialization ***
@@ -82,7 +81,7 @@ class LogosController extends ChangeNotifier {
     _apiPath          = apiPath;
     _apiVersion       = apiVersion;
     _environment      = environment;
-    _logosFontStyles  = logosTextStyles;
+    _logosTextStyles  = logosTextStyles;
 
     // todo: the translation files should be passed as a list in the init() call.
     /// 0: Copy databases from assets folder
@@ -91,7 +90,7 @@ class LogosController extends ChangeNotifier {
     DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_ES.db' );
 
     /// 0.1: Init the SettingsController where the fontScale is set.
-    SettingsController().initSettings();
+    await SettingsController().initSettings();
 
     /// 1: get the selected langCode from the local DB.
     LanguageController().selectedAppLanguageCode = await LogosDB().getSavedLanguagePreference();
@@ -118,12 +117,16 @@ class LogosController extends ChangeNotifier {
     /// 7: get the screen list from the local DB.
     //_screenList = await LogosDB().getDataListFromLocalDB( dataManagerType: DataManagerType.screens );
 
+    //FontSizeController().adjustFontScale( scale: 0 );
+    //_logosTextStyles.updateStyles();
+
     if (_logosList.isNotEmpty) {
       notifyListeners();
       return true;
     } else {
       return false;
     }
+
   }
 
   Future<bool> signIn( {
@@ -224,7 +227,7 @@ class LogosController extends ChangeNotifier {
       'env'               : _environment
     };
 
-    _log(msg: 'Data To Server', map: map );
+    _log( msg: 'Data To Server', map: map );
 
     String result = await NetworkHelper.sendPostRequest(
         url: _apiPath + _apiVersion + '/kickoff.php',
@@ -556,7 +559,7 @@ class LogosController extends ChangeNotifier {
 
   static const bool isDebug = false;
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
-    if ( isDebug == true || EOL.isDEBUG == true )
+    if ( isDebug == true )
       EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboGreen_White );
   }
 }

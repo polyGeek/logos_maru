@@ -4,6 +4,7 @@ import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
+import 'package:logos_maru/logos_styles.dart';
 import 'package:logos_maru/screens/drawer.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 
@@ -79,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: [
               Padding(
                 padding: const EdgeInsets.only( right: 15.0),
-                child: LogosMaruShowAdjustFontScale( iconSize: 30 ),
+                child: LogosMaruShowAdjustFontScale( iconSize: 30, package: '', ),
               ),
             ],
       ),
@@ -99,10 +100,47 @@ class _HomeScreenState extends State<HomeScreen> {
               LogosTxt(
                 comment: "RunPee: because movie theaters don't have pause buttons. | RunPee tagline",
                 logosID: 1,
-                //txtStyle: LogosStyles.fixedGoogle,
+                textStyle: LogosController().logosFontStyles!.header,
               ),
 
-              Builder(builder: (BuildContext context) {
+              LogosTxt(
+                comment: "RunPee: because movie theaters don't have pause buttons. | RunPee tagline",
+                logosID: 1,
+              ),
+
+              /*Text(
+                "RunPee: because movie theaters don't have pause buttons. 20",
+                style: LogosTextStyles().title.copyWith( fontSize: 20 ),
+              ),
+
+              Text(
+                "RunPee: because movie theaters don't have pause buttons. 25",
+                style: LogosTextStyles().title.copyWith( fontSize: 25 ),
+              ),
+
+              Text(
+                "RunPee: because movie theaters don't have pause buttons. 30",
+                style: LogosTextStyles().title.copyWith( fontSize: 30 ),
+              ),
+
+              Text(
+                "RunPee: because movie theaters don't have pause buttons. 35",
+                style: LogosTextStyles().title.copyWith( fontSize: 35 ),
+              ),
+
+              Text(
+                "RunPee: because movie theaters don't have pause buttons. 40",
+                style: LogosTextStyles().title.copyWith( fontSize: 40 ),
+              ),
+
+              Text(
+                "RunPee: because movie theaters don't have pause buttons. 50",
+                style: LogosTextStyles().title.copyWith( fontSize: 50 ),
+              ),*/
+
+
+
+              /*Builder(builder: (BuildContext context) {
                 List<String> days = [ 'January', 'February', 'March', 'April', 'May' ];
                 List<Widget> dayChildren = [];
 
@@ -112,7 +150,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     LogosTxt.dynamic(
                       tag: 'month',
                       txt: element,
-                      //txtStyle: LogosStyles.fixedGoogle,
                     ),
                   );
                 });
@@ -122,8 +159,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: dayChildren,
                 );
-              }),
-
+              }),*/
 
 
               /* RichTxt(
@@ -142,8 +178,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TxtStyles.body ),*/
 
               SizedBox( height: 20,),
-
-
+              
               Align(
                   alignment: Alignment.center,
                   child: ChangeLanguageDropdown(

@@ -17,7 +17,7 @@ class LogosTxt extends StatefulWidget {
   final int logosID;
   final String comment;
   final Map? vars;
-  final TextStyle? txtStyle;
+  final TextStyle? textStyle;
   final Widget? child;
   final TextAlign textAlign;
 
@@ -26,7 +26,7 @@ class LogosTxt extends StatefulWidget {
     required this.comment,
     this.child,
     this.vars,
-    this.txtStyle,
+    this.textStyle,
     this.textAlign = TextAlign.start,
   });
 
@@ -43,7 +43,7 @@ class LogosTxt extends StatefulWidget {
   LogosTxt.dynamic({
     required String txt,
     required String tag,
-    this.txtStyle,
+    this.textStyle,
     this.vars,
     this.child,
     this.textAlign = TextAlign.start,
@@ -59,7 +59,7 @@ class _LogosTxtState extends State<LogosTxt> {
   late LogosVO _logosVO;
 
   /// Set to the default. (body)
-  TextStyle ts = LogosController().logosFontStyles!.body;
+  late TextStyle textStyle;
 
   @override
   void initState() {
@@ -69,6 +69,7 @@ class _LogosTxtState extends State<LogosTxt> {
 
    _getStyle();
 
+
     if (_logosVO.logosID == 1) {
       print('.\n..\n#############################################');
 
@@ -77,7 +78,7 @@ class _LogosTxtState extends State<LogosTxt> {
               'ID:                  ' + _logosVO.logosID.toString() +
               "\n" + 'txt:          ' + _logosVO.txt +
               "\n" + 'logosStyle:   ' + _logosVO.style +
-              "\n" + 'ts:           ' + ts.toString() +
+              "\n" + 'ts:           ' + textStyle.toString() +
               "\n**************************\n",
           color: EOL.comboLightRed_White);
     }
@@ -86,7 +87,7 @@ class _LogosTxtState extends State<LogosTxt> {
       logosVO: _logosVO,
       callback: _waitingForUpdate,
       vars: widget.vars,
-      txtStyle: ts,
+      txtStyle: textStyle,
       textAlign: widget.textAlign,
       child: widget.child,
     );
@@ -97,12 +98,15 @@ class _LogosTxtState extends State<LogosTxt> {
   }
 
   void _getStyle() {
-    /// If the Logos widget has a txtStyle then use it.
-    if( widget.txtStyle != null ) {
-      ts = widget.txtStyle!;
+
+    if( widget.textStyle == null ) {
+
+      /// The Logos style will default to body if it is not set.
+      textStyle = LogosVO.getStyle( styleName: _logosVO.style );
+
     } else {
-      /// The Logos style will always be defined.
-      ts = LogosVO.getStyle( styleName: _logosVO.style );
+      /// If the Logos widget has a txtStyle then use it.
+      textStyle = widget.textStyle!.copyWith( fontSize: widget.textStyle!.fontSize! + FontSizeController().fontSizeAdjustment );
     }
   }
 
@@ -124,19 +128,16 @@ class _LogosTxtState extends State<LogosTxt> {
   }
 
   void _textUpdated() {
-    TextStyle _ts = ts;
-    _ts = LogosVO.getStyle( styleName: _logosVO.style );
-    if( ts.fontSize != null ) {
-      _ts = ts.copyWith( fontSize: ts.fontSize! * FontSizeController().userScale );
-    }
+    _getStyle();
 
     _body = _LogosUpdateTxt(
       logosVO: _logosVO,
       callback: _waitingForUpdate,
       vars: widget.vars,
-      txtStyle: _ts,
+      txtStyle: textStyle,
       child: widget.child,
     );
+
     _update();
   }
 

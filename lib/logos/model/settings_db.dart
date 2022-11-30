@@ -6,60 +6,57 @@ import 'package:sqflite/sqflite.dart';
 
 class SettingsDB {
 
-	/*void updateBits( String bits ) async {
+	void setFontScale( { required int fontSizeAdjustment } ) async {
 		Database db = await DBHelpers.openUserSettingsDatabase();
-		String sql = "UPDATE settings set bits = '$bits' WHERE uKey = 1";
-		await db.rawQuery( sql );
-	}*/
-	
-	void setFontScale( { required double fontScale } ) async {
-		Database db = await DBHelpers.openUserSettingsDatabase();
-		String sql = "UPDATE `settings` set fontScale = $fontScale WHERE uKey = 1";
-		//_log( msg: 'DBuserSettings.setFontScale-> ' + sql );
+		String sql = "UPDATE `settings` set fontSizeAdjustment = $fontSizeAdjustment WHERE uKey = 1";
+		_log( msg: 'UPDATE : DBuserSettings.fontSizeAdjustment-> ' + sql );
 		await db.rawQuery( sql );
 		
-		sql = "SELECT bits, fontScale FROM `settings` WHERE uKey = 1";
+		sql = "SELECT bits, fontSizeAdjustment FROM `settings` WHERE uKey = 1";
 		List<Map<String, dynamic>> maps = await db.rawQuery( sql );
 
 		if( maps.isNotEmpty ) {
 			SettingsVO sVO = SettingsVO(
-				bits					: maps[0][ 'bits' ],
-				fontScale			: maps[0][ 'fontScale' ],
+				bits										: maps[0][ 'bits' ],
+				fontSizeAdjustment			: maps[0][ 'fontSizeAdjustment' ],
 			);
 
-			_log( msg: 'fontScale stored in DB: ' + sVO.fontScale.toString() );
-		} /*else {
-			/// Set defaults.
-			getUserSettings();
-			sql = "INSERT INTO `settings` ( uKey, bits, fontScale ) VALUES ( 1, '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000', 1 )";
-			print( sql );
-			await db.rawQuery( sql );
-		}*/
+			_log( msg: 'fontSizeAdjustment stored in DB: ' + sVO.fontSizeAdjustment.toString() );
+		}
 	}
 	
 	Future<SettingsVO> getUserSettings() async {
 		Database db = await DBHelpers.openUserSettingsDatabase();
 		
-		String sql = "SELECT * FROM settings WHERE uKey = 1";
-		List<Map<String, dynamic>> maps = await db.rawQuery( sql );
+
+		List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT * FROM settings WHERE uKey = 1" );
 		
 		if( maps.isEmpty ) {
 			
 			/// Insert default values.
-			await db.rawQuery( "INSERT INTO settings ( uKey, bits, fontScale ) VALUES ( null, '0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000', 1.0 )" );
+			await db.rawQuery( "INSERT INTO settings ( "
+					"uKey, bits, fontSizeAdjustment "
+					") VALUES ( "
+					"null, "
+					"'0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000', "
+					"0 )"
+			);
 
 			maps = await db.rawQuery( "SELECT * FROM settings WHERE uKey = 1" );
 		}
-		
-		return SettingsVO(
-			bits    					: maps[0][ 'bits' ],
-			fontScale					: maps[0][ 'fontScale' ],
+
+		SettingsVO sVO = SettingsVO(
+			bits								: maps[0][ 'bits' ],
+			fontSizeAdjustment	: maps[0][ 'fontSizeAdjustment' ],
 		);
+
+		_log( msg: 'fontSizeAdjustment stored in DB: ' + sVO.fontSizeAdjustment.toString() );
+		return sVO;
 	}
 
 	static const bool isDebug = false;
 	static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
-		if ( isDebug == true || EOL.isDEBUG == true )
+		if ( isDebug == true )
 			EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboLightGreen_White );
 	}
 }
