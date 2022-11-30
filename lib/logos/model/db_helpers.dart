@@ -105,10 +105,11 @@ class DBHelpers {
 
       try {
 
-        ByteData data = await rootBundle.load( join( 'assets/', filename ) );
+        ByteData data = await rootBundle.load( join( filename ) );
         _log(msg: 'ByteData lengthInBytes: ' + data.lengthInBytes.toString() );
         List<int> bytes = data.buffer.asUint8List( data.offsetInBytes, data.lengthInBytes );
-        await new File( dbPath ).writeAsBytes( bytes );
+        File file = await File( dbPath ).writeAsBytes( bytes );
+        _log(msg: 'File path: ' + file.path );
 
         return true;
 
@@ -149,7 +150,7 @@ class DBHelpers {
     } catch( e ) {}
   }
 
-  static const bool isDebug = false;
+  static const bool isDebug = true;
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
     if ( isDebug == true )
       EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboBlue_LightYellow );

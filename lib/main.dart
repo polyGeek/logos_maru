@@ -119,9 +119,9 @@ class _MyHomePageState extends State<MyHomePage> {
       environment: 'RP',
       logosTextStyles: LogosTextStyles(),
       embeddedDatabases: [
-        'logos_maru/logos_pref.db',
-        'logos_maru/logos_EN.db',
-        'logos_maru/logos_ES.db'
+        'assets/logos_maru/logos_pref.db',
+        'assets/logos_maru/logos_EN.db',
+        'assets/logos_maru/logos_ES.db'
       ]
     ) == true ) {
       _body = HomeScreen();
