@@ -57,6 +57,7 @@ class Styles {
         }
 
         spans.add( TextSpan( text: snip, style: txtStyle ) );
+        print( 'tag: $tag, styledTxt: $styledTxt' );
         spans.add( TextSpan( text: styledTxt, style: txtStyle.merge( LogosVO.getStyle( styleName: tag ) )  ) );
       } else {
         spans.add( TextSpan( text: txt, style: txtStyle ) );
@@ -102,8 +103,6 @@ class _RichTxtState extends State<RichTxt> {
       children: null,
       style: widget.txtStyle,
     );
-
-    print( 'RichTxt TextStyle:  ' + widget.txtStyle.toString() );
 
     FontSizeController().addListener( _update );
     LogosController().addListener( refresh );

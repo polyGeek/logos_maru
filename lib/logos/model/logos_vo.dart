@@ -108,34 +108,31 @@ class LogosVO {
   /// Returns the TextStyle for the given style name
   /// If the style name is not found, returns the default style (body).
   static Map<dynamic, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
+  static double _lastFontSize = LogosController().logosFontStyles!.body.fontSize! + FontSizeController().fontSizeAdjustment;
+
   static TextStyle getStyle( { required String styleName } ) {
 
     if( _txtStyles.isEmpty ) {
       Map<dynamic, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
     }
 
-
-    TextStyle ts;// = LogosController().logosFontStyles!.body;
-
+    /// todo: Using the _lastFontSize won't work if the text begins with a different style.
     try {
-      ts = _txtStyles[ styleName ] as TextStyle;
-      print( ' ----------------------- ');
-      print( 'getStyle: $styleName' );
-      print( 'pre fontSize: ${ts.fontSize}' );
 
-      //double fontSize = ( ts.fontSize == null )? LogosController().logosFontStyles!.body.fontSize! : ts.fontSize!;
-      //double fontSize = ts.fontSize ?? LogosController().logosFontStyles!.body.fontSize!;
-      ts = ts.copyWith( fontSize: ts.fontSize! + FontSizeController().fontSizeAdjustment );
-      print( 'post fontSize: ${ts.fontSize}' );
-      print( '~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-      //_log( msg: 'Got Style: $styleName --- fontsize: ' + ts.fontSize.toString() );
-      return ts;
+      TextStyle ts = _txtStyles[ styleName ] as TextStyle;
+      if( ts.fontSize == null ) {
+        return ts.copyWith( fontSize: _lastFontSize );
+      } else {
+        _lastFontSize = ts.fontSize! + FontSizeController().fontSizeAdjustment;
+        return ts.copyWith( fontSize: ts.fontSize! + FontSizeController().fontSizeAdjustment );
+      }
+
     } catch (e) {
       _log( msg: 'ERROR GETTING STYLE : $styleName \n $e', fail: true );
-      return LogosController().logosFontStyles!.body;
+      return LogosController().logosFontStyles!.body.copyWith(
+          fontSize: LogosController().logosFontStyles!.body.fontSize! + FontSizeController().fontSizeAdjustment
+      );
     }
-
-    //return ts;
   }
 
   static TextStyle chooseStyle( {

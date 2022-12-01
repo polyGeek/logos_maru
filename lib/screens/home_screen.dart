@@ -42,10 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
 
-              /*LogosTxt(
-                  comment: 'RunPee tag line',
-                  logosID: 1,
-              ),*/
+
 
               /*
               Sign in
@@ -104,8 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               LogosTxt(
-                comment: "RunPee: because movie theaters don't have pause buttons. | RunPee tagline",
-                logosID: 1,
+                comment: "The core feature of the RunPee app is to provide you the best times to <gold>run</gold> and <gold>pe... | 2nd screen, 1st paragraph",
+                logosID: 23,
+                textAlign: TextAlign.center,
               ),
 
               /*Text(
