@@ -68,6 +68,9 @@ class LogosController extends ChangeNotifier {
   dynamic _logosTextStyles;
   dynamic get logosFontStyles => _logosTextStyles;
 
+  bool _showConsoleOutput = false;
+  bool get showConsoleOutput => _showConsoleOutput;
+
   /**********************
    *** Initialization ***
    ***********************/
@@ -77,12 +80,14 @@ class LogosController extends ChangeNotifier {
     required String environment,
     required dynamic logosTextStyles,
     required List<String> embeddedDatabases,
+    bool showConsoleOutput = false,
   } ) async {
 
     _apiPath          = apiPath;
     _apiVersion       = apiVersion;
     _environment      = environment;
     _logosTextStyles  = logosTextStyles;
+    _showConsoleOutput = showConsoleOutput;
 
     // todo: the translation files should be passed as a list in the init() call.
     /// 0: Copy databases from assets folder
@@ -471,7 +476,6 @@ class LogosController extends ChangeNotifier {
     _log(msg: "Data to server: " + map.toString() );
 
     String result = await NetworkHelper.sendPostRequest(
-        //url: NetworkHelper.API_LOCATION + NetworkHelper.API_VERSION + '/add-new.php',
       url: _apiPath + _apiVersion + '/add-new.php',
         map: map
     );
@@ -522,10 +526,7 @@ class LogosController extends ChangeNotifier {
   }
 
   void setEditingLogoVOisRich( { required bool isRich } ) {
-    //LogosVO logosVO = getEditLogos( logosID: logosID );
-    //logosVO.isRich = ( isRich == true )? 1 : 0;
     _editingLogosVO!.isRich = ( isRich == true )? 1 : 0;
-    //updateEditLogosList( logosVO: logosVO );
     update();
   }
 
@@ -536,35 +537,24 @@ class LogosController extends ChangeNotifier {
   }
 
   String insertVars( { required String txt, required Map vars } ) {
-    p(msg: '_________________START_________________');
-    p(msg: 'insertVars: ' + txt);
-    p(msg: 'map: ' + vars.toString());
+
     while (txt.contains('{') == true) {
 
       /// Get the first {}
       int start = txt.indexOf('{') + 1;
       int end = txt.indexOf('}', start);
-      p(msg: '     start: ' + start.toString() + ', end: ' + end.toString());
 
       /// Get the variable name
       String v = txt.substring(start, end);
-      p(msg: '     variable: ' + v);
 
       txt = txt.substring(0, start - 1) + vars[v] + txt.substring(end + 1);
-      p(msg: '     txt: ' + txt);
-      p(msg: '_________________END_________________');
     }
 
     return txt;
   }
 
-  void p( { required String msg } ) {
-    //print( msg );
-  }
-
-  static const bool isDebug = false;
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
-    if ( isDebug == true )
+    if( LogosController().showConsoleOutput == true )
       EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboGreen_White );
   }
 }

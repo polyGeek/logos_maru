@@ -69,19 +69,17 @@ class _LogosTxtState extends State<LogosTxt> {
 
    _getStyle();
 
+    print('.\n..\n#############################################');
 
-    if (_logosVO.logosID == 1) {
-      print('.\n..\n#############################################');
+    EOL.log(
+        msg: '_LogosTxtState > init >\n' +
+            'ID:                  ' + _logosVO.logosID.toString() +
+            "\n" + 'txt:          ' + _logosVO.txt +
+            "\n" + 'logosStyle:   ' + _logosVO.style +
+            "\n" + 'ts:           ' + textStyle.toString() +
+            "\n**************************\n",
+        color: EOL.comboLightRed_White);
 
-      EOL.log(
-          msg: '_LogosTxtState > init >\n' +
-              'ID:                  ' + _logosVO.logosID.toString() +
-              "\n" + 'txt:          ' + _logosVO.txt +
-              "\n" + 'logosStyle:   ' + _logosVO.style +
-              "\n" + 'ts:           ' + textStyle.toString() +
-              "\n**************************\n",
-          color: EOL.comboLightRed_White);
-    }
 
     _body = _LogosUpdateTxt(
       logosVO: _logosVO,

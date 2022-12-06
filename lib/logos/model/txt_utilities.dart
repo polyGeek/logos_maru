@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
-import 'package:logos_maru/logos/model/rich_txt.dart';
 
 class LogosAdminTxtStyles {
 
@@ -29,7 +28,7 @@ class LogosAdminTxtStyles {
 
 extension LogosAdminTextStyleHelpers on TextStyle {
   TextStyle get bold          => copyWith( fontWeight: FontWeight.bold );
-  TextStyle get gold          => copyWith( color: Styles.c_RPYellow );
+  TextStyle get gold          => copyWith( color: Colors.orangeAccent );
   TextStyle get black         => copyWith( color: Colors.black87 );
   TextStyle get white         => copyWith( color: Colors.white );
   TextStyle get offWhite      => copyWith( color: Colors.white70 );

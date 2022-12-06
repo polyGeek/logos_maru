@@ -8,18 +8,16 @@ class Styles {
   factory Styles() => _styles;
   Styles._internal();
 
-  static const Color c_RPYellow           = Color(0xe6fca905);
-  static const Color c_bone               = Color(0xff000000);
-  static const Color c_greenAccent        = Color( 0xff05FC2E ); /// Colors.lightGreenAccent;
-  static const Color c_redAccent          = Colors.redAccent;    /// Color( 0xffFC05D4 );
-
-  //static double iconSize      = 10;
-
   List<TextSpan> makeRichTxt( {
     required String txt,
     required TextStyle txtStyle,
     TextAlign textAlign = TextAlign.left,
-  }) {
+  } ) {
+
+    print( 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+    print( 'Styles.makeRichTxt() txt: $txt' );
+    print( 'Styles.makeRichTxt() txtStyle: $txtStyle' );
+    print( '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
 
     List<TextSpan> spans  = [];
     String tag            = '';
@@ -57,7 +55,10 @@ class Styles {
         }
 
         spans.add( TextSpan( text: snip, style: txtStyle ) );
-        print( 'tag: $tag, styledTxt: $styledTxt' );
+        print( 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+        print( '+++++++++++ tag: $tag, styledTxt: $styledTxt' );
+        print( '+++++++++++ style: $txtStyle.toString()');
+        print( '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
         spans.add( TextSpan( text: styledTxt, style: txtStyle.merge( LogosVO.getStyle( styleName: tag ) )  ) );
       } else {
         spans.add( TextSpan( text: txt, style: txtStyle ) );

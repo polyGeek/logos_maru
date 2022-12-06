@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/logos_controller.dart';
 
 class NetworkHelper {
   /** ===============================================
@@ -91,9 +92,8 @@ class NetworkHelper {
     }
   }
 
-  static const bool isDebug = false;
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
-    if ( isDebug == true )
+    if( LogosController().showConsoleOutput == true )
       EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboMagenta_Gray );
   }
 }
