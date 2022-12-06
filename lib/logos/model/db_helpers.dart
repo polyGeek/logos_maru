@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/eol_colors.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -155,6 +156,6 @@ class DBHelpers {
 
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
     if ( LogosController().showConsoleOutput == true )
-      EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboBlue_LightYellow );
+      EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOLcolors.database_blue_LightYellow );
   }
 }

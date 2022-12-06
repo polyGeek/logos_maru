@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/eol_colors.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 
@@ -155,15 +156,14 @@ class LogosVO {
     }
   }
 
-  static bool isDebug = true;
   static void _log( { required String msg, String title = '', bool shout=false, bool fail=false } ) {
-    if ( isDebug == true || EOL.isDEBUG == true )
+    if( LogosController().showConsoleOutput == true )
       EOL.log(
         msg: msg,
         title: title,
         shout: shout,
         fail: fail,
-        color: EOL.comboBlue_Black,
+        color: EOLcolors.vo_blue_Black,
       );
   }
 }

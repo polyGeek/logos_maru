@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/logos_editor_parts/formatting_btn.dart';
-import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
@@ -50,20 +49,14 @@ class _LogosEditorState extends State<LogosEditor> {
 
   void changeBusyState(bool isBusy) {
     _isBusy = isBusy;
-    EOL.log(msg: "isBusy: " + isBusy.toString());
   }
 
   void formatCallback(String formatChar) {
     String newTxt = '';
     int selectionEnd = 0;
 
-    EOL.log(msg: "format char: " + formatChar, color: EOL.comboLightGreen_White );
-
     int selectionStart = _tecTxt.selection.start;
     selectionEnd = _tecTxt.selection.extent.offset;
-
-    EOL.log(msg: "pre start " + _tecTxt.text.substring( selectionStart - 1, selectionStart ), color: EOL.comboLightGreen_White );
-    EOL.log(msg: "post end: " + _tecTxt.text.substring( selectionEnd, selectionEnd + 2 ), color: EOL.comboLightGreen_White );
 
     String txt = _tecTxt.text;
     String t1 = '';
@@ -95,8 +88,6 @@ class _LogosEditorState extends State<LogosEditor> {
       print( 'i = ' + i.toString() );
       print( 'j = ' + j.toString() );
       newTxt = _tecTxt.text.substring( 0, i ) + _tecTxt.text.substring( selectionStart, selectionEnd ) + _tecTxt.text.substring( j + 1, _tecTxt.text.length );
-
-      EOL.log(msg: "new text: " + newTxt, color: EOL.comboPurple_White );
 
     } else {
 

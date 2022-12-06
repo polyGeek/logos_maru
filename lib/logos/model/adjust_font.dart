@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/eol_colors.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/settings_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
@@ -170,13 +171,11 @@ class FontSizeController extends ChangeNotifier {
         notifyListeners();
     }
 
-    /** ===============================================
-     *  EOL
-     *  ===============================================*/
-    static const bool isDebug = true;
-
     static void _log({required String msg, String title = '', Map<String, dynamic>? map, String json = '', bool shout = false, bool fail = false}) {
-        if (isDebug == true || EOL.isDEBUG == true)
-            EOL.log(msg: msg, borderSide: 'H', borderTop: 'H', map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboLightGreen_White );
+        if( LogosController().showConsoleOutput == true )
+            EOL.log( msg: msg,
+                borderSide: 'H', borderTop: 'H',
+                map: map, title: title, json: json, shout: shout, fail: fail,
+                color: EOLcolors.fontSizeAdjust_lightGreen_White );
     }
 }

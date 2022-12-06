@@ -1,6 +1,7 @@
 import 'package:logos_maru/logos/model/data_tags/data_vo.dart';
 import 'package:logos_maru/logos/model/db_helpers.dart';
 import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/eol_colors.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
@@ -422,6 +423,8 @@ class LogosDB {
 
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
     if( LogosController().showConsoleOutput == true )
-      EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboBlue_LightYellow );
+      EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail,
+          color: EOLcolors.database_blue_LightYellow
+      );
   }
 }

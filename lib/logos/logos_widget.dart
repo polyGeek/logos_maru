@@ -3,6 +3,7 @@ import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/logos_editor.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/eol_colors.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
@@ -71,14 +72,18 @@ class _LogosTxtState extends State<LogosTxt> {
 
     print('.\n..\n#############################################');
 
-    EOL.log(
-        msg: '_LogosTxtState > init >\n' +
-            'ID:                  ' + _logosVO.logosID.toString() +
-            "\n" + 'txt:          ' + _logosVO.txt +
-            "\n" + 'logosStyle:   ' + _logosVO.style +
-            "\n" + 'ts:           ' + textStyle.toString() +
-            "\n**************************\n",
-        color: EOL.comboLightRed_White);
+    if( LogosController().showConsoleOutput == true ) {
+      EOL.log(
+          msg: '_LogosTxtState > init >\n' +
+              'ID:                  ' + _logosVO.logosID.toString() +
+              "\n" + 'txt:          ' + _logosVO.txt +
+              "\n" + 'logosStyle:   ' + _logosVO.style +
+              "\n" + 'ts:           ' + textStyle.toString() +
+              "\n**************************\n",
+          color: EOLcolors.logosWidget_lightRed_White
+      );
+    }
+
 
 
     _body = _LogosUpdateTxt(

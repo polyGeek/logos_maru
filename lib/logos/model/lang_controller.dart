@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:logos_maru/logos/model/eol.dart';
+import 'package:logos_maru/logos/model/eol_colors.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 
@@ -77,6 +78,8 @@ class LanguageController extends ChangeNotifier {
 
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
     if( LogosController().showConsoleOutput == true )
-      EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail, color: EOL.comboLightGray_Olive );
+      EOL.log( msg: msg, map: map, title: title, json: json, shout: shout, fail: fail,
+          color: EOLcolors.langController_lightGray_Olive
+      );
   }
 }
