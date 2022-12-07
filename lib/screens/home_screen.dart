@@ -15,11 +15,18 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
 
+  String _dynamicText = 'update';
+
   @override
   void initState() {
     super.initState();
     AppController().addListener(() { _update(); } );
     LogosController().addListener(() { _update(); } );
+
+    _dynamicText = LogosController().getLogosVO(
+        logosID: 67,
+        vars: {'count': 4}
+    ).txt;
   }
 
   @override
@@ -99,6 +106,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 logosID: 2,
                 //textStyle: LogosTextStyles().bodySm,
               ),
+
+              Text( _dynamicText ),
 
               SizedBox( height: 30, ),
 

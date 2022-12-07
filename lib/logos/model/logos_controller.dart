@@ -326,7 +326,8 @@ class LogosController extends ChangeNotifier {
       if ( logosVO.logosID == logosID ) {
 
         /// Add vars if needed.
-        String txt = ( vars == null )? logosVO.txt : insertVars( txt: logosVO.txt, vars: vars);
+        String txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars);
+        //String txt = _insertVars( txt: logosVO.txt, vars: vars );
 
         if( _useHashtag == true ) {
           return '#' + txt + '#';
@@ -345,6 +346,7 @@ class LogosController extends ChangeNotifier {
   LogosVO getDynamicLogos( {
     required String txt,
     required String tag,
+    Map? vars,
   } ) {
 
     if( _lastTagList.isEmpty || _lastTagList[0].tags != tag ) {
@@ -365,6 +367,7 @@ class LogosController extends ChangeNotifier {
 
       if( logosVO.tags.contains( tagID.toString() ) ) {
         if( logosVO.txt == txt ) {
+          logosVO.txt = ( vars == null )? logosVO.txt :  _insertVars( txt: logosVO.txt, vars: vars );
           return logosVO;
         }
       }
@@ -381,6 +384,7 @@ class LogosController extends ChangeNotifier {
     for (int i = 0; i < _logosList.length; i++) {
       LogosVO logosVO = _logosList.elementAt(i);
       if ( logosVO.logosID == logosID ) {
+        logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars );
         return logosVO;
       }
     }
@@ -403,7 +407,7 @@ class LogosController extends ChangeNotifier {
 
         _log( msg: 'FOUND LogosVO: ' + logosVO.txt );
         if (vars != null) {
-          logosVO.txt = insertVars(txt: logosVO.txt, vars: vars);
+          logosVO.txt = _insertVars( txt: logosVO.txt, vars: vars );
         }
 
         return logosVO;
@@ -537,7 +541,7 @@ class LogosController extends ChangeNotifier {
     updateEditLogosList( logosVO: logosVO );
   }
 
-  String insertVars( { required String txt, required Map vars } ) {
+  String _insertVars( { required String txt, required Map vars } ) {
 
     while (txt.contains('{') == true) {
 
@@ -548,7 +552,7 @@ class LogosController extends ChangeNotifier {
       /// Get the variable name
       String v = txt.substring(start, end);
 
-      txt = txt.substring(0, start - 1) + vars[v] + txt.substring(end + 1);
+      txt = txt.substring(0, start - 1) + vars[v].toString() + txt.substring(end + 1);
     }
 
     return txt;
