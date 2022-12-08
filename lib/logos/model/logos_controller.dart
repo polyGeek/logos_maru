@@ -328,13 +328,14 @@ class LogosController extends ChangeNotifier {
         /// Add vars if needed.
         String txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars);
 
-        if( _useHashtag == true ) {
+        txt = _debugWithDoubleSizeORhashtag( txt: txt );
+        /*if( _useHashtag == true ) {
           return '#' + txt + '#';
         } else if( _makeDoubleSize == true ) {
           return txt + ' | ' + txt.toUpperCase();
         } else {
           return txt;
-        }
+        }*/
       }
     }
 
