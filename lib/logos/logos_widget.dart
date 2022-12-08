@@ -48,7 +48,7 @@ class LogosTxt extends StatefulWidget {
     this.vars,
     this.child,
     this.textAlign = TextAlign.start,
-  })  : this.logosID = LogosController().getDynamicLogos(txt: txt, tag: tag).logosID,
+  })  : this.logosID = LogosController().getDynamicLogos( txt: txt, tag: tag ).logosID,
         this.comment = tag;
 
   @override
@@ -83,8 +83,6 @@ class _LogosTxtState extends State<LogosTxt> {
           color: EOLcolors.logosWidget_lightRed_White
       );
     }
-
-
 
     _body = _LogosUpdateTxt(
       logosVO: _logosVO,

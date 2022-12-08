@@ -14,11 +14,6 @@ class Styles {
     TextAlign textAlign = TextAlign.left,
   } ) {
 
-    print( 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
-    print( 'Styles.makeRichTxt() txt: $txt' );
-    print( 'Styles.makeRichTxt() txtStyle: $txtStyle' );
-    print( '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-
     List<TextSpan> spans  = [];
     String tag            = '';
     String styledTxt      = '';
@@ -55,10 +50,6 @@ class Styles {
         }
 
         spans.add( TextSpan( text: snip, style: txtStyle ) );
-        print( 'vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
-        print( '+++++++++++ tag: $tag, styledTxt: $styledTxt' );
-        print( '+++++++++++ style: $txtStyle.toString()');
-        print( '^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
         spans.add( TextSpan( text: styledTxt, style: txtStyle.merge( LogosVO.getStyle( styleName: tag ) )  ) );
       } else {
         spans.add( TextSpan( text: txt, style: txtStyle ) );

@@ -128,10 +128,12 @@ class _LogosEditorState extends State<LogosEditor> {
 
   void callbackHashtag(bool value) {
     LogosController().setUseHashtag(useHashtag: value);
+    Navigator.of( context ).pop();
   }
 
   void callbackDoubleSized(bool value) {
     LogosController().setMakeDoubleSize(makeDoubleSize: value);
+    Navigator.of( context ).pop();
   }
 
   @override

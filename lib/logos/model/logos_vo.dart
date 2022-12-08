@@ -117,22 +117,15 @@ class LogosVO {
       Map<dynamic, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
     }
 
-    print( '>>>>>>' + styleName );
-    print( ' <<<<<<<<<<<<<< fontSizeAdjustment: ' + FontSizeController().fontSizeAdjustment.toString() );
     /// todo: Using the _lastFontSize won't work if the text begins with a different style.
     try {
 
       TextStyle ts = _txtStyles[ styleName ] as TextStyle;
       if( ts.fontSize == null ) {
-        print( '----------------last font size : ' + _lastFontSize.toString() );
-        ts = ts.copyWith( fontSize: _lastFontSize );
-        print( 'IF return : ' + ts.toString() );
-        return ts;
+        return ts.copyWith( fontSize: _lastFontSize );
       } else {
         _lastFontSize = ts.fontSize! + FontSizeController().fontSizeAdjustment;
-        ts = ts.copyWith( fontSize: ts.fontSize! + FontSizeController().fontSizeAdjustment );
-        print( 'ELSE return > ' + ts.toString( ));
-        return ts;
+        return ts.copyWith( fontSize: ts.fontSize! + FontSizeController().fontSizeAdjustment );
       }
 
     } catch (e) {

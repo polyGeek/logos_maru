@@ -46,6 +46,7 @@ class LogosController extends ChangeNotifier {
   bool get useHashtag => _useHashtag!;
   void setUseHashtag( { required bool useHashtag } ) {
     _useHashtag = useHashtag;
+    notifyListeners();
   }
 
   /// Repeat the text to test Text Wrapping
@@ -53,6 +54,7 @@ class LogosController extends ChangeNotifier {
   bool get makeDoubleSize => _makeDoubleSize!;
   void setMakeDoubleSize( { required bool makeDoubleSize } ) {
     _makeDoubleSize = makeDoubleSize;
+    notifyListeners();
   }
 
   /// userID and userName
@@ -338,6 +340,7 @@ class LogosController extends ChangeNotifier {
 
     if( _useHashtag == true ) {
 
+      print( '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Hashtag: ' + txt.substring( 0, 1 ) + ' --- ' + txt.substring( txt.length - 1, txt.length ) );
       if( txt.substring( 0, 1 ) != '#' && txt.substring( txt.length - 1, txt.length ) != '#' ) {
         return txt = '#' + txt + '#';
       } else {
@@ -346,12 +349,11 @@ class LogosController extends ChangeNotifier {
 
     } else if( _makeDoubleSize == true ) {
 
-      /*if( !txt.contains( txt + ' | ' ) ) {
+      if( !txt.contains( txt + ' | ' ) ) {
         return txt + ' | ' + txt.toUpperCase();
       } else {
         return txt;
-      }*/
-      return txt;
+      }
 
     } else {
       return txt;
@@ -401,8 +403,8 @@ class LogosController extends ChangeNotifier {
     for (int i = 0; i < _logosList.length; i++) {
       LogosVO logosVO = _logosList.elementAt(i);
       if ( logosVO.logosID == logosID ) {
-        logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars );
 
+        logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars );
         logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
         return logosVO;
       }
