@@ -96,9 +96,6 @@ class LogosController extends ChangeNotifier {
       await DBHelpers.copyEmbeddedDatabase( assetPath: embeddedDatabase );
       print( 'LogosController.init() - Copied embedded database: $embeddedDatabase' );
     } );
-    /*DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_pref.db' );
-    DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_EN.db' );
-    DBHelpers.copyEmbeddedDatabase( filename: 'logos_maru/logos_ES.db' );*/
 
     /// 0.1: Init the SettingsController where the fontScale is set.
     await SettingsController().initSettings();
@@ -124,12 +121,6 @@ class LogosController extends ChangeNotifier {
 
     /// 6: get the tag list from the local DB.
     _tagList = await LogosDB().getDataListFromLocalDB( dataManagerType: DataManagerType.tags );
-
-    /// 7: get the screen list from the local DB.
-    //_screenList = await LogosDB().getDataListFromLocalDB( dataManagerType: DataManagerType.screens );
-
-    //FontSizeController().adjustFontScale( scale: 0 );
-    //_logosTextStyles.updateStyles();
 
     if (_logosList.isNotEmpty) {
       notifyListeners();
@@ -328,7 +319,6 @@ class LogosController extends ChangeNotifier {
         /// Add vars if needed.
         String txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars);
 
-        txt = _debugWithDoubleSizeORhashtag( txt: txt );
         /*if( _useHashtag == true ) {
           return '#' + txt + '#';
         } else if( _makeDoubleSize == true ) {
@@ -336,6 +326,8 @@ class LogosController extends ChangeNotifier {
         } else {
           return txt;
         }*/
+
+        return _debugWithDoubleSizeORhashtag( txt: txt );
       }
     }
 
@@ -354,11 +346,12 @@ class LogosController extends ChangeNotifier {
 
     } else if( _makeDoubleSize == true ) {
 
-      if( !txt.contains( txt + ' | ' ) ) {
+      /*if( !txt.contains( txt + ' | ' ) ) {
         return txt + ' | ' + txt.toUpperCase();
       } else {
         return txt;
-      }
+      }*/
+      return txt;
 
     } else {
       return txt;
