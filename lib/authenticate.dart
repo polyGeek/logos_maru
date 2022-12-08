@@ -3,12 +3,12 @@ import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 
-class AuthenticateEditor extends StatefulWidget {
+class AuthenticateLogosEditor extends StatefulWidget {
   @override
-  AuthenticateEditorState createState() => AuthenticateEditorState();
+  AuthenticateLogosEditorState createState() => AuthenticateLogosEditorState();
 }
 
-class AuthenticateEditorState extends State<AuthenticateEditor> {
+class AuthenticateLogosEditorState extends State<AuthenticateLogosEditor> {
 
   TextEditingController _tecUsername    = TextEditingController();
   bool                  _isBusy = false;

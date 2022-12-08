@@ -4,7 +4,6 @@ import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
-import 'package:logos_maru/logos_styles.dart';
 import 'package:logos_maru/screens/drawer.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 

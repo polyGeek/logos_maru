@@ -47,7 +47,7 @@ class DrawerMenu extends StatelessWidget {
                   context: context,
                   barrierDismissible: true,
                   builder: (BuildContext context) {
-                    return AuthenticateEditor();
+                    return AuthenticateLogosEditor();
                   });
             },
             child: Text( 'Authenticate as Editor',)
