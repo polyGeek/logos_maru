@@ -349,7 +349,9 @@ class LogosController extends ChangeNotifier {
 
     } else if( _makeDoubleSize == true ) {
 
+      print( '*****************'  + txt );
       if( !txt.contains( txt + ' | ' ) ) {
+        print( 'uppercasing');
         return txt + ' | ' + txt.toUpperCase();
       } else {
         return txt;

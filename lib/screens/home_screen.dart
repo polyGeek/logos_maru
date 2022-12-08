@@ -119,17 +119,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 logosID: 18,
               ),
 
-              /*LogosTxt(
+              LogosTxt(
                 comment: "RunPee: because movie theaters don't have pause buttons. | RunPee tagline",
                 logosID: 1,
                 textStyle: LogosController().logosFontStyles!.header,
-              ),*/
+              ),
 
-              /*LogosTxt(
+              LogosTxt(
                 comment: "The core feature of the RunPee app is to provide you the best times to <gold>run</gold> and <gold>pe... | 2nd screen, 1st paragraph",
                 logosID: 23,
                 textAlign: TextAlign.center,
-              ),*/
+              ),
 
               /*Text(
                 "RunPee: because movie theaters don't have pause buttons. 20",

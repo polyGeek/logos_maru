@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/logos_editor.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
-import 'package:logos_maru/logos/model/eol.dart';
-import 'package:logos_maru/logos/model/eol_colors.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
@@ -57,22 +55,22 @@ class LogosTxt extends StatefulWidget {
 
 class _LogosTxtState extends State<LogosTxt> {
   late Widget _body;
-  late LogosVO _logosVO;
+  //late LogosVO _logosVO;
 
   /// Set to the default. (body)
-  late TextStyle textStyle;
+  //late TextStyle textStyle;
 
   @override
   void initState() {
     super.initState();
 
-    _logosVO = LogosController().getLogosVO( logosID: widget.logosID );
+    //_logosVO = LogosController().getLogosVO( logosID: widget.logosID );
 
-   _getStyle();
+   //_getStyle();
 
-    print('.\n..\n#############################################');
+    //print('.\n..\n#############################################');
 
-    if( LogosController().showConsoleOutput == true ) {
+    /*if( LogosController().showConsoleOutput == true ) {
       EOL.log(
           msg: '_LogosTxtState > init >\n' +
               'ID:                  ' + _logosVO.logosID.toString() +
@@ -82,13 +80,14 @@ class _LogosTxtState extends State<LogosTxt> {
               "\n**************************\n",
           color: EOLcolors.logosWidget_lightRed_White
       );
-    }
+    }*/
 
     _body = _LogosUpdateTxt(
-      logosVO: _logosVO,
+      //logosVO: _logosVO,
+      logosID: widget.logosID,
       callback: _waitingForUpdate,
       vars: widget.vars,
-      txtStyle: textStyle,
+      textStyle: widget.textStyle,
       textAlign: widget.textAlign,
       child: widget.child,
     );
@@ -98,7 +97,7 @@ class _LogosTxtState extends State<LogosTxt> {
     FontSizeController().addListener(() { _textUpdated(); });
   }
 
-  void _getStyle() {
+  /*void _getStyle() {
 
     if( widget.textStyle == null ) {
 
@@ -109,7 +108,7 @@ class _LogosTxtState extends State<LogosTxt> {
       /// If the Logos widget has a txtStyle then use it.
       textStyle = widget.textStyle!.copyWith( fontSize: widget.textStyle!.fontSize! + FontSizeController().fontSizeAdjustment );
     }
-  }
+  }*/
 
   @override
   void dispose() {
@@ -129,13 +128,14 @@ class _LogosTxtState extends State<LogosTxt> {
   }
 
   void _textUpdated() {
-    _getStyle();
+    //_getStyle();
 
     _body = _LogosUpdateTxt(
-      logosVO: _logosVO,
+      //logosVO: _logosVO,
+      logosID: widget.logosID,
       callback: _waitingForUpdate,
       vars: widget.vars,
-      txtStyle: textStyle,
+      textStyle: widget.textStyle,
       child: widget.child,
     );
 
@@ -154,29 +154,48 @@ class _LogosTxtState extends State<LogosTxt> {
 }
 
 class _LogosUpdateTxt extends StatelessWidget {
-  final LogosVO logosVO;
+  //final LogosVO logosVO;
+  final int logosID;
   final Function callback;
   final Map? vars;
-  final TextStyle txtStyle;
+  TextStyle? textStyle;
   final Widget? child;
   final TextAlign textAlign;
   late final LogosVO _logosVO;
 
   _LogosUpdateTxt({
-    required this.logosVO,
+    //required this.logosVO,
+    required this.logosID,
     required this.callback,
-    required this.txtStyle,
+    this.textStyle,
     this.child,
     this.vars,
     this.textAlign = TextAlign.start,
   }) {
-    _logosVO = LogosController().getLogosVO( logosID: logosVO.logosID );
+    //_logosVO = LogosController().getLogosVO( logosID: logosVO.logosID );
+    _logosVO = LogosController().getLogosVO( logosID: logosID );
+    _getStyle();
+  }
+
+  void _getStyle() {
+
+    if( textStyle == null ) {
+
+      /// The Logos style will default to body if it is not set.
+      textStyle = LogosVO.getStyle( styleName: _logosVO.style );
+
+    } else {
+      /// If the Logos widget has a txtStyle then use it.
+      textStyle = textStyle!.copyWith( fontSize: textStyle!.fontSize! + FontSizeController().fontSizeAdjustment );
+    }
   }
 
   void openEditor({required BuildContext context}) {
     if (LogosController().isEditable == true) {
       callback();
-      LogosController().setEditingLogosVO(logosVO: logosVO);
+
+      LogosController().setEditingLogosVO( logosVO: _logosVO );
+
       showDialog<void>(
           context: context,
           barrierDismissible: false,
@@ -199,13 +218,13 @@ class _LogosUpdateTxt extends StatelessWidget {
         if (child == null) {
           return (_logosVO.isRich == 0)
               ? Text(
-                  LogosController().getLogos(logosID: logosVO.logosID, vars: vars, comment: ''),
-                  style: txtStyle,
+                  LogosController().getLogos(logosID: _logosVO.logosID, vars: vars, comment: ''),
+                  style: textStyle,
                   textAlign: textAlign,
                 )
               : RichTxt(
-                  txt: LogosController().getLogos(logosID: logosVO.logosID, vars: vars, comment: ''),
-                  txtStyle: txtStyle,
+                  txt: LogosController().getLogos(logosID: _logosVO.logosID, vars: vars, comment: ''),
+                  txtStyle: textStyle!,
                   textAlign: textAlign,
                 );
         } else {
