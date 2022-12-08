@@ -342,10 +342,23 @@ class LogosController extends ChangeNotifier {
   }
 
   String _debugWithDoubleSizeORhashtag( { required String txt } ) {
+
     if( _useHashtag == true ) {
-      return txt = '#' + txt + '#';
+
+      if( txt.substring( 0, 1 ) != '#' && txt.substring( txt.length - 1, txt.length ) != '#' ) {
+        return txt = '#' + txt + '#';
+      } else {
+        return txt;
+      }
+
     } else if( _makeDoubleSize == true ) {
-      return txt + ' | ' + txt.toUpperCase();
+
+      if( !txt.contains( txt + ' | ' ) ) {
+        return txt + ' | ' + txt.toUpperCase();
+      } else {
+        return txt;
+      }
+
     } else {
       return txt;
     }
