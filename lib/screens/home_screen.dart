@@ -110,6 +110,15 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox( height: 30, ),
 
+              Text( LogosController().getLogosVO( logosID: 20 ).txt,),
+
+              SizedBox( height: 30, ),
+
+              LogosTxt(
+                comment: "Title | Search movies by title.",
+                logosID: 18,
+              ),
+
               /*LogosTxt(
                 comment: "RunPee: because movie theaters don't have pause buttons. | RunPee tagline",
                 logosID: 1,
