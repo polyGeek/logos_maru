@@ -250,7 +250,7 @@ class LogosController extends ChangeNotifier {
 
     if( newLanguageOptionsDecoded.isNotEmpty ) {
       _log(msg: 'newLanguageOptions', json: result );
-      
+
       List<LangVO> newLangList = newLanguageOptionsDecoded.map((e) => LangVO.fromJson(e)).toList();
 
       /// Update local DB with newLanguage list.
@@ -327,7 +327,6 @@ class LogosController extends ChangeNotifier {
 
         /// Add vars if needed.
         String txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars);
-        //String txt = _insertVars( txt: logosVO.txt, vars: vars );
 
         if( _useHashtag == true ) {
           return '#' + txt + '#';
@@ -340,6 +339,16 @@ class LogosController extends ChangeNotifier {
     }
 
     return 'ERROR: #' + logosID.toString();
+  }
+
+  String _debugWithDoubleSizeORhashtag( { required String txt } ) {
+    if( _useHashtag == true ) {
+      return txt = '#' + txt + '#';
+    } else if( _makeDoubleSize == true ) {
+      return txt + ' | ' + txt.toUpperCase();
+    } else {
+      return txt;
+    }
   }
 
   List<LogosVO> _lastTagList = [];
@@ -368,6 +377,7 @@ class LogosController extends ChangeNotifier {
       if( logosVO.tags.contains( tagID.toString() ) ) {
         if( logosVO.txt == txt ) {
           logosVO.txt = ( vars == null )? logosVO.txt :  _insertVars( txt: logosVO.txt, vars: vars );
+          logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
           return logosVO;
         }
       }
@@ -385,6 +395,8 @@ class LogosController extends ChangeNotifier {
       LogosVO logosVO = _logosList.elementAt(i);
       if ( logosVO.logosID == logosID ) {
         logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars );
+
+        logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
         return logosVO;
       }
     }
@@ -481,7 +493,7 @@ class LogosController extends ChangeNotifier {
     _log(msg: "Data to server: " + map.toString() );
 
     String result = await NetworkHelper.sendPostRequest(
-      url: _apiPath + _apiVersion + '/add-new.php',
+        url: _apiPath + _apiVersion + '/add-new.php',
         map: map
     );
 
