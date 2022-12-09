@@ -16,6 +16,7 @@ class LogosTxt extends StatefulWidget {
   final Widget? child;
   final TextAlign textAlign;
   final int? maxLines;
+  final bool? isRich;
 
   /// Used for LogosTxt.static
   final String txt;
@@ -29,6 +30,7 @@ class LogosTxt extends StatefulWidget {
     this.textAlign = TextAlign.start,
     this.txt = '',
     this.maxLines,
+    this.isRich,
   });
 
   /// This will search through all of the matching tags to find
@@ -36,6 +38,7 @@ class LogosTxt extends StatefulWidget {
   LogosTxt.dynamic({
     required String txt,
     required String tag,
+    this.isRich,
     this.textStyle,
     this.vars,
     this.child,
@@ -49,6 +52,7 @@ class LogosTxt extends StatefulWidget {
   /// Allows static text to be passed through LogosTxt so that it will be adjusted for font size.
   LogosTxt.static({
     required String txt,
+    this.isRich,
     this.textStyle,
     this.comment = '',
     this.vars,
@@ -70,14 +74,14 @@ class _LogosTxtState extends State<LogosTxt> {
     super.initState();
 
     _body = _LogosUpdateTxt(
-      logosID: widget.logosID,
-      vars: widget.vars,
-      textStyle: widget.textStyle,
-      textAlign: widget.textAlign,
-      txt: widget.txt,
-      maxLines: widget.maxLines,
-      child: widget.child,
-
+      logosID     : widget.logosID,
+      vars        : widget.vars,
+      textStyle   : widget.textStyle,
+      textAlign   : widget.textAlign,
+      txt         : widget.txt,
+      maxLines    : widget.maxLines,
+      isRich      : widget.isRich,
+      child       : widget.child,
     );
 
     LogosController().addListener(() { _update(); });
@@ -102,13 +106,14 @@ class _LogosTxtState extends State<LogosTxt> {
 
       await Future.delayed( const Duration( milliseconds: 100 ), () {
         _body = _LogosUpdateTxt(
-          logosID: widget.logosID,
-          vars: widget.vars,
-          textStyle: widget.textStyle,
-          textAlign: widget.textAlign,
-          txt: widget.txt,
-          maxLines: widget.maxLines,
-          child: widget.child,
+          logosID     : widget.logosID,
+          vars        : widget.vars,
+          textStyle   : widget.textStyle,
+          textAlign   : widget.textAlign,
+          txt         : widget.txt,
+          maxLines    : widget.maxLines,
+          isRich      : widget.isRich,
+          child       : widget.child,
         );
       } );
 
@@ -137,6 +142,7 @@ class _LogosUpdateTxt extends StatefulWidget {
   final TextAlign textAlign;
   final String? txt;
   final int? maxLines;
+  final bool? isRich;
 
   _LogosUpdateTxt( {
     required this.logosID,
@@ -146,6 +152,7 @@ class _LogosUpdateTxt extends StatefulWidget {
     this.textAlign = TextAlign.start,
     this.txt,
     this.maxLines,
+    this.isRich,
   });
 
   @override
@@ -163,20 +170,20 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
 
     if( widget.logosID == 0 ) {
       _logosVO = LogosVO(
-        logosID: 0,
-        txt: widget.txt!,
-        style: 'body', /// This would have been chosen as the default text no matter.
-        description: '',
-        tags: '',
-        isRich: 0,
-        langCode: '',
-        lastUpdate: '',
-        note: '',
+        logosID       : 0,
+        txt           : widget.txt!,
+        style         : 'body', /// This would have been chosen as the default text no matter.
+        description   : '',
+        tags          : '',
+        isRich        : ( widget.isRich == null ) ? 0 : ( widget.isRich == true )? 1 : 0,
+        langCode      : '',
+        lastUpdate    : '',
+        note          : '',
       );
     } else {
       _logosVO = LogosController().getLogosVO(
-        logosID: widget.logosID,
-        vars: widget.vars,
+        logosID       : widget.logosID,
+        vars          : widget.vars,
       );
     }
 
@@ -225,19 +232,19 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
       if( _logosVO.isRich == 1 ) {
 
         _body = RichTxt(
-          txt: _logosVO.txt,
-          txtStyle: _style,
-          textAlign: widget.textAlign,
-          maxLines: widget.maxLines,
+          txt         : _logosVO.txt,
+          txtStyle    : _style,
+          textAlign   : widget.textAlign,
+          maxLines    : widget.maxLines,
         );
 
       } else {
 
         _body = Text(
           _logosVO.txt,
-          style: _style,
-          textAlign: widget.textAlign,
-          maxLines: widget.maxLines
+          style       : _style,
+          textAlign   : widget.textAlign,
+          maxLines    : widget.maxLines
         );
       }
     }

@@ -140,6 +140,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 textAlign: TextAlign.center,
               ),
 
+              LogosTxt.static( txt: 'This is <gold>static</gold> text', isRich: true,),
               /*Text(
                 "RunPee: because movie theaters don't have pause buttons. 20",
                 style: LogosTextStyles().title.copyWith( fontSize: 20 ),
@@ -194,7 +195,7 @@ class _HomeScreenState extends State<HomeScreen> {
               }),*/
 
 
-              LogosTxt.static( txt: 'HELLO \nWORLD...', textStyle: TextStyle( fontSize: 44, color: Colors.yellowAccent),),
+              //LogosTxt.static( txt: 'HELLO \nWORLD...', textStyle: TextStyle( fontSize: 44, color: Colors.yellowAccent),),
 
 
 
