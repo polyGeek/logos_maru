@@ -172,7 +172,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-              /*Builder(builder: (BuildContext context) {
+              Builder(builder: (BuildContext context) {
                 List<String> days = [ 'January', 'February', 'March', 'April', 'May' ];
                 List<Widget> dayChildren = [];
 
@@ -191,7 +191,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: dayChildren,
                 );
-              }),*/
+              }),
+
+
+              LogosTxt.static( txt: 'HELLO WORLD...', textStyle: TextStyle( fontSize: 44, color: Colors.yellowAccent),),
 
 
               /* RichTxt(

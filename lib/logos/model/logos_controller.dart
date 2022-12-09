@@ -97,7 +97,6 @@ class LogosController extends ChangeNotifier {
     /// 0: Copy databases from assets folder
     embeddedDatabases.forEach( (embeddedDatabase) async {
       await DBHelpers.copyEmbeddedDatabase( assetPath: embeddedDatabase );
-      print( 'LogosController.init() - Copied embedded database: $embeddedDatabase' );
     } );
 
     /// 0.1: Init the SettingsController where the fontScale is set.

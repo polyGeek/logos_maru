@@ -17,6 +17,9 @@ class LogosTxt extends StatefulWidget {
   final Widget? child;
   final TextAlign textAlign;
 
+  /// Used for LogosTxt.static
+  final String txt;
+
   LogosTxt({
     required this.logosID,
     required this.comment,
@@ -24,8 +27,11 @@ class LogosTxt extends StatefulWidget {
     this.vars,
     this.textStyle,
     this.textAlign = TextAlign.start,
+    this.txt = '',
   });
 
+  /// This will search through all of the matching tags to find
+  /// the correct txt and return the translation for the selected language.
   LogosTxt.dynamic({
     required String txt,
     required String tag,
@@ -34,7 +40,20 @@ class LogosTxt extends StatefulWidget {
     this.child,
     this.textAlign = TextAlign.start,
   })  : this.logosID = LogosController().getDynamicLogos( txt: txt, tag: tag ).logosID,
+        this.txt = '', /// Used for LogosTxt.static
         this.comment = tag;
+
+
+  /// Allows static text to be passed through LogosTxt so that it will be adjusted for font size.
+  LogosTxt.static({
+    required String txt,
+    required this.textStyle, // todo: make this optional
+    this.comment = '',
+    this.vars,
+    this.child,
+    this.textAlign = TextAlign.start,
+  })  : this.logosID = 0, /// This is what makes it static.
+        this.txt = txt;
 
   @override
   State<LogosTxt> createState() => _LogosTxtState();
@@ -43,22 +62,16 @@ class LogosTxt extends StatefulWidget {
 class _LogosTxtState extends State<LogosTxt> {
   Widget _body = Container();
 
-  /*void _waitingForUpdate() {
-    //_body = CircularProgress();
-    //_update();
-  }*/
-
-
   @override
   void initState() {
     super.initState();
 
     _body = _LogosUpdateTxt(
       logosID: widget.logosID,
-      //updateCallback: _waitingForUpdate,
       vars: widget.vars,
       textStyle: widget.textStyle,
       textAlign: widget.textAlign,
+      txt: widget.txt,
       child: widget.child,
     );
 
@@ -85,10 +98,10 @@ class _LogosTxtState extends State<LogosTxt> {
       await Future.delayed( const Duration( milliseconds: 100 ), () {
         _body = _LogosUpdateTxt(
           logosID: widget.logosID,
-          //updateCallback: _waitingForUpdate,
           vars: widget.vars,
           textStyle: widget.textStyle,
           textAlign: widget.textAlign,
+          txt: widget.txt,
           child: widget.child,
         );
       } );
@@ -112,19 +125,19 @@ class _LogosTxtState extends State<LogosTxt> {
 *  ===============================================*/
 class _LogosUpdateTxt extends StatefulWidget {
   final int logosID;
-  //final Function updateCallback;
   final Map? vars;
   final TextStyle? textStyle;
   final Widget? child;
   final TextAlign textAlign;
+  final String? txt;
 
   _LogosUpdateTxt( {
     required this.logosID,
-    //required this.updateCallback,
     this.textStyle,
     this.child,
     this.vars,
     this.textAlign = TextAlign.start,
+    this.txt,
   });
 
   @override
@@ -140,10 +153,25 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
   void initState() {
     super.initState();
 
-    _logosVO = LogosController().getLogosVO(
-      logosID: widget.logosID,
-      vars: widget.vars,
-    );
+    if( widget.logosID == 0 ) {
+      print( ' ----------------------------------- ');
+      _logosVO = LogosVO(
+        logosID: 0,
+        txt: widget.txt!,
+        style: 'body', /// This would have been chosen as the default text no matter.
+        description: '',
+        tags: '',
+        isRich: 0,
+        langCode: '',
+        lastUpdate: '',
+        note: '',
+      );
+    } else {
+      _logosVO = LogosController().getLogosVO(
+        logosID: widget.logosID,
+        vars: widget.vars,
+      );
+    }
 
     _getStyle();
 
@@ -154,11 +182,6 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
   void dispose() {
     super.dispose();
   }
-
-  /*void _update() {
-    if( mounted )
-      setState(() {});
-  }*/
 
   void _getStyle() {
 
@@ -175,8 +198,6 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
 
   void openEditor({required BuildContext context}) {
     if (LogosController().isEditable == true) {
-      //widget.updateCallback();
-
       LogosController().setEditingLogosVO( logosVO: _logosVO );
 
       showDialog<void>(
