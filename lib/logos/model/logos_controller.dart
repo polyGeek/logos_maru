@@ -320,7 +320,7 @@ class LogosController extends ChangeNotifier {
 
         /// Add vars if needed.
         String txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars);
-
+        txt = _newLine( txt: txt );
         return _debugWithDoubleSizeORhashtag( txt: txt );
       }
     }
@@ -332,7 +332,6 @@ class LogosController extends ChangeNotifier {
 
     if( _useHashtag == true ) {
 
-      print( '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@Hashtag: ' + txt.substring( 0, 1 ) + ' --- ' + txt.substring( txt.length - 1, txt.length ) );
       if( txt.substring( 0, 1 ) != '#' && txt.substring( txt.length - 1, txt.length ) != '#' ) {
         return txt = '#' + txt + '#';
       } else {
@@ -341,9 +340,7 @@ class LogosController extends ChangeNotifier {
 
     } else if( _makeDoubleSize == true ) {
 
-      print( '*****************'  + txt );
       if( !txt.contains( txt + ' | ' ) ) {
-        print( 'uppercasing');
         return txt + ' | ' + txt.toUpperCase();
       } else {
         return txt;
@@ -381,6 +378,7 @@ class LogosController extends ChangeNotifier {
         if( logosVO.txt == txt ) {
           logosVO.txt = ( vars == null )? logosVO.txt :  _insertVars( txt: logosVO.txt, vars: vars );
           logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
+          logosVO.txt = _newLine( txt: logosVO.txt );
           return logosVO;
         }
       }
@@ -400,6 +398,8 @@ class LogosController extends ChangeNotifier {
 
         logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars );
         logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
+        logosVO.txt = _newLine( txt: logosVO.txt );
+
         return logosVO;
       }
     }
@@ -407,6 +407,10 @@ class LogosController extends ChangeNotifier {
     return LogosVO(
         txt: 'ERROR',
         logosID: 0, tags: '', note: '', description: '', langCode: 'EN', lastUpdate: '', style: '', isRich: 0 );
+  }
+
+  String _newLine( { required String txt } ) {
+    return txt.replaceAll( '^^', '\n' );
   }
 
   LogosVO getEditLogos({
