@@ -148,7 +148,7 @@ class _StyleChooserState extends State<StyleChooser> {
                     children: [
                       Text(
                         value.name,
-                        style: LogosAdminTxtStyles.body.bold,
+                        style: LogosAdminTxtStyles.body.logos_bold,
                       ),
                       Text( value.description,
                         style: LogosVO.getStyle(styleName: value.name ),

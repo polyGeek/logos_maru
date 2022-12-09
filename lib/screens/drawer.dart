@@ -35,7 +35,7 @@ class DrawerMenu extends StatelessWidget {
             },
             child: Text(
               'update from the remote database',
-              style: LogosTextStyles().btn.white,
+              style: LogosTextStyles().btn.logos_white,
             ),
           ),
 
@@ -53,7 +53,7 @@ class DrawerMenu extends StatelessWidget {
             },
             child: Text(
               'Authenticate as Editor',
-              style: LogosTextStyles().btn.white,
+              style: LogosTextStyles().btn.logos_white,
             )
           ),
 
@@ -71,7 +71,7 @@ class DrawerMenu extends StatelessWidget {
             },
             child: Text(
               'View Logs',
-              style: LogosTextStyles().btn.white,
+              style: LogosTextStyles().btn.logos_white,
             ),
           ),
 
@@ -80,7 +80,7 @@ class DrawerMenu extends StatelessWidget {
           LogosTxt.static(
             txt: 'App version: {version}',
             vars: { 'version': AppController.version },
-            textStyle: LogosTextStyles().btn.white,
+            textStyle: LogosTextStyles().btn.logos_white,
           ),
 
           SizedBox( height: 20,),
@@ -88,7 +88,7 @@ class DrawerMenu extends StatelessWidget {
           LogosTxt.static(
               txt: 'application build number {build}',
               vars: { 'build': AppController.buildNumber },
-            textStyle: LogosTextStyles().btn.white,
+            textStyle: LogosTextStyles().btn.logos_white,
 
           ),
 
@@ -105,7 +105,7 @@ class DrawerMenu extends StatelessWidget {
             },
             child: LogosTxt.static(
               txt: 'User Sign In',
-              textStyle: LogosTextStyles().btn.white,
+              textStyle: LogosTextStyles().btn.logos_white,
             ),
           )
         ],

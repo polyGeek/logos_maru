@@ -193,7 +193,7 @@ class _LogosEditorState extends State<LogosEditor> {
                       TableCell(
                         child: Text(
                           LogosController().editingLogosVO!.description,
-                          style: LogosAdminTxtStyles.body.italic,
+                          style: LogosAdminTxtStyles.body.logos_italic,
                         ),
                       ),
                     ],
@@ -211,7 +211,7 @@ class _LogosEditorState extends State<LogosEditor> {
                       TableCell(
                         child: Text(
                           LogosController().editingLogosVO!.tags,
-                          style: LogosAdminTxtStyles.body.italic,
+                          style: LogosAdminTxtStyles.body.logos_italic,
                         ),
                       ),
                     ],
@@ -253,7 +253,7 @@ class _LogosEditorState extends State<LogosEditor> {
                   labelText: LanguageController().getLanguageNameFromCode(
                     langCode: LanguageController().editingLanguageCode,
                   ),
-                  labelStyle: LogosAdminTxtStyles.bodySm.offWhite,
+                  labelStyle: LogosAdminTxtStyles.bodySm.logos_offWhite,
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.amber,
@@ -288,7 +288,7 @@ class _LogosEditorState extends State<LogosEditor> {
                   errorStyle: TextStyle(fontSize: 18, color: Colors.redAccent),
                   border: OutlineInputBorder(),
                   labelText: 'Note',
-                  labelStyle: LogosAdminTxtStyles.bodySm.offWhite,
+                  labelStyle: LogosAdminTxtStyles.bodySm.logos_offWhite,
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.amber,
