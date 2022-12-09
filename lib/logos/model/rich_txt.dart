@@ -65,14 +65,14 @@ class Styles {
 class RichTxt extends StatefulWidget {
   final String txt;
   final TextAlign textAlign;
-  final int maxLines;
+  final int? maxLines;
   final TextStyle txtStyle;
 
   RichTxt( {
     required this.txt,
     required this.txtStyle,
     this.textAlign = TextAlign.start,
-    this.maxLines = 10000 } );
+    this.maxLines } );
 
   @override
   _RichTxtState createState() => _RichTxtState();

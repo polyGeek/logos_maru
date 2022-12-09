@@ -16,6 +16,7 @@ class LogosTxt extends StatefulWidget {
   final TextStyle? textStyle;
   final Widget? child;
   final TextAlign textAlign;
+  final int? maxLines;
 
   /// Used for LogosTxt.static
   final String txt;
@@ -28,6 +29,7 @@ class LogosTxt extends StatefulWidget {
     this.textStyle,
     this.textAlign = TextAlign.start,
     this.txt = '',
+    this.maxLines,
   });
 
   /// This will search through all of the matching tags to find
@@ -38,6 +40,7 @@ class LogosTxt extends StatefulWidget {
     this.textStyle,
     this.vars,
     this.child,
+    this.maxLines,
     this.textAlign = TextAlign.start,
   })  : this.logosID = LogosController().getDynamicLogos( txt: txt, tag: tag ).logosID,
         this.txt = '', /// Used for LogosTxt.static
@@ -47,10 +50,11 @@ class LogosTxt extends StatefulWidget {
   /// Allows static text to be passed through LogosTxt so that it will be adjusted for font size.
   LogosTxt.static({
     required String txt,
-    required this.textStyle, // todo: make this optional
+    this.textStyle,
     this.comment = '',
     this.vars,
     this.child,
+    this.maxLines,
     this.textAlign = TextAlign.start,
   })  : this.logosID = 0, /// This is what makes it static.
         this.txt = txt;
@@ -72,7 +76,9 @@ class _LogosTxtState extends State<LogosTxt> {
       textStyle: widget.textStyle,
       textAlign: widget.textAlign,
       txt: widget.txt,
+      maxLines: widget.maxLines,
       child: widget.child,
+
     );
 
     LogosController().addListener(() { _update(); });
@@ -102,6 +108,7 @@ class _LogosTxtState extends State<LogosTxt> {
           textStyle: widget.textStyle,
           textAlign: widget.textAlign,
           txt: widget.txt,
+          maxLines: widget.maxLines,
           child: widget.child,
         );
       } );
@@ -130,6 +137,7 @@ class _LogosUpdateTxt extends StatefulWidget {
   final Widget? child;
   final TextAlign textAlign;
   final String? txt;
+  final int? maxLines;
 
   _LogosUpdateTxt( {
     required this.logosID,
@@ -138,6 +146,7 @@ class _LogosUpdateTxt extends StatefulWidget {
     this.vars,
     this.textAlign = TextAlign.start,
     this.txt,
+    this.maxLines,
   });
 
   @override
@@ -221,6 +230,7 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
           txt: _logosVO.txt,
           txtStyle: _style,
           textAlign: widget.textAlign,
+          maxLines: widget.maxLines,
         );
 
       } else {
@@ -229,8 +239,8 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
           _logosVO.txt,
           style: _style,
           textAlign: widget.textAlign,
+          maxLines: widget.maxLines
         );
-
       }
     }
   }
