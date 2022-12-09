@@ -26,6 +26,16 @@ class LogosTxt extends StatefulWidget {
     this.textAlign = TextAlign.start,
   });
 
+  LogosTxt.dynamic({
+    required String txt,
+    required String tag,
+    this.textStyle,
+    this.vars,
+    this.child,
+    this.textAlign = TextAlign.start,
+  })  : this.logosID = LogosController().getDynamicLogos( txt: txt, tag: tag ).logosID,
+        this.comment = tag;
+
   @override
   State<LogosTxt> createState() => _LogosTxtState();
 }
