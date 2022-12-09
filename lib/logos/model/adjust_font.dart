@@ -155,7 +155,6 @@ class FontSizeController extends ChangeNotifier {
     void changeFontSizeAdjustment( { required int fontSizeAdjustment } ) async {
         print( 'pre adjustment = ' + _fontSizeAdjustment.toString() );
         _fontSizeAdjustment += fontSizeAdjustment;
-        print( 'post adjustment = ' + _fontSizeAdjustment.toString() );
 
         /// Keep the _fontSizeAdjustment within the range of -10 to 20.
         if( _fontSizeAdjustment > 20 ) {

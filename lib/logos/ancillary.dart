@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/model/data_tags/data_vo.dart';
 import 'package:logos_maru/logos/model/data_tags/styles_controller.dart';
-import 'package:logos_maru/logos/model/eol.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';

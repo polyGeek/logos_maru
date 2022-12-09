@@ -103,7 +103,11 @@ class _HomeScreenState extends State<HomeScreen> {
               LogosTxt(
                 comment: 'Sign in & <gold>get 2 FREE Peecoins</gold> | sign in message',
                 logosID: 2,
-                //textStyle: LogosTextStyles().bodySm,
+                textAlign: TextAlign.center,
+                textStyle: TextStyle(
+                  fontSize: 20,
+                  color: Colors.blue,
+                ),
               ),
 
               Text( _dynamicText ),
@@ -117,12 +121,17 @@ class _HomeScreenState extends State<HomeScreen> {
               LogosTxt(
                 comment: "Title | Search movies by title.",
                 logosID: 18,
+                child: Container( width: 300, height: 50, color: Colors.black,),
               ),
 
               LogosTxt(
                 comment: "RunPee: because movie theaters don't have pause buttons. | RunPee tagline",
                 logosID: 1,
-                textStyle: LogosController().logosFontStyles!.header,
+                textStyle: TextStyle(
+                  fontSize: 20,
+                  color: Colors.blue,
+                ),
+                textAlign: TextAlign.center,
               ),
 
               LogosTxt(

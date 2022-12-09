@@ -45,6 +45,7 @@ class LogosController extends ChangeNotifier {
   bool? _useHashtag = false;
   bool get useHashtag => _useHashtag!;
   void setUseHashtag( { required bool useHashtag } ) {
+    print( 'LogosController.setUseHashtag: $useHashtag' );
     _useHashtag = useHashtag;
     notifyListeners();
   }
@@ -320,14 +321,6 @@ class LogosController extends ChangeNotifier {
 
         /// Add vars if needed.
         String txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars);
-
-        /*if( _useHashtag == true ) {
-          return '#' + txt + '#';
-        } else if( _makeDoubleSize == true ) {
-          return txt + ' | ' + txt.toUpperCase();
-        } else {
-          return txt;
-        }*/
 
         return _debugWithDoubleSizeORhashtag( txt: txt );
       }
