@@ -7,7 +7,12 @@ class LogosAdminTxtStyles {
   static TextStyle body = GoogleFonts.robotoMono(
     letterSpacing: 1.2,
     fontSize: (20 + FontSizeController().fontSizeAdjustment).toDouble(),
-    //fontWeight: FontWeight.w300,
+    height: 1.3,
+  ).white;
+
+  static TextStyle bodySm = GoogleFonts.robotoMono(
+    letterSpacing: 1.2,
+    fontSize: (18 + FontSizeController().fontSizeAdjustment).toDouble(),
     height: 1.3,
   ).white;
 
@@ -26,14 +31,25 @@ class LogosAdminTxtStyles {
 }
 
 
-extension LogosAdminTextStyleHelpers on TextStyle {
+extension LogosTextStyleEx on TextStyle {
+  /// Weight/Style/Decoration
   TextStyle get bold          => copyWith( fontWeight: FontWeight.bold );
-  TextStyle get gold          => copyWith( color: Colors.orangeAccent );
-  TextStyle get black         => copyWith( color: Colors.black87 );
+  TextStyle get boldHeavy     => copyWith( fontWeight: FontWeight.w900 );
+  TextStyle get boldMild      => copyWith( fontWeight: FontWeight.w500 );
+  TextStyle get boldLight     => copyWith( fontWeight: FontWeight.w100 );
+  TextStyle get italic        => copyWith( fontStyle: FontStyle.italic );
+  TextStyle get underline     => copyWith( decoration: TextDecoration.underline );
+
+  /// Color
+  TextStyle get gold          => copyWith( color: Color( 0xe6fca905 ) );
+  TextStyle get black         => copyWith( color: Colors.black );
   TextStyle get white         => copyWith( color: Colors.white );
   TextStyle get offWhite      => copyWith( color: Colors.white70 );
-  TextStyle get small         => copyWith( fontSize: FontSizeController().fontSizeAdjustment + 14 );
-  TextStyle get italic        => copyWith( fontStyle: FontStyle.italic );
+
+  TextStyle get enabled       => copyWith( color: Colors.lightGreenAccent );
+  TextStyle get disabled      => copyWith( color: Colors.redAccent );
+
+  /// Spacing
   TextStyle letterSpace( double v ) => copyWith( letterSpacing: v );
 }
 

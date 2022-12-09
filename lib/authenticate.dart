@@ -111,7 +111,7 @@ class AuthenticateLogosEditorState extends State<AuthenticateLogosEditor> {
                 autocorrect: false,
                 style: LogosAdminTxtStyles.body,
                 decoration: InputDecoration(
-                  labelStyle: LogosAdminTxtStyles.body.small,
+                  labelStyle: LogosAdminTxtStyles.bodySm,
                   errorStyle: TextStyle( fontSize: 18, color: Colors.redAccent ),
                   border: OutlineInputBorder(),
                   labelText: 'Username',

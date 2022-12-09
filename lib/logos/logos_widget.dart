@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/logos_editor.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';

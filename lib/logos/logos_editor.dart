@@ -223,7 +223,7 @@ class _LogosEditorState extends State<LogosEditor> {
               ),
               Text(
                 'Primary Style:',
-                style: LogosAdminTxtStyles.body.small,
+                style: LogosAdminTxtStyles.bodySm,
               ),
               StyleChooser(
                 logosID: LogosController().editingLogosVO!.logosID,
@@ -253,7 +253,7 @@ class _LogosEditorState extends State<LogosEditor> {
                   labelText: LanguageController().getLanguageNameFromCode(
                     langCode: LanguageController().editingLanguageCode,
                   ),
-                  labelStyle: LogosAdminTxtStyles.body.small.offWhite,
+                  labelStyle: LogosAdminTxtStyles.bodySm.offWhite,
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.amber,
@@ -288,7 +288,7 @@ class _LogosEditorState extends State<LogosEditor> {
                   errorStyle: TextStyle(fontSize: 18, color: Colors.redAccent),
                   border: OutlineInputBorder(),
                   labelText: 'Note',
-                  labelStyle: LogosAdminTxtStyles.body.small.offWhite,
+                  labelStyle: LogosAdminTxtStyles.bodySm.offWhite,
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(
                       color: Colors.amber,
