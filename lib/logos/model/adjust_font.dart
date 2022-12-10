@@ -52,13 +52,13 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
     @override
     void initState() {
         super.initState();
-        FontSizeController().addListener(() { _update(); } );
+        LogosFontSizeController().addListener(() { _update(); } );
     }
 
     @override
     void dispose() {
 
-        FontSizeController().removeListener(() { _update(); } );
+        LogosFontSizeController().removeListener(() { _update(); } );
         super.dispose();
     }
 
@@ -74,7 +74,7 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
             contentPadding: EdgeInsets.all( 10 ),
 
             title: Text(
-                'Text Size Adjustment = ' + FontSizeController().fontSizeAdjustment.toString(),
+                'Text Size Adjustment = ' + LogosFontSizeController().fontSizeAdjustment.toString(),
             ),
             content: SingleChildScrollView(
                 child: ListBody(
@@ -102,7 +102,7 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
 
                                 GestureDetector(
                                     onTap: (){
-                                        FontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: -1 );
+                                        LogosFontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: -1 );
                                     },
                                     child: Icon(
                                         Icons.remove_circle_outline,
@@ -112,7 +112,7 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
 
                                 GestureDetector(
                                     onTap: (){
-                                        FontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: 1 );
+                                        LogosFontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: 1 );
                                     },
                                     child: Icon(
                                         Icons.add_circle_outline,
@@ -139,21 +139,20 @@ class _AdjustFontScaleState extends State<AdjustFontScale> {
 }
 
 
-class FontSizeController extends ChangeNotifier {
-    static final FontSizeController _fontSizeController = FontSizeController._internal();
-    factory FontSizeController() => _fontSizeController;
-    FontSizeController._internal();
+class LogosFontSizeController extends ChangeNotifier {
+    static final LogosFontSizeController _fontSizeController = LogosFontSizeController._internal();
+    factory LogosFontSizeController() => _fontSizeController;
+    LogosFontSizeController._internal();
 
     void init() {
         _fontSizeAdjustment = SettingsController.settingsVO.fontSizeAdjustment;
-        FontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: 0 );
+        LogosFontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: 0 );
     }
 
     int _fontSizeAdjustment = 0;
     int get fontSizeAdjustment => _fontSizeAdjustment;
 
     void changeFontSizeAdjustment( { required int fontSizeAdjustment } ) async {
-        print( 'pre adjustment = ' + _fontSizeAdjustment.toString() );
         _fontSizeAdjustment += fontSizeAdjustment;
 
         /// Keep the _fontSizeAdjustment within the range of -10 to 20.
@@ -166,7 +165,7 @@ class FontSizeController extends ChangeNotifier {
         /// Store the fontSizeAdjustment in the Settings.
         SettingsController().setFontSizeAdjustment( fontSizeAdjustment: _fontSizeAdjustment );
 
-        _log(msg: 'userScale: ' + _fontSizeAdjustment.toString() );
+        _log(msg: 'font size adjustment: ' + _fontSizeAdjustment.toString() );
         notifyListeners();
     }
 

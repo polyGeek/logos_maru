@@ -16,7 +16,7 @@ class SettingsController {
 		_settingsVO = await _settingsDB.getUserSettings();
 
 		//FontSizeController().fontSizeAdjustment = _settingsVO.fontSizeAdjustment;
-		FontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: _settingsVO.fontSizeAdjustment );
+		LogosFontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: _settingsVO.fontSizeAdjustment );
 	}
 
 

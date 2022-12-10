@@ -6,24 +6,24 @@ class LogosAdminTxtStyles {
 
   static TextStyle body = GoogleFonts.robotoMono(
     letterSpacing: 1.2,
-    fontSize: (20 + FontSizeController().fontSizeAdjustment).toDouble(),
+    fontSize: (20 + LogosFontSizeController().fontSizeAdjustment).toDouble(),
     height: 1.3,
   ).logos_white;
 
   static TextStyle bodySm = GoogleFonts.robotoMono(
     letterSpacing: 1.2,
-    fontSize: (18 + FontSizeController().fontSizeAdjustment).toDouble(),
+    fontSize: (18 + LogosFontSizeController().fontSizeAdjustment).toDouble(),
     height: 1.3,
   ).logos_white;
 
   static TextStyle get btn =>
-      body.copyWith( fontSize: FontSizeController().fontSizeAdjustment + 16 ).logos_black.logos_bold;
+      body.copyWith( fontSize: LogosFontSizeController().fontSizeAdjustment + 16 ).logos_black.logos_bold;
 
   static TextStyle get btnSub =>
-      body.copyWith( fontSize: FontSizeController().fontSizeAdjustment + 14 ).logos_white;
+      body.copyWith( fontSize: LogosFontSizeController().fontSizeAdjustment + 14 ).logos_white;
 
   static TextStyle get title =>
-      body.copyWith( fontSize: FontSizeController().fontSizeAdjustment + 22 ).logos_bold;
+      body.copyWith( fontSize: LogosFontSizeController().fontSizeAdjustment + 22 ).logos_bold;
 
 
 

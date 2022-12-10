@@ -96,14 +96,14 @@ class _RichTxtState extends State<RichTxt> {
       style: widget.txtStyle,
     );
 
-    FontSizeController().addListener( _update );
+    LogosFontSizeController().addListener( _update );
     LogosController().addListener( refresh );
     _update();
   }
 
   @override
   void dispose() {
-    FontSizeController().removeListener( _update );
+    LogosFontSizeController().removeListener( _update );
     LogosController().removeListener( refresh );
     super.dispose();
   }

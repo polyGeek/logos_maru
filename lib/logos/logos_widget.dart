@@ -86,14 +86,14 @@ class _LogosTxtState extends State<LogosTxt> {
 
     LogosController().addListener(() { _update(); });
     LanguageController().addListener(() { _update(); });
-    FontSizeController().addListener(() { _update(); });
+    LogosFontSizeController().addListener(() { _update(); });
   }
 
   @override
   void dispose() {
     LogosController().removeListener(() { _update(); });
     LanguageController().removeListener(() { _update(); });
-    FontSizeController().removeListener(() { _update(); });
+    LogosFontSizeController().removeListener(() { _update(); });
     super.dispose();
   }
 
@@ -206,7 +206,7 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
 
     } else {
       /// If the Logos widget has a txtStyle then use it.
-      _style = widget.textStyle!.copyWith( fontSize: widget.textStyle!.fontSize! + FontSizeController().fontSizeAdjustment );
+      _style = widget.textStyle!.copyWith( fontSize: widget.textStyle!.fontSize! + LogosFontSizeController().fontSizeAdjustment );
     }
   }
 

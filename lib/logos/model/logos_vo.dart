@@ -109,7 +109,7 @@ class LogosVO {
   /// Returns the TextStyle for the given style name
   /// If the style name is not found, returns the default style (body).
   static Map<dynamic, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
-  static double _lastFontSize = LogosController().logosFontStyles!.body.fontSize! + FontSizeController().fontSizeAdjustment;
+  static double _lastFontSize = LogosController().logosFontStyles!.body.fontSize! + LogosFontSizeController().fontSizeAdjustment;
 
   static TextStyle getStyle( { required String styleName } ) {
 
@@ -124,14 +124,14 @@ class LogosVO {
       if( ts.fontSize == null ) {
         return ts.copyWith( fontSize: _lastFontSize );
       } else {
-        _lastFontSize = ts.fontSize! + FontSizeController().fontSizeAdjustment;
-        return ts.copyWith( fontSize: ts.fontSize! + FontSizeController().fontSizeAdjustment );
+        _lastFontSize = ts.fontSize! + LogosFontSizeController().fontSizeAdjustment;
+        return ts.copyWith( fontSize: ts.fontSize! + LogosFontSizeController().fontSizeAdjustment );
       }
 
     } catch (e) {
       _log( msg: 'ERROR GETTING STYLE : $styleName \n $e', fail: true );
       return LogosController().logosFontStyles!.body.copyWith(
-          fontSize: LogosController().logosFontStyles!.body.fontSize! + FontSizeController().fontSizeAdjustment
+          fontSize: LogosController().logosFontStyles!.body.fontSize! + LogosFontSizeController().fontSizeAdjustment
       );
     }
   }
