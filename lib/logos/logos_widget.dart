@@ -29,7 +29,7 @@ class LogosTxt extends StatefulWidget {
     this.textStyle,
     this.textAlign = TextAlign.start,
     this.txt = '',
-    this.maxLines,
+    this.maxLines = 9999,
     this.isRich,
   });
 

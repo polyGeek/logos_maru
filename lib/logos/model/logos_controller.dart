@@ -410,7 +410,7 @@ class LogosController extends ChangeNotifier {
     }
 
     return LogosVO(
-        txt: '(#' + logosID.toString() + ') ' + comment,
+        txt: comment + ' (#' + logosID.toString() + ')',
         logosID: 0, tags: '', note: '', description: '', langCode: 'EN', lastUpdate: '', style: '', isRich: 0 );
   }
 
