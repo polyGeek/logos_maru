@@ -27,8 +27,9 @@ class _HomeScreenState extends State<HomeScreen> {
     LogosController().addListener(() { _update(); } );
 
     _dynamicText = LogosController().getLogosVO(
-        logosID: 67,
-        vars: {'count': 4}
+        logosID     : 67,
+        comment     : 'HomeScreen',
+        vars        : {'count': 4}
     ).txt;
   }
 
@@ -118,7 +119,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
               SizedBox( height: 30, ),
 
-              Text( LogosController().getLogosVO( logosID: 20 ).txt,),
+              Text( LogosController().getLogosVO(
+                  logosID: 20,
+                  comment: 'HomeScreen',
+              ).txt,
+              ),
 
               SizedBox( height: 30, ),
 

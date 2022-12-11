@@ -390,6 +390,7 @@ class LogosController extends ChangeNotifier {
 
   LogosVO getLogosVO( {
     required int logosID,
+    required String comment,
     Map? vars }) {
 
     for (int i = 0; i < _logosList.length; i++) {
@@ -404,8 +405,12 @@ class LogosController extends ChangeNotifier {
       }
     }
 
+    if( comment.contains( '|' ) ) {
+      comment = comment.split( '|' )[0];
+    }
+
     return LogosVO(
-        txt: 'ERROR',
+        txt: '(#' + logosID.toString() + ') ' + comment,
         logosID: 0, tags: '', note: '', description: '', langCode: 'EN', lastUpdate: '', style: '', isRich: 0 );
   }
 

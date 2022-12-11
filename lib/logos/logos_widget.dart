@@ -75,6 +75,7 @@ class _LogosTxtState extends State<LogosTxt> {
 
     _body = _LogosUpdateTxt(
       logosID     : widget.logosID,
+      comment     : widget.comment,
       vars        : widget.vars,
       textStyle   : widget.textStyle,
       textAlign   : widget.textAlign,
@@ -107,6 +108,7 @@ class _LogosTxtState extends State<LogosTxt> {
       await Future.delayed( const Duration( milliseconds: 100 ), () {
         _body = _LogosUpdateTxt(
           logosID     : widget.logosID,
+          comment     : widget.comment,
           vars        : widget.vars,
           textStyle   : widget.textStyle,
           textAlign   : widget.textAlign,
@@ -136,6 +138,7 @@ class _LogosTxtState extends State<LogosTxt> {
 *  ===============================================*/
 class _LogosUpdateTxt extends StatefulWidget {
   final int logosID;
+  final String comment;
   final Map? vars;
   final TextStyle? textStyle;
   final Widget? child;
@@ -146,6 +149,7 @@ class _LogosUpdateTxt extends StatefulWidget {
 
   _LogosUpdateTxt( {
     required this.logosID,
+    required this.comment,
     this.textStyle,
     this.child,
     this.vars,
@@ -160,7 +164,7 @@ class _LogosUpdateTxt extends StatefulWidget {
 }
 
 class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
-  Widget _body = Container( width: 20, height: 20, color: Colors.red,);
+  Widget _body = SizedBox.shrink();
   late LogosVO _logosVO;
   late TextStyle _style;
 
@@ -183,6 +187,7 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
     } else {
       _logosVO = LogosController().getLogosVO(
         logosID       : widget.logosID,
+        comment       : widget.comment,
         vars          : widget.vars,
       );
     }
