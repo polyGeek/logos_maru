@@ -566,7 +566,9 @@ class LogosController extends ChangeNotifier {
   }
 
   String _insertVars( { required String txt, required Map vars } ) {
-
+    print( ' vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
+    print( '_insertVars: ' + txt );
+    print( 'vars: ' + vars.toString() );
     while (txt.contains('{') == true) {
 
       /// Get the first {}
@@ -579,6 +581,9 @@ class LogosController extends ChangeNotifier {
       txt = txt.substring(0, start - 1) + vars[v].toString() + txt.substring(end + 1);
     }
 
+    print( 'return: ' + txt );
+    print( ' ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
+    print( ' ' );
     return txt;
   }
 
