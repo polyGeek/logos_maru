@@ -173,6 +173,7 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
     super.initState();
 
     if( widget.logosID == 0 ) {
+      /// This is STATIC text.
       _logosVO = LogosVO(
         logosID       : 0,
         txt           : widget.txt!,

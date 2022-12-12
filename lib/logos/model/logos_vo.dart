@@ -27,7 +27,11 @@ class LogosVO {
     required this.style,
     required this.isRich
   }) {
-    this.txt = unEscapeTxt( s: txt );
+    this.txt = unEscapeTxt(
+        s: LogosController().newLine(
+            txt: txt
+        )
+    );
     this.note = unEscapeTxt( s: note );
   }
 

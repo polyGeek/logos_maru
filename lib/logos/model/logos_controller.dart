@@ -320,7 +320,7 @@ class LogosController extends ChangeNotifier {
 
         /// Add vars if needed.
         String txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars);
-        txt = _newLine( txt: txt );
+        txt = newLine( txt: txt );
         return _debugWithDoubleSizeORhashtag( txt: txt );
       }
     }
@@ -378,7 +378,7 @@ class LogosController extends ChangeNotifier {
         if( logosVO.txt == txt ) {
           logosVO.txt = ( vars == null )? logosVO.txt :  _insertVars( txt: logosVO.txt, vars: vars );
           logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
-          logosVO.txt = _newLine( txt: logosVO.txt );
+          logosVO.txt = newLine( txt: logosVO.txt );
           return logosVO;
         }
       }
@@ -399,7 +399,7 @@ class LogosController extends ChangeNotifier {
 
         logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars );
         logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
-        logosVO.txt = _newLine( txt: logosVO.txt );
+        logosVO.txt = newLine( txt: logosVO.txt );
 
         return logosVO;
       }
@@ -414,7 +414,7 @@ class LogosController extends ChangeNotifier {
         logosID: 0, tags: '', note: '', description: '', langCode: 'EN', lastUpdate: '', style: '', isRich: 0 );
   }
 
-  String _newLine( { required String txt } ) {
+  String newLine( { required String txt } ) {
     return txt.replaceAll( '^^', '\n' );
   }
 
@@ -566,9 +566,6 @@ class LogosController extends ChangeNotifier {
   }
 
   String _insertVars( { required String txt, required Map vars } ) {
-    print( ' vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv');
-    print( '_insertVars: ' + txt );
-    print( 'vars: ' + vars.toString() );
     while (txt.contains('{') == true) {
 
       /// Get the first {}
@@ -581,9 +578,6 @@ class LogosController extends ChangeNotifier {
       txt = txt.substring(0, start - 1) + vars[v].toString() + txt.substring(end + 1);
     }
 
-    print( 'return: ' + txt );
-    print( ' ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^');
-    print( ' ' );
     return txt;
   }
 
