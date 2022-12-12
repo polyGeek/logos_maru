@@ -163,7 +163,6 @@ class LogosDB {
       } else if( dataManagerType == DataManagerType.screens ) {
         maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = '" + dataVO.id.toString() + "'", );
       }
-      //maps = await db.rawQuery( "SELECT * FROM `pref` WHERE `langID` = '" + dataVO.langID.toString() + "'", );
 
       if( maps.isEmpty ) {
 
@@ -174,8 +173,8 @@ class LogosDB {
             "lastUpdated "
             " ) VALUES ( "
             + dataVO.id.toString() + ', '
-            + "'" + dataVO.name.toString() + "', "
-            + "'" + dataVO.description.toString() + "', "
+            + "'" + _escape( str: dataVO.name.toString() ) + "', "
+            + "'" + _escape( str: dataVO.description.toString() ) + "', "
             + "'" + dataVO.lastUpdated.toString() + "' "
             + ' ) '
         );
@@ -417,8 +416,10 @@ class LogosDB {
     } else {
       return [];
     }
+  }
 
-
+  static String _escape({ required String str }) {
+    return str.replaceAll( "'", "\'" );
   }
 
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {

@@ -12,6 +12,13 @@ class LogosTextStyles {
     fontSize: 16,
   );
 
+  TextStyle content = GoogleFonts.robotoSerif(
+    color: Colors.white,
+    fontWeight: FontWeight.w100,
+    height: 1.3,
+    fontSize: 16,
+  );
+
   TextStyle bodySm = GoogleFonts.robotoSerif(
     color: Colors.purpleAccent,// Styles.c_bone,
     fontWeight: FontWeight.w300,

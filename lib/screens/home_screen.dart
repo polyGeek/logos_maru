@@ -4,6 +4,7 @@ import 'package:logos_maru/logos/logos_widget.dart';
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
+import 'package:logos_maru/logos_styles.dart';
 import 'package:logos_maru/screens/drawer.dart';
 import 'package:logos_maru/utils/data_controller.dart';
 
@@ -144,12 +145,18 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
 
               LogosTxt(
-                comment: "The core feature of the RunPee app is to provide you the best times to <gold>run</gold> and <gold>pe... | 2nd screen, 1st paragraph",
+                comment: "",
                 logosID: 23,
+                textStyle: LogosTextStyles().content,
                 textAlign: TextAlign.center,
               ),
 
-              LogosTxt.static( txt: 'This is <gold>static</gold> text', isRich: true,),
+              LogosTxt.static(
+                txt: 'This is <gold>static</gold> text',
+                textStyle: LogosTextStyles().content,
+                isRich: true,
+              ),
+
               /*Text(
                 "RunPee: because movie theaters don't have pause buttons. 20",
                 style: LogosTextStyles().title.copyWith( fontSize: 20 ),
