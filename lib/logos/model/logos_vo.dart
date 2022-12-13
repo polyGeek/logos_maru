@@ -49,6 +49,17 @@ class LogosVO {
     this.txt = txt;
   }
 
+  LogosVO.clone( { required LogosVO logosVO } ) :
+    this.logosID      = logosVO.logosID,
+    this.tags         = logosVO.tags,
+    this.note         = logosVO.note,
+    this.description  = logosVO.description,
+    this.langCode     = logosVO.langCode,
+    this.txt          = logosVO.txt,
+    this.lastUpdate   = logosVO.lastUpdate,
+    this.style        = logosVO.style,
+    this.isRich       = logosVO.isRich;
+
   LogosVO fromMap( { required Map map } ) {
     return LogosVO(
         logosID			: map[ 'logosID' ],

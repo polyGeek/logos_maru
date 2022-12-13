@@ -396,12 +396,13 @@ class LogosController extends ChangeNotifier {
     for (int i = 0; i < _logosList.length; i++) {
       LogosVO logosVO = _logosList.elementAt(i);
       if ( logosVO.logosID == logosID ) {
-        print( '@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@' + vars.toString() );
-        logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars );
-        logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
-        logosVO.txt = newLine( txt: logosVO.txt );
-        print( '>>>>>>>>>>>>>>>>>>>>>' + logosVO.txt );
-        return logosVO;
+        LogosVO _logosVO = LogosVO.clone( logosVO: logosVO );
+
+        _logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars );
+        _logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
+        _logosVO.txt = newLine( txt: logosVO.txt );
+
+        return _logosVO;
       }
     }
 
