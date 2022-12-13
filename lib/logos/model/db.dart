@@ -179,7 +179,6 @@ class LogosDB {
             + "'" + dataVO.lastUpdated.toString() + "' "
             + ' ) ';
 
-        _log( msg: sql );
         await db.rawQuery( sql );
 
       } else {
@@ -191,7 +190,6 @@ class LogosDB {
             + "lastUpdated = '" + dataVO.lastUpdated + "' "
             + "WHERE id = " + dataVO.id.toString();
 
-        _log( msg: sql );
         await db.rawQuery( sql );
       }
     }
