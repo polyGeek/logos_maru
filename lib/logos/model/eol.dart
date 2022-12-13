@@ -7,7 +7,7 @@ import 'dart:io';
 
 class EOL {
   static const bool isDEBUG = true;
-  static int _lineWidth = 50;
+  static int _lineWidth = 70;
   static DateTime _previousNow = DateTime.now();
   static int _count = 1;
   static const String _reset = '\x1B[0m';

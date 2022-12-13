@@ -15,10 +15,10 @@ class LogosDB {
   Future<String> getLastUpdate( { required String langCode } ) async {
 
     Database db = await DBHelpers.openLogosDatabase( langCode: langCode );
-    await DBHelpers.updateDB(
+    /*await DBHelpers.updateDB(
         db: db,
         langCode: langCode
-    );
+    );*/
 
     /// Query the table for the movie to be updated.
     final List<Map<String, dynamic>> maps = await db.rawQuery(
@@ -116,7 +116,7 @@ class LogosDB {
             + "0, " /// isSelected
             + "'" + langVO.langCode.toString() + "', "
             + "'" + langVO.countryCode.toString() + "', "
-            + "'" + langVO.name.toString() + "' "
+            + "'" + _escape( str: langVO.name.toString() )+ "' "
             + ' ) '
         );
 
@@ -125,7 +125,7 @@ class LogosDB {
         await db.rawQuery( "UPDATE `pref` SET "
             + "langCode = '" + langVO.langCode + "', "
             + "countryCode = '" + langVO.countryCode + "', "
-            + "name = '" + langVO.name + "' "
+            + "name = '" + _escape( str: langVO.name ) + "' "
             + "WHERE langID = " + langVO.langID.toString()
         );
       }
@@ -151,6 +151,7 @@ class LogosDB {
 
 
     late List<Map<String, dynamic>> maps;
+    String sql = '';
 
     for( int i = 0; i < newData.length; i++ ) {
 
@@ -166,7 +167,7 @@ class LogosDB {
 
       if( maps.isEmpty ) {
 
-        await db.rawQuery( "INSERT INTO `$tableName` ( "
+        sql = "INSERT INTO `$tableName` ( "
             "id, "
             "name, "
             "description, "
@@ -176,18 +177,22 @@ class LogosDB {
             + "'" + _escape( str: dataVO.name.toString() ) + "', "
             + "'" + _escape( str: dataVO.description.toString() ) + "', "
             + "'" + dataVO.lastUpdated.toString() + "' "
-            + ' ) '
-        );
+            + ' ) ';
+
+        _log( msg: sql );
+        await db.rawQuery( sql );
 
       } else {
 
-        await db.rawQuery( "UPDATE `$tableName` SET "
+        sql = "UPDATE `$tableName` SET "
             + "id = '" + dataVO.id.toString() + "', "
-            + "name = '" + dataVO.name + "', "
-            + "description = '" + dataVO.description + "', "
+            + "name = '" + _escape( str: dataVO.name ) + "', "
+            + "description = '" + _escape( str: dataVO.description ) + "', "
             + "lastUpdated = '" + dataVO.lastUpdated + "' "
-            + "WHERE id = " + dataVO.id.toString()
-        );
+            + "WHERE id = " + dataVO.id.toString();
+
+        _log( msg: sql );
+        await db.rawQuery( sql );
       }
     }
 
@@ -228,11 +233,11 @@ class LogosDB {
             "lastUpdate "
             " ) VALUES ( "
             + logosVO.logosID.toString() + ', '
-            + "'" + logosVO.description.escapeTxt() + "', "
-            + "'" + logosVO.tags.escapeTxt() + "', "
-            + "'" + logosVO.note.escapeTxt() + "', "
-            + "'" + logosVO.txt.escapeTxt() + "', "
-            + "'" + logosVO.style + "', "
+            + "'" + _escape( str: logosVO.description.escapeTxt() ) + "', "
+            + "'" + _escape( str: logosVO.tags.escapeTxt() ) + "', "
+            + "'" + _escape( str: logosVO.note.escapeTxt() ) + "', "
+            + "'" + _escape( str: logosVO.txt.escapeTxt() ) + "', "
+            + "'" + _escape( str: logosVO.style ) + "', "
             + logosVO.isRich.toString() + ", "
             + "'" + logosVO.lastUpdate + "' "
             + ' ) '
@@ -245,11 +250,11 @@ class LogosDB {
       } else {
 
         await db.rawQuery( "UPDATE `logos_$langCode` SET "
-            "description      = '" + logosVO.description.escapeTxt() + "', "
-            + "tags           = '" + logosVO.tags.escapeTxt() + "', "
-            + "note           = '" + logosVO.note.escapeTxt() + "', "
-            + "txt            = '" + logosVO.txt.escapeTxt() + "', "
-            + "style          = '" + logosVO.style + "', "
+            "description      = '" + _escape( str: logosVO.description.escapeTxt() ) + "', "
+            + "tags           = '" + _escape( str: logosVO.tags.escapeTxt() ) + "', "
+            + "note           = '" + _escape( str: logosVO.note.escapeTxt() ) + "', "
+            + "txt            = '" + _escape( str: logosVO.txt.escapeTxt() ) + "', "
+            + "style          = '" + _escape( str: logosVO.style ) + "', "
             + "isRich         = " + logosVO.isRich.toString() + ", "
             + "lastUpdate     = '" + logosVO.lastUpdate + "' "
             + "WHERE logosID  = " + logosVO.logosID.toString()
@@ -265,15 +270,15 @@ class LogosDB {
 
 
     return LogosVO(
-        logosID      : maps[0][ 'logosID' ],
+        logosID     : maps[0][ 'logosID' ],
         description : maps[0][ 'description' ],
         tags        : maps[0][ 'tags' ],
         lastUpdate  : maps[0][ 'lastUpdate' ],
         langCode    : ( maps[0][ 'langCode' ] == null ) ? '' : maps[0][ 'langCode' ],
         note        : ( maps[0][ 'note' ] == null )     ? '' : maps[0][ 'note' ],
         txt         : ( maps[0][ 'txt' ] == null )      ? '' : maps[0][ 'txt' ],
-        style        : maps[0][ 'style' ],
-        isRich        : maps[0][ 'isRich' ]
+        style       : maps[0][ 'style' ],
+        isRich      : maps[0][ 'isRich' ]
 
     );
   }
