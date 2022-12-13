@@ -398,8 +398,8 @@ class LogosController extends ChangeNotifier {
       if ( logosVO.logosID == logosID ) {
         LogosVO _logosVO = LogosVO.clone( logosVO: logosVO );
 
-        _logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars );
-        _logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
+        _logosVO.txt = ( vars == null )? _logosVO.txt : _insertVars( txt: _logosVO.txt, vars: vars );
+        _logosVO.txt = _debugWithDoubleSizeORhashtag( txt: _logosVO.txt );
         _logosVO.txt = newLine( txt: logosVO.txt );
 
         return _logosVO;
