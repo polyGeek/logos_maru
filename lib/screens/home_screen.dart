@@ -129,9 +129,18 @@ class _HomeScreenState extends State<HomeScreen> {
               SizedBox( height: 30, ),
 
               LogosTxt(
-                comment: "Title | Search movies by title.",
-                logosID: 18,
-                child: Container( width: 300, height: 50, color: Colors.black,),
+                comment: "150",
+                logosID: 150,
+              ),
+
+              LogosTxt(
+                comment: "150",
+                logosID: 151,
+              ),
+
+              LogosTxt(
+                comment: "150",
+                logosID: 152,
               ),
 
               LogosTxt(
@@ -224,7 +233,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-              /*Builder(builder: (BuildContext context) {
+              Builder(builder: (BuildContext context) {
                 List<String> days = [ 'January', 'February', 'March', 'April', 'May' ];
                 List<Widget> dayChildren = [];
 
@@ -243,8 +252,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: dayChildren,
                 );
-              }),*/
-
+              }),
 
               //LogosTxt.static( txt: 'HELLO \nWORLD...', textStyle: TextStyle( fontSize: 44, color: Colors.yellowAccent),),
 

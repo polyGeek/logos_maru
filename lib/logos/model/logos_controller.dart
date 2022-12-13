@@ -388,24 +388,42 @@ class LogosController extends ChangeNotifier {
         'no match found for:\n' + txt + '\nwith tag: ' + tag );
   }
 
+  static int count = 0;
   LogosVO getLogosVO( {
     required int logosID,
     required String comment,
     Map? vars }) {
 
-    for (int i = 0; i < _logosList.length; i++) {
-      LogosVO _logosVO = _logosList.elementAt(i);
-      if ( _logosVO.logosID == logosID ) {
-        //LogosVO _logosVO = LogosVO.clone( logosVO: logosVO );
+    LogosVO _logosVO;
 
-        _logosVO.txt = ( vars == null )? _logosVO.txt : _insertVars( txt: _logosVO.txt, vars: vars );
-        _logosVO.txt = _debugWithDoubleSizeORhashtag( txt: _logosVO.txt );
-        _logosVO.txt = newLine( txt: _logosVO.txt );
+    /// First, start the loop at logosID - 1, since that is the most likely place to find it.
+    int loopStart = logosID - 1;
+    for( int i = loopStart; i < _logosList.length; i++ ) {
 
+      _logosVO = _logosList.elementAt( i );
+      count++;
+
+      if( _logosVO.logosID == logosID ) {
+        print( '1-FOUND: ' + count.toString() );
+        _logosVO.txt = _adjustTxt( logosVO: _logosVO, vars: vars );
         return _logosVO;
       }
     }
 
+    /// If not found, start at the beginning.
+    for (int i = 0; i < _logosList.length; i++) {
+      _logosVO = _logosList.elementAt(i);
+
+      count++;
+      print( '2-FOUND: ' + count.toString() );
+      if ( _logosVO.logosID == logosID ) {
+        _logosVO.txt = _adjustTxt( logosVO: _logosVO, vars: vars );
+        return _logosVO;
+      }
+    }
+
+    /// We only get here if the LogosVO is not found.
+    /// This attempts to use the "comment" to return meaningful text and the logosID as an error msg.
     if( comment.contains( '|' ) ) {
       comment = comment.split( '|' )[0];
     }
@@ -413,6 +431,16 @@ class LogosController extends ChangeNotifier {
     return LogosVO(
         txt: comment + ' (#' + logosID.toString() + ')',
         logosID: 0, tags: '', note: '', description: '', langCode: 'EN', lastUpdate: '', style: '', isRich: 0 );
+  }
+
+  String _adjustTxt({
+    required LogosVO logosVO,
+    Map? vars, }) {
+
+    logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txtOriginal, vars: vars );
+    logosVO.txt = newLine( txt: logosVO.txt );
+    logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
+    return logosVO.txt;
   }
 
   String newLine( { required String txt } ) {
