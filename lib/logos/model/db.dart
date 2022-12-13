@@ -422,7 +422,7 @@ class LogosDB {
   }
 
   static String _escape({ required String str }) {
-    return str.replaceAll( "'", "\'" );
+    return str.replaceAll( "'", "''" );
   }
 
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {
