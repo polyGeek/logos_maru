@@ -394,13 +394,13 @@ class LogosController extends ChangeNotifier {
     Map? vars }) {
 
     for (int i = 0; i < _logosList.length; i++) {
-      LogosVO logosVO = _logosList.elementAt(i);
-      if ( logosVO.logosID == logosID ) {
-        LogosVO _logosVO = LogosVO.clone( logosVO: logosVO );
+      LogosVO _logosVO = _logosList.elementAt(i);
+      if ( _logosVO.logosID == logosID ) {
+        //LogosVO _logosVO = LogosVO.clone( logosVO: logosVO );
 
         _logosVO.txt = ( vars == null )? _logosVO.txt : _insertVars( txt: _logosVO.txt, vars: vars );
         _logosVO.txt = _debugWithDoubleSizeORhashtag( txt: _logosVO.txt );
-        _logosVO.txt = newLine( txt: logosVO.txt );
+        _logosVO.txt = newLine( txt: _logosVO.txt );
 
         return _logosVO;
       }

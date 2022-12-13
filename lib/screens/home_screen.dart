@@ -157,6 +157,41 @@ class _HomeScreenState extends State<HomeScreen> {
                 isRich: true,
               ),
 
+              Builder(builder: (BuildContext context) {
+                if (true) {
+                  return Column(
+                    children: [
+
+                      LogosTxt(
+                        comment: "Peetime {countNumber} of {peetimeTotal}",
+                        vars: {'countNumber': 1, 'peetimeTotal': 3 },
+                        textStyle: LogosTextStyles().content,
+                        logosID: 145,
+                      ),
+
+                      LogosTxt(
+                        comment: "Peetime {countNumber} of {peetimeTotal}",
+                        vars: {'countNumber': 2, 'peetimeTotal': 3 },
+                        textStyle: LogosTextStyles().content,
+                        logosID: 145,
+                      ),
+
+                      LogosTxt(
+                        comment: "Peetime {countNumber} of {peetimeTotal}",
+                        vars: {'countNumber': 3, 'peetimeTotal': 3 },
+                        textStyle: LogosTextStyles().content,
+                        logosID: 145,
+                      ),
+
+                    ],
+                  );
+                } else {
+                  return SizedBox.shrink();
+                }
+              }),
+
+
+
               /*Text(
                 "RunPee: because movie theaters don't have pause buttons. 20",
                 style: LogosTextStyles().title.copyWith( fontSize: 20 ),
