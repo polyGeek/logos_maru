@@ -400,7 +400,7 @@ class LogosController extends ChangeNotifier {
         logosVO.txt = ( vars == null )? logosVO.txt : _insertVars( txt: logosVO.txt, vars: vars );
         logosVO.txt = _debugWithDoubleSizeORhashtag( txt: logosVO.txt );
         logosVO.txt = newLine( txt: logosVO.txt );
-
+        print( '>>>>>>>>>>>>>>>>>>>>>' + logosVO.txt );
         return logosVO;
       }
     }
