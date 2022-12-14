@@ -22,17 +22,17 @@ class LanguageChooser extends StatefulWidget {
 
 class _LanguageChooserState extends State<LanguageChooser> {
 
-  String _dropdownValue = LanguageController().editingLanguageCode;
+  String _dropdownValue = LogosLanguageController().editingLanguageCode;
 
   @override
   void initState() {
-    LanguageController().addListener(() { _update(); });
+    LogosLanguageController().addListener(() { _update(); });
     super.initState();
   }
 
   @override
   void dispose() {
-    LanguageController().removeListener(() { _update(); });
+    LogosLanguageController().removeListener(() { _update(); });
     super.dispose();
   }
 
@@ -62,7 +62,7 @@ class _LanguageChooserState extends State<LanguageChooser> {
         widget.callbackState( false );
       },
 
-      items: LanguageController().permittedLanguageOptionsList.map<DropdownMenuItem<String>>(( LangVO value ) {
+      items: LogosLanguageController().permittedLanguageOptionsList.map<DropdownMenuItem<String>>(( LangVO value ) {
         return DropdownMenuItem<String>(
           value: value.langCode,
           child: Text( value.langCode + ' - ' + value.name ),

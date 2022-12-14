@@ -25,7 +25,7 @@ class _LogosEditorState extends State<LogosEditor> {
     LogosController().addListener(() {
       _update();
     });
-    LanguageController().addListener(() {
+    LogosLanguageController().addListener(() {
       _update();
     });
   }
@@ -35,7 +35,7 @@ class _LogosEditorState extends State<LogosEditor> {
     LogosController().removeListener(() {
       _update();
     });
-    LanguageController().removeListener(() {
+    LogosLanguageController().removeListener(() {
       _update();
     });
 
@@ -250,8 +250,8 @@ class _LogosEditorState extends State<LogosEditor> {
                 decoration: InputDecoration(
                   errorStyle: TextStyle(fontSize: 18, color: Colors.redAccent),
                   border: OutlineInputBorder(),
-                  labelText: LanguageController().getLanguageNameFromCode(
-                    langCode: LanguageController().editingLanguageCode,
+                  labelText: LogosLanguageController().getLanguageNameFromCode(
+                    langCode: LogosLanguageController().editingLanguageCode,
                   ),
                   labelStyle: LogosAdminTxtStyles.bodySm.logos_offWhite,
                   focusedBorder: OutlineInputBorder(
@@ -347,7 +347,7 @@ class _LogosEditorState extends State<LogosEditor> {
 
                 LogosController().updateLogosDatabase(
                   logosVO: LogosController().editingLogosVO!,
-                  langCode: LanguageController().editingLanguageCode,
+                  langCode: LogosLanguageController().editingLanguageCode,
                 );
 
                 Navigator.of(context).pop();

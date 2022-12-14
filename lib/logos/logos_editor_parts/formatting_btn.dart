@@ -191,7 +191,7 @@ class _FormattingBtnState extends State<FormattingBtn> {
             children: [
               Text( '<', style: TextStyle( color: Colors.white ), ),
 
-              RichTxt(
+              LogosRichTxt(
                 txt: '<' + widget.tag + '>' + widget.formattedCharacter + '</' + widget.tag + '>',
                 txtStyle: LogosAdminTxtStyles.body,
               ),

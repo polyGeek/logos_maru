@@ -45,7 +45,7 @@ class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
   @override
   void initState() {
     super.initState();
-    _dropdownValue = LanguageController().userSelectedLanguageCode;
+    _dropdownValue = LogosLanguageController().userSelectedLanguageCode;
   }
 
   @override
@@ -66,7 +66,7 @@ class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
         if( mounted )
           setState(() {});
       },
-      items: LanguageController().languageOptionsList.map<DropdownMenuItem<String>>(( LangVO value ) {
+      items: LogosLanguageController().languageOptionsList.map<DropdownMenuItem<String>>(( LangVO value ) {
         return DropdownMenuItem<String>(
             value: value.langCode,
             child: LayoutBuilder( builder: ( BuildContext context, BoxConstraints constraints ) {

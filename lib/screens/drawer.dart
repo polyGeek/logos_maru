@@ -31,7 +31,7 @@ class DrawerMenu extends StatelessWidget {
           TextButton(
             onPressed: (){
               Navigator.of( context ).pop();
-              LogosController().getRemoteChanges( langCode: LanguageController().editingLanguageCode );
+              LogosController().getRemoteChanges( langCode: LogosLanguageController().editingLanguageCode );
             },
             child: Text(
               'update from the remote database',

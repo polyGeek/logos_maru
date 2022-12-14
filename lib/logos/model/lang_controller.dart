@@ -5,10 +5,10 @@ import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 
 /// Editing LanguageCode: this is the selected CC in the popup editor.
-class LanguageController extends ChangeNotifier {
-  static final LanguageController _editingLanguageCodeController = LanguageController._internal();
-  factory LanguageController() => _editingLanguageCodeController;
-  LanguageController._internal();
+class LogosLanguageController extends ChangeNotifier {
+  static final LogosLanguageController _editingLanguageCodeController = LogosLanguageController._internal();
+  factory LogosLanguageController() => _editingLanguageCodeController;
+  LogosLanguageController._internal();
 
   /** ===============================================
   *  Selected language in APP

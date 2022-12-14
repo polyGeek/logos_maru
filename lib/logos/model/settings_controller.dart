@@ -1,10 +1,10 @@
 import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/settings_db.dart';
 
-class SettingsController {
-	static final SettingsController _settingsController = SettingsController._internal();
-	factory SettingsController() => _settingsController;
-	SettingsController._internal();
+class LogosSettingsController {
+	static final LogosSettingsController _settingsController = LogosSettingsController._internal();
+	factory LogosSettingsController() => _settingsController;
+	LogosSettingsController._internal();
 
 	static bool isDebug = false;
 
@@ -14,8 +14,6 @@ class SettingsController {
 
 	Future<void> initSettings() async {
 		_settingsVO = await _settingsDB.getUserSettings();
-
-		//FontSizeController().fontSizeAdjustment = _settingsVO.fontSizeAdjustment;
 		LogosFontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: _settingsVO.fontSizeAdjustment );
 	}
 

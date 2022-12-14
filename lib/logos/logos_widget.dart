@@ -86,14 +86,14 @@ class _LogosTxtState extends State<LogosTxt> {
     );
 
     LogosController().addListener(() { _update(); });
-    LanguageController().addListener(() { _update(); });
+    LogosLanguageController().addListener(() { _update(); });
     LogosFontSizeController().addListener(() { _update(); });
   }
 
   @override
   void dispose() {
     LogosController().removeListener(() { _update(); });
-    LanguageController().removeListener(() { _update(); });
+    LogosLanguageController().removeListener(() { _update(); });
     LogosFontSizeController().removeListener(() { _update(); });
     super.dispose();
   }
@@ -237,7 +237,7 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
 
       if( _logosVO.isRich == 1 ) {
 
-        _body = RichTxt(
+        _body = LogosRichTxt(
           txt         : _logosVO.txt,
           txtStyle    : _style,
           textAlign   : widget.textAlign,

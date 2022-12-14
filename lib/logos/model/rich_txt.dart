@@ -3,10 +3,10 @@ import 'package:logos_maru/logos/model/adjust_font.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
 
-class Styles {
-  static final Styles _styles = Styles._internal();
-  factory Styles() => _styles;
-  Styles._internal();
+class LogosStyles {
+  static final LogosStyles _styles = LogosStyles._internal();
+  factory LogosStyles() => _styles;
+  LogosStyles._internal();
 
   List<TextSpan> makeRichTxt( {
     required String txt,
@@ -62,23 +62,23 @@ class Styles {
   }
 }
 
-class RichTxt extends StatefulWidget {
+class LogosRichTxt extends StatefulWidget {
   final String txt;
   final TextAlign textAlign;
   final int? maxLines;
   final TextStyle txtStyle;
 
-  RichTxt( {
+  LogosRichTxt( {
     required this.txt,
     required this.txtStyle,
     this.textAlign = TextAlign.start,
     this.maxLines } );
 
   @override
-  _RichTxtState createState() => _RichTxtState();
+  _LogosRichTxtState createState() => _LogosRichTxtState();
 }
 
-class _RichTxtState extends State<RichTxt> {
+class _LogosRichTxtState extends State<LogosRichTxt> {
 
   List<TextSpan>  _spans = [];
 
@@ -110,7 +110,7 @@ class _RichTxtState extends State<RichTxt> {
 
   void _update() {
     if( mounted ) {
-      _spans = Styles().makeRichTxt(
+      _spans = LogosStyles().makeRichTxt(
           txt: widget.txt,
           txtStyle: widget.txtStyle,
           textAlign: widget.textAlign,

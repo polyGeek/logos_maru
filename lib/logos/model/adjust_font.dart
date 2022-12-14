@@ -145,7 +145,7 @@ class LogosFontSizeController extends ChangeNotifier {
     LogosFontSizeController._internal();
 
     void init() {
-        _fontSizeAdjustment = SettingsController.settingsVO.fontSizeAdjustment;
+        _fontSizeAdjustment = LogosSettingsController.settingsVO.fontSizeAdjustment;
         LogosFontSizeController().changeFontSizeAdjustment( fontSizeAdjustment: 0 );
     }
 
@@ -163,7 +163,7 @@ class LogosFontSizeController extends ChangeNotifier {
         }
 
         /// Store the fontSizeAdjustment in the Settings.
-        SettingsController().setFontSizeAdjustment( fontSizeAdjustment: _fontSizeAdjustment );
+        LogosSettingsController().setFontSizeAdjustment( fontSizeAdjustment: _fontSizeAdjustment );
 
         _log(msg: 'font size adjustment: ' + _fontSizeAdjustment.toString() );
         notifyListeners();

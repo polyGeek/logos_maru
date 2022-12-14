@@ -100,26 +100,26 @@ class LogosController extends ChangeNotifier {
     } );
 
     /// 0.1: Init the SettingsController where the fontScale is set.
-    await SettingsController().initSettings();
+    await LogosSettingsController().initSettings();
 
     /// 1: get the selected langCode from the local DB.
-    LanguageController().userSelectedLanguageCode = await LogosDB().getSavedLanguagePreference();
-    _log(msg: '_selectedLangCode: ' + LanguageController().userSelectedLanguageCode.toString());
+    LogosLanguageController().userSelectedLanguageCode = await LogosDB().getSavedLanguagePreference();
+    _log(msg: '_selectedLangCode: ' + LogosLanguageController().userSelectedLanguageCode.toString());
 
     /// 2: get all of the language options from the local DB.
-    LanguageController().languageOptionsList = await LogosDB().getLanguageOptionsList();
+    LogosLanguageController().languageOptionsList = await LogosDB().getLanguageOptionsList();
 
-    _log( msg: 'Language options: ' + LanguageController().languageOptionsList.toString() );
+    _log( msg: 'Language options: ' + LogosLanguageController().languageOptionsList.toString() );
 
     /// 3: get language data from local DB.
-    _logosList = await LogosDB().getLogosDataFromLocalDB( langCode: LanguageController().userSelectedLanguageCode.toString() );
+    _logosList = await LogosDB().getLogosDataFromLocalDB( langCode: LogosLanguageController().userSelectedLanguageCode.toString() );
     _logosList_EN = await LogosDB().getLogosDataFromLocalDB( langCode: 'EN' );
 
     /// 4: get any changes approved by the remote DB.
-    getRemoteChanges( langCode: LanguageController().userSelectedLanguageCode );
+    getRemoteChanges( langCode: LogosLanguageController().userSelectedLanguageCode );
 
     /// 5: Set the EditingLanguage Code to be the same as the viewing language code.
-    LanguageController().editingLanguageCode = LanguageController().userSelectedLanguageCode;
+    LogosLanguageController().editingLanguageCode = LogosLanguageController().userSelectedLanguageCode;
 
     /// 6: get the tag list from the local DB.
     _tagList = await LogosDB().getDataListFromLocalDB( dataManagerType: DataManagerType.tags );
@@ -174,7 +174,7 @@ class LogosController extends ChangeNotifier {
       if( permittedLangCodesDecoded.isNotEmpty ) {
         _log(msg: permittedLangCodesDecoded.toString());
 
-        LanguageController().permittedLanguageOptionsList =
+        LogosLanguageController().permittedLanguageOptionsList =
             permittedLangCodesDecoded.map((e) => LangVO.fromJson(e)).toList();
       }
 
@@ -247,7 +247,7 @@ class LogosController extends ChangeNotifier {
       List<LangVO> newLangList = newLanguageOptionsDecoded.map((e) => LangVO.fromJson(e)).toList();
 
       /// Update local DB with newLanguage list.
-      LanguageController().languageOptionsList = await LogosDB().updateLanguageOptions(
+      LogosLanguageController().languageOptionsList = await LogosDB().updateLanguageOptions(
           newLangList: newLangList
       );
     }
@@ -466,7 +466,7 @@ class LogosController extends ChangeNotifier {
     /// Error
     return logosVO = LogosVO(
       logosID: 0, description: '', lastUpdate: '', note: '', tags: '', style: '', isRich: 0,
-      langCode: LanguageController().editingLanguageCode,
+      langCode: LogosLanguageController().editingLanguageCode,
       txt: 'ERROR: #' + logosID.toString(),
     );
   }
@@ -474,7 +474,7 @@ class LogosController extends ChangeNotifier {
   void changeLanguage( { required String langCode } ) async {
     _log(msg: '_selectedLangCode: $langCode' );
 
-    LanguageController().userSelectedLanguageCode = langCode;
+    LogosLanguageController().userSelectedLanguageCode = langCode;
     LogosDB().saveLanguagePreference( code: langCode );
 
     /// Switch the language
@@ -493,7 +493,7 @@ class LogosController extends ChangeNotifier {
     _log(msg: 'Editing language: $langCode' );
 
     /// Change EditingLanguage Code
-    LanguageController().editingLanguageCode = langCode;
+    LogosLanguageController().editingLanguageCode = langCode;
 
     /// Switch the editing language
     _editingLogosList = await LogosDB().getLogosDataFromLocalDB( langCode: langCode, );
