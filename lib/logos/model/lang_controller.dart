@@ -13,12 +13,12 @@ class LanguageController extends ChangeNotifier {
   /** ===============================================
   *  Selected language in APP
   *  ===============================================*/
-  String _selectedAppLanguageCode = 'EN';
+  String _userSelectedLanguageCode = 'EN';
 
-  String get selectedAppLanguageCode => _selectedAppLanguageCode;
+  String get userSelectedLanguageCode => _userSelectedLanguageCode;
 
-  set selectedAppLanguageCode( String langCode ) {
-    _selectedAppLanguageCode = langCode;
+  set userSelectedLanguageCode( String langCode ) {
+    _userSelectedLanguageCode = langCode;
     notifyListeners();
   }
 

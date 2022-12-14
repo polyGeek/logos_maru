@@ -45,7 +45,7 @@ class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
   @override
   void initState() {
     super.initState();
-    _dropdownValue = LanguageController().selectedAppLanguageCode;
+    _dropdownValue = LanguageController().userSelectedLanguageCode;
   }
 
   @override

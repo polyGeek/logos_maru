@@ -103,8 +103,8 @@ class LogosController extends ChangeNotifier {
     await SettingsController().initSettings();
 
     /// 1: get the selected langCode from the local DB.
-    LanguageController().selectedAppLanguageCode = await LogosDB().getSavedLanguagePreference();
-    _log(msg: '_selectedLangCode: ' + LanguageController().selectedAppLanguageCode.toString());
+    LanguageController().userSelectedLanguageCode = await LogosDB().getSavedLanguagePreference();
+    _log(msg: '_selectedLangCode: ' + LanguageController().userSelectedLanguageCode.toString());
 
     /// 2: get all of the language options from the local DB.
     LanguageController().languageOptionsList = await LogosDB().getLanguageOptionsList();
@@ -112,14 +112,14 @@ class LogosController extends ChangeNotifier {
     _log( msg: 'Language options: ' + LanguageController().languageOptionsList.toString() );
 
     /// 3: get language data from local DB.
-    _logosList = await LogosDB().getLogosDataFromLocalDB( langCode: LanguageController().selectedAppLanguageCode.toString() );
+    _logosList = await LogosDB().getLogosDataFromLocalDB( langCode: LanguageController().userSelectedLanguageCode.toString() );
     _logosList_EN = await LogosDB().getLogosDataFromLocalDB( langCode: 'EN' );
 
     /// 4: get any changes approved by the remote DB.
-    getRemoteChanges( langCode: LanguageController().selectedAppLanguageCode );
+    getRemoteChanges( langCode: LanguageController().userSelectedLanguageCode );
 
     /// 5: Set the EditingLanguage Code to be the same as the viewing language code.
-    LanguageController().editingLanguageCode = LanguageController().selectedAppLanguageCode;
+    LanguageController().editingLanguageCode = LanguageController().userSelectedLanguageCode;
 
     /// 6: get the tag list from the local DB.
     _tagList = await LogosDB().getDataListFromLocalDB( dataManagerType: DataManagerType.tags );
@@ -388,7 +388,6 @@ class LogosController extends ChangeNotifier {
         'no match found for:\n' + txt + '\nwith tag: ' + tag );
   }
 
-  static int count = 0;
   LogosVO getLogosVO( {
     required int logosID,
     required String comment,
@@ -401,10 +400,8 @@ class LogosController extends ChangeNotifier {
     for( int i = loopStart; i < _logosList.length; i++ ) {
 
       _logosVO = _logosList.elementAt( i );
-      count++;
 
       if( _logosVO.logosID == logosID ) {
-        print( '1-FOUND: ' + count.toString() );
         _logosVO.txt = _adjustTxt( logosVO: _logosVO, vars: vars );
         return _logosVO;
       }
@@ -414,8 +411,6 @@ class LogosController extends ChangeNotifier {
     for (int i = 0; i < _logosList.length; i++) {
       _logosVO = _logosList.elementAt(i);
 
-      count++;
-      print( '2-FOUND: ' + count.toString() );
       if ( _logosVO.logosID == logosID ) {
         _logosVO.txt = _adjustTxt( logosVO: _logosVO, vars: vars );
         return _logosVO;
@@ -479,7 +474,7 @@ class LogosController extends ChangeNotifier {
   void changeLanguage( { required String langCode } ) async {
     _log(msg: '_selectedLangCode: $langCode' );
 
-    LanguageController().selectedAppLanguageCode = langCode;
+    LanguageController().userSelectedLanguageCode = langCode;
     LogosDB().saveLanguagePreference( code: langCode );
 
     /// Switch the language
