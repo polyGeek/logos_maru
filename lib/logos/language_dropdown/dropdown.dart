@@ -32,8 +32,12 @@ Widget DropDownChild_FlagOnly( LangVO value, double width ) {
 class LogosChangeLanguageDropdown extends StatefulWidget {
 
   final LogosDropDownOptions childOptions;
+  final Function? onLanguageChanged;
 
-  LogosChangeLanguageDropdown( { required this.childOptions } );
+  LogosChangeLanguageDropdown( {
+    required this.childOptions,
+    this.onLanguageChanged = null,
+  } );
 
   @override
   _LogosChangeLanguageDropdownState createState() => _LogosChangeLanguageDropdownState();
@@ -52,7 +56,6 @@ class _LogosChangeLanguageDropdownState extends State<LogosChangeLanguageDropdow
   Widget build( BuildContext context ) {
     return DropdownButton<String>(
       value: _dropdownValue,
-      //icon: const Icon(Icons.arrow_downward),
       iconSize: 24,
       elevation: 16,
       underline: Container(
@@ -61,7 +64,8 @@ class _LogosChangeLanguageDropdownState extends State<LogosChangeLanguageDropdow
       ),
       onChanged: ( String? newValue ) {
         _dropdownValue = newValue!;
-        print( newValue );
+        if( widget.onLanguageChanged != null )
+          widget.onLanguageChanged!( newValue );
         LogosController().changeLanguage( langCode: newValue );
         if( mounted )
           setState(() {});

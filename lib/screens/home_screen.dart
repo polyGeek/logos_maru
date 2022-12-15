@@ -264,6 +264,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   alignment: Alignment.center,
                   child: LogosChangeLanguageDropdown(
                     childOptions: LogosDropDownOptions.worldIconCountryCodeLangCode,
+                    onLanguageChanged: (String langCode) {
+
+                      print( 'langCode: $langCode' );
+                    },
                   )
               ),
 
