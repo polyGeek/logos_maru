@@ -8,7 +8,7 @@ import 'package:logos_maru/logos/model/logos_controller.dart';
  *  Change Language Dropdown
  *  ===============================================*/
 
-enum DropDownChildOptions {
+enum LogosDropDownOptions {
   flagOnly,
   flagAndFullName,
   flagAndCountryCode,
@@ -29,17 +29,17 @@ Widget DropDownChild_FlagOnly( LangVO value, double width ) {
   );
 }
 
-class ChangeLanguageDropdown extends StatefulWidget {
+class LogosChangeLanguageDropdown extends StatefulWidget {
 
-  final DropDownChildOptions childOptions;
+  final LogosDropDownOptions childOptions;
 
-  ChangeLanguageDropdown( { required this.childOptions } );
+  LogosChangeLanguageDropdown( { required this.childOptions } );
 
   @override
-  _ChangeLanguageDropdownState createState() => _ChangeLanguageDropdownState();
+  _LogosChangeLanguageDropdownState createState() => _LogosChangeLanguageDropdownState();
 }
 
-class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
+class _LogosChangeLanguageDropdownState extends State<LogosChangeLanguageDropdown> {
   String _dropdownValue   = 'EN';
 
   @override
@@ -71,9 +71,9 @@ class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
             value: value.langCode,
             child: LayoutBuilder( builder: ( BuildContext context, BoxConstraints constraints ) {
 
-              if( widget.childOptions == DropDownChildOptions.flagOnly )
+              if( widget.childOptions == LogosDropDownOptions.flagOnly )
                 return DropDownChild_FlagOnly( value, 30 );
-              else if( widget.childOptions == DropDownChildOptions.flagAndFullName )
+              else if( widget.childOptions == LogosDropDownOptions.flagAndFullName )
                 return Row(
                   children: [
                     DropDownChild_FlagOnly( value, 30 ),
@@ -81,7 +81,7 @@ class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
                     Text( value.name ),
                   ],
                 );
-              else if( widget.childOptions == DropDownChildOptions.flagAndCountryCode )
+              else if( widget.childOptions == LogosDropDownOptions.flagAndCountryCode )
                 return Row(
                   children: [
                     DropDownChild_FlagOnly( value, 24 ),
@@ -89,9 +89,9 @@ class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
                     Text( value.countryCode.toUpperCase() ),
                   ],
                 );
-              else if( widget.childOptions == DropDownChildOptions.countryFullNameOnly )
+              else if( widget.childOptions == LogosDropDownOptions.countryFullNameOnly )
                 return Text( value.name );
-              else if( widget.childOptions == DropDownChildOptions.countryFullNameAndCountryCode )
+              else if( widget.childOptions == LogosDropDownOptions.countryFullNameAndCountryCode )
                 return Row(
                   children: [
                     Text( value.name ),
@@ -99,7 +99,7 @@ class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
                     Text( value.countryCode ),
                   ],
                 );
-              else if( widget.childOptions == DropDownChildOptions.worldIconCountryCodeLangCode )
+              else if( widget.childOptions == LogosDropDownOptions.worldIconCountryCodeLangCode )
                 return Row(
                   children: [
                     Icon( Icons.language ),
@@ -107,7 +107,7 @@ class _ChangeLanguageDropdownState extends State<ChangeLanguageDropdown> {
                     Text( value.countryCode.toUpperCase() + ' [' + value.langCode + ']'),
                   ],
                 );
-              else if( widget.childOptions == DropDownChildOptions.worldIconLangName )
+              else if( widget.childOptions == LogosDropDownOptions.worldIconLangName )
                 return Row(
                   children: [
                     Icon( Icons.language ),
