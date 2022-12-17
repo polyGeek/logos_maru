@@ -15,10 +15,6 @@ class LogosDB {
   Future<String> getLastUpdate( { required String langCode } ) async {
 
     Database db = await DBHelpers.openLogosDatabase( langCode: langCode );
-    /*await DBHelpers.updateDB(
-        db: db,
-        langCode: langCode
-    );*/
 
     /// Query the table for the movie to be updated.
     final List<Map<String, dynamic>> maps = await db.rawQuery(
@@ -101,11 +97,11 @@ class LogosDB {
 
       _log( msg: "updating changes: " + langVO.langID.toString() + " : " + langVO.langCode.toString() + " : " + langVO.name );
 
-      maps = await db.rawQuery( "SELECT * FROM `pref` WHERE `langID` = '" + langVO.langID.toString() + "'", );
+      maps = await db.rawQuery( "SELECT * FROM `pref` WHERE `langID` = ?", [ langVO.langID ] );
 
       if( maps.isEmpty ) {
 
-        await db.rawQuery( "INSERT INTO `pref` ( "
+        await db.rawInsert( "INSERT INTO `pref` ( "
             "langID, "
             "isSelected, "
             "langCode, "
@@ -113,20 +109,28 @@ class LogosDB {
             "name "
             " ) VALUES ( "
             + langVO.langID.toString() + ', '
-            + "0, " /// isSelected
-            + "'" + langVO.langCode.toString() + "', "
-            + "'" + langVO.countryCode.toString() + "', "
-            + "'" + _escape( str: langVO.name.toString() )+ "' "
-            + ' ) '
+            + "0, ?, ?, ? )",
+            [
+              0, /// isSelected
+              langVO.langCode,
+              langVO.countryCode,
+              langVO.name
+            ]
         );
 
       } else {
 
-        await db.rawQuery( "UPDATE `pref` SET "
-            + "langCode = '" + langVO.langCode + "', "
-            + "countryCode = '" + langVO.countryCode + "', "
-            + "name = '" + _escape( str: langVO.name ) + "' "
-            + "WHERE langID = " + langVO.langID.toString()
+        await db.rawUpdate( "UPDATE `pref` SET "
+            + "langCode = ?, "
+            + "countryCode = ?, "
+            + "name = ? "
+            + "WHERE langID = ?",
+            [
+              langVO.langCode,
+              langVO.countryCode,
+              langVO.name,
+              langVO.langID
+            ]
         );
       }
     }
@@ -142,10 +146,10 @@ class LogosDB {
     late Database db;
     String tableName = '';
     if( dataManagerType == DataManagerType.tags ) {
-      db = await DBHelpers.openTags();
+      db = await DBHelpers.openDataTable( table: 'tags' );
       tableName = 'tags';
     } else if( dataManagerType == DataManagerType.screens ) {
-      db = await DBHelpers.openScreens();
+      db = await DBHelpers.openDataTable( table: 'screens' );
       tableName = 'screens';
     }
 
@@ -160,9 +164,9 @@ class LogosDB {
       _log( msg: "updating changes: " + dataVO.id.toString() + " : " + dataVO.name );
 
       if( dataManagerType == DataManagerType.tags ) {
-        maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = '" + dataVO.id.toString() + "'", );
+        maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = ?", [ dataVO.id ] );
       } else if( dataManagerType == DataManagerType.screens ) {
-        maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = '" + dataVO.id.toString() + "'", );
+        maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = ?", [ dataVO.id ] );
       }
 
       if( maps.isEmpty ) {
@@ -172,25 +176,18 @@ class LogosDB {
             "name, "
             "description, "
             "lastUpdated "
-            " ) VALUES ( "
-            + dataVO.id.toString() + ', '
-            + "'" + _escape( str: dataVO.name.toString() ) + "', "
-            + "'" + _escape( str: dataVO.description.toString() ) + "', "
-            + "'" + dataVO.lastUpdated.toString() + "' "
-            + ' ) ';
-
-        await db.rawQuery( sql );
+            " ) VALUES ( ?, ?, ?, ? )";
+        await db.rawInsert( sql, [ dataVO.id, dataVO.name, dataVO.description, dataVO.lastUpdated ] );
 
       } else {
 
         sql = "UPDATE `$tableName` SET "
-            + "id = '" + dataVO.id.toString() + "', "
-            + "name = '" + _escape( str: dataVO.name ) + "', "
-            + "description = '" + _escape( str: dataVO.description ) + "', "
-            + "lastUpdated = '" + dataVO.lastUpdated + "' "
-            + "WHERE id = " + dataVO.id.toString();
-
-        await db.rawQuery( sql );
+            + "id = ?, "
+            + "name = ?, "
+            + "description = ?, "
+            + "lastUpdated = ? "
+            + "WHERE id = ?";
+        await db.rawUpdate( sql, [ dataVO.id, dataVO.name, dataVO.description, dataVO.lastUpdated, dataVO.id ] );
       }
     }
 
@@ -220,7 +217,7 @@ class LogosDB {
 
       if( maps.isEmpty ) {
 
-        await db.rawQuery( "INSERT INTO `logos_$langCode` ( "
+        await db.rawInsert( "INSERT INTO `logos_$langCode` ( "
             "logosID, "
             "description, "
             "tags, "
@@ -229,33 +226,44 @@ class LogosDB {
             "style, "
             "isRich, "
             "lastUpdate "
-            " ) VALUES ( "
-            + logosVO.logosID.toString() + ', '
-            + "'" + _escape( str: logosVO.description.escapeTxt() ) + "', "
-            + "'" + _escape( str: logosVO.tags.escapeTxt() ) + "', "
-            + "'" + _escape( str: logosVO.note.escapeTxt() ) + "', "
-            + "'" + _escape( str: logosVO.txt.escapeTxt() ) + "', "
-            + "'" + _escape( str: logosVO.style ) + "', "
-            + logosVO.isRich.toString() + ", "
-            + "'" + logosVO.lastUpdate + "' "
-            + ' ) '
-        );
+            " ) VALUES ( ?, ?, ?, ?, ?, ?, ?, ? ) ",
+            [
+              logosVO.logosID,
+              logosVO.description,
+              logosVO.tags,
+              logosVO.note,
+              logosVO.txt,
+              logosVO.style,
+              logosVO.isRich,
+              logosVO.lastUpdate
+            ]
 
+        );
         _log(msg: sql );
         /// Select the row that was just INSERTED.
         sql = "SELECT * FROM `logos_$langCode` ORDER BY `logosID` DESC LIMIT 1";
 
       } else {
 
-        await db.rawQuery( "UPDATE `logos_$langCode` SET "
-            "description      = '" + _escape( str: logosVO.description.escapeTxt() ) + "', "
-            + "tags           = '" + _escape( str: logosVO.tags.escapeTxt() ) + "', "
-            + "note           = '" + _escape( str: logosVO.note.escapeTxt() ) + "', "
-            + "txt            = '" + _escape( str: logosVO.txt.escapeTxt() ) + "', "
-            + "style          = '" + _escape( str: logosVO.style ) + "', "
-            + "isRich         = " + logosVO.isRich.toString() + ", "
-            + "lastUpdate     = '" + logosVO.lastUpdate + "' "
-            + "WHERE logosID  = " + logosVO.logosID.toString()
+        await db.rawUpdate( "UPDATE `logos_$langCode` SET "
+            "description      = ?, "
+            + "tags           = ?, "
+            + "note           = ?, "
+            + "txt            = ?, "
+            + "style          = ?, "
+            + "isRich         = ?, "
+            + "lastUpdate     = ? "
+            + "WHERE logosID  = ? ",
+            [
+              logosVO.description,
+              logosVO.tags,
+              logosVO.note,
+              logosVO.txt,
+              logosVO.style,
+              logosVO.isRich,
+              logosVO.lastUpdate,
+              logosVO.logosID,
+            ]
         );
 
         /// Select the row that was just UPDATED.
@@ -285,14 +293,12 @@ class LogosDB {
     Database db = await DBHelpers.openLanguagePreference();
 
     /// Set all 'isSelected' = 0
-    await db.rawQuery(
-      "UPDATE `pref` SET `isSelected` = 0",
-    );
+    await db.rawUpdate( "UPDATE `pref` SET `isSelected` = 0", );
 
     /// Set selected language.
-    String sql = "UPDATE `pref` SET `isSelected` = 1 WHERE `langCode` = '" + code + "'";
+    String sql = "UPDATE `pref` SET `isSelected` = 1 WHERE `langCode` = ?";
     _log( msg: sql );
-    await db.rawQuery( sql );
+    await db.rawUpdate( sql, [ code ] );
 
     /// Select the newly selected language.
     List<Map<String, dynamic>> maps = await db.rawQuery(
@@ -304,7 +310,7 @@ class LogosDB {
       return 'EN';
     } else {
 
-      return maps[0]['langCode'];
+      return maps[0][ 'langCode' ];
     }
   }
 
@@ -339,25 +345,13 @@ class LogosDB {
     }
   }
 
-  Future<String> getLastTagUpdate() async {
-    Database db = await DBHelpers.openTags();
-    List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT `lastUpdated` FROM `tags` ORDER BY `lastUpdated` DESC LIMIT 1" );
+  Future<String> getLastDataUpdate( { required String table } ) async {
+    Database db = await DBHelpers.openDataTable( table: table );
+    List<Map<String, dynamic>> maps = await db.rawQuery(
+        "SELECT `lastUpdated` FROM `$table` ORDER BY `lastUpdated` DESC LIMIT 1"
+    );
 
-    _log( msg: 'last tag update = ' + maps.toString() );
-
-    if( maps.isEmpty == true ) {
-      return '2000-01-01 00:00:00';
-    } else {
-
-      return maps[0][ 'lastUpdated' ];
-    }
-  }
-
-  Future<String> getLastScreensUpdate() async {
-    Database db = await DBHelpers.openScreens();
-    List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT `lastUpdated` FROM `screens` ORDER BY `lastUpdated` DESC LIMIT 1" );
-
-    _log( msg: 'last tag update = ' + maps.toString() );
+    _log( msg: 'last $table update = ' + maps.toString() );
 
     if( maps.isEmpty == true ) {
       return '2000-01-01 00:00:00';
@@ -396,10 +390,10 @@ class LogosDB {
     late Database db;
 
     if( dataManagerType == DataManagerType.tags ) {
-      db = await DBHelpers.openTags();
+      db = await DBHelpers.openDataTable( table: 'tags' );
       tableName = 'tags';
     } else if( dataManagerType == DataManagerType.screens ) {
-      db = await DBHelpers.openScreens();
+      db = await DBHelpers.openDataTable( table: 'screens' );
       tableName = 'screens';
     }
 
@@ -419,10 +413,6 @@ class LogosDB {
     } else {
       return [];
     }
-  }
-
-  static String _escape({ required String str }) {
-    return str.replaceAll( "'", "''" );
   }
 
   static void _log( { required String msg, String title='', Map<String, dynamic>? map, String json='', bool shout=false, bool fail=false } ) {

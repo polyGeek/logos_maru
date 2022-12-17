@@ -89,7 +89,7 @@ class _HomeScreenState extends State<HomeScreen> {
             actions: [
               Padding(
                 padding: const EdgeInsets.only( right: 15.0),
-                child: LogosMaruShowAdjustFontScale( iconSize: 30, package: '', ),
+                child: LogosShowAdjustFontScale( iconSize: 30, package: '', ),
               ),
             ],
       ),
@@ -256,7 +256,11 @@ class _HomeScreenState extends State<HomeScreen> {
 
               //LogosTxt.static( txt: 'HELLO \nWORLD...', textStyle: TextStyle( fontSize: 44, color: Colors.yellowAccent),),
 
-
+              LogosTxt(
+                logosID: 112,
+                comment: 'I am about to watch...',
+                vars: { 'movieTitle': 'The Matrix' },
+              ),
 
               SizedBox( height: 20,),
               

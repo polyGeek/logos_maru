@@ -56,17 +56,17 @@ class DataVO {
     };
   }
 
-  String escapeTxt( { required String s } ) {
+  /*String escapeTxt( { required String s } ) {
     s = s.replaceAll( "'", "\'" );
     s = s.replaceAll( '"', '\"' );
     return s;
-  }
+  }*/
 
-  String unEscapeTxt( { required String s } ) {
+  /*String unEscapeTxt( { required String s } ) {
     s = s.replaceAll( '&#39;', "'" );
     s = s.replaceAll( '&quot;', '"' );
     return s;
-  }
+  }*/
 
   factory DataVO.fromJson( Map<String, dynamic> json ) {
     _log(msg: json.toString() );

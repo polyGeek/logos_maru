@@ -29,8 +29,8 @@ class LogosVO {
     required this.style,
     required this.isRich
   }): txtOriginal = txt {
-    this.txt = unEscapeTxt( s: LogosController().newLine( txt: txt ) );
-    this.note = unEscapeTxt( s: note );
+    this.txt = LogosController().newLine( txt: txt ); //unEscapeTxt( s: LogosController().newLine( txt: txt ) );
+    //this.note = unEscapeTxt( s: note );
   }
 
   LogosVO.error( {
@@ -85,14 +85,14 @@ class LogosVO {
       'description'	: description,
       'tags'        : tags,
       'langCode'    : langCode,
-      'txt'         : escapeTxt( s: txt ),
+      'txt'         : txt, //escapeTxt( s: txt ),
       'note'        : note,
       'lastUpdate'  : lastUpdate,
       'style'      : style,
     };
   }
 
-  String escapeTxt( { required String s } ) {
+  /*String escapeTxt( { required String s } ) {
     s = s.replaceAll( "'", "\'" );
     s = s.replaceAll( '"', '\"' );
     return s;
@@ -102,7 +102,7 @@ class LogosVO {
     s = s.replaceAll( '&#39;', "'" );
     s = s.replaceAll( '&quot;', '"' );
     return s;
-  }
+  }*/
 
   factory LogosVO.fromJson( Map<String, dynamic> json ) {
     _log(msg: json.toString() );
@@ -178,7 +178,7 @@ class LogosVO {
 
 extension ExtendedString on String {
 
-  String escapeTxt() {
+  /*String escapeTxt() {
     String s = this;
     s = s.replaceAll( "'", "&#39;" );
     s = s.replaceAll( '"', '&quot;' );
@@ -190,7 +190,7 @@ extension ExtendedString on String {
     s = s.replaceAll( '&#39;', "'" );
     s = s.replaceAll( '&quot;', '"' );
     return s;
-  }
+  }*/
 }
 
 /*

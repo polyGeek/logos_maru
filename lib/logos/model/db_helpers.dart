@@ -52,14 +52,14 @@ class DBHelpers {
     );
   }
 
-  static dynamic openTags() async {
+  static dynamic openDataTable( { required String table } ) async {
 
     return openDatabase(
 
-      join( await getDatabasesPath(), 'logos_tags.db' ),
+      join( await getDatabasesPath(), 'logos_$table.db' ),
 
       onCreate: ( db, version ) {
-        String sql = "CREATE TABLE `tags` ( "
+        String sql = "CREATE TABLE `$table` ( "
             "id 				  INTEGER PRIMARY KEY, "
             "name         VARCHAR(32), "
             "description  TEXT, "
@@ -72,7 +72,7 @@ class DBHelpers {
     );
   }
 
-  static dynamic openScreens() async {
+  /*static dynamic openScreens() async {
 
     return openDatabase(
 
@@ -90,7 +90,7 @@ class DBHelpers {
       },
       version: 1,
     );
-  }
+  }*/
 
   static Future<bool> copyEmbeddedDatabase( { required String assetPath } ) async {
     /// TESTING: This forces the code to recreate the database.

@@ -7,7 +7,7 @@ import 'package:logos_maru/logos/model/settings_controller.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 
-class LogosMaruShowAdjustFontScale extends StatelessWidget {
+class LogosShowAdjustFontScale extends StatelessWidget {
 
     /// The icon is square, so the width and height are the same.
     final double iconSize;
@@ -15,7 +15,7 @@ class LogosMaruShowAdjustFontScale extends StatelessWidget {
 
     static const String fontsizeAdjustIcon = 'assets/logos_maru/fontsize-adjust-icon.png';
 
-    LogosMaruShowAdjustFontScale( {
+    LogosShowAdjustFontScale( {
         required this.iconSize,
         this.package = 'logos_maru',
     } );

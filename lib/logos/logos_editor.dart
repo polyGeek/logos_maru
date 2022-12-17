@@ -20,7 +20,7 @@ class _LogosEditorState extends State<LogosEditor> {
   void initState() {
     super.initState();
 
-    _tecTxt.text = LogosController().editingLogosVO!.txt;
+    _tecTxt.text = LogosController().editingLogosVO!.txtOriginal;
 
     LogosController().addListener(() {
       _update();

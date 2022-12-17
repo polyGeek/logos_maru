@@ -216,10 +216,10 @@ class LogosController extends ChangeNotifier {
     int lastLangKey = await LogosDB().getLastLangKey();
 
     /// Get the last update timestamp from the tagsDB.
-    String lastTagUpdate = await LogosDB().getLastTagUpdate();
+    String lastTagUpdate = await LogosDB().getLastDataUpdate(table: 'tags' );
 
     /// Get the last update timestamp from the screensDB.
-    String lastScreenUpdate = await LogosDB().getLastScreensUpdate();
+    String lastScreenUpdate = await LogosDB().getLastDataUpdate( table: 'screens' );
 
     /// Data to the server
     Map<String, dynamic> map = {
