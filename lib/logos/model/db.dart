@@ -151,6 +151,9 @@ class LogosDB {
     } else if( dataManagerType == DataManagerType.screens ) {
       db = await DBHelpers.openDataTable( table: 'screens' );
       tableName = 'screens';
+    } else if( dataManagerType == DataManagerType.styles ) {
+      db = await DBHelpers.openDataTable( table: 'styles' );
+      tableName = 'styles';
     }
 
 
@@ -163,9 +166,12 @@ class LogosDB {
 
       _log( msg: "updating changes: " + dataVO.id.toString() + " : " + dataVO.name );
 
+      // todo: all of these are the same???
       if( dataManagerType == DataManagerType.tags ) {
         maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = ?", [ dataVO.id ] );
       } else if( dataManagerType == DataManagerType.screens ) {
+        maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = ?", [ dataVO.id ] );
+      } else if( dataManagerType == DataManagerType.styles ) {
         maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = ?", [ dataVO.id ] );
       }
 
@@ -395,6 +401,9 @@ class LogosDB {
     } else if( dataManagerType == DataManagerType.screens ) {
       db = await DBHelpers.openDataTable( table: 'screens' );
       tableName = 'screens';
+    } else if( dataManagerType == DataManagerType.styles ) {
+      db = await DBHelpers.openDataTable( table: 'styles' );
+      tableName = 'styles';
     }
 
     List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT * FROM `$tableName`" );

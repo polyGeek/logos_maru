@@ -72,26 +72,6 @@ class DBHelpers {
     );
   }
 
-  /*static dynamic openScreens() async {
-
-    return openDatabase(
-
-      join( await getDatabasesPath(), 'logos_screens.db' ),
-
-      onCreate: ( db, version ) {
-        String sql = "CREATE TABLE `screens` ( "
-            "id 				  INTEGER PRIMARY KEY, "
-            "name         VARCHAR(32), "
-            "description  TEXT, "
-            "lastUpdated   datetime"
-            " )";
-
-        db.execute( sql );
-      },
-      version: 1,
-    );
-  }*/
-
   static Future<bool> copyEmbeddedDatabase( { required String assetPath } ) async {
     /// TESTING: This forces the code to recreate the database.
     ///return true;

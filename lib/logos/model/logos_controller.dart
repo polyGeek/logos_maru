@@ -301,6 +301,19 @@ class LogosController extends ChangeNotifier {
           newData: screensList
       );
     }
+
+    /// Update stylesDB
+    var stylesDecoded = jsonDecode(result)[ 'styles' ] as List;
+    if( stylesDecoded.isNotEmpty ) {
+      _log( msg: "New styles", shout: true );
+      List<DataVO> stylesList = stylesDecoded.map((e) => DataVO.fromJson(e)).toList();
+
+      /// Update database
+      await LogosDB().updateData(
+          dataManagerType: DataManagerType.styles,
+          newData: stylesList,
+      );
+    }
   }
 
   bool doesHaveLogos() {
