@@ -119,7 +119,6 @@ class DBHelpers {
             "fontSizeAdjustment    INTEGER DEFAULT 0 "
             " )";
 
-        print( sql );
         db.execute( sql );
       },
       version: 1,

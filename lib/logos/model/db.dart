@@ -109,7 +109,7 @@ class LogosDB {
             "name "
             " ) VALUES ( "
             + langVO.langID.toString() + ', '
-            + "0, ?, ?, ? )",
+            + "?, ?, ?, ? )",
             [
               0, /// isSelected
               langVO.langCode,
