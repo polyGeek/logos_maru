@@ -151,10 +151,10 @@ class LogosDB {
     } else if( dataManagerType == DataManagerType.screens ) {
       db = await DBHelpers.openDataTable( table: 'screens' );
       tableName = 'screens';
-    } else if( dataManagerType == DataManagerType.styles ) {
+    } /*else if( dataManagerType == DataManagerType.styles ) {
       db = await DBHelpers.openDataTable( table: 'styles' );
       tableName = 'styles';
-    }
+    }*/
 
 
     late List<Map<String, dynamic>> maps;
@@ -171,9 +171,9 @@ class LogosDB {
         maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = ?", [ dataVO.id ] );
       } else if( dataManagerType == DataManagerType.screens ) {
         maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = ?", [ dataVO.id ] );
-      } else if( dataManagerType == DataManagerType.styles ) {
+      }/* else if( dataManagerType == DataManagerType.styles ) {
         maps = await db.rawQuery( "SELECT * FROM `$tableName` WHERE `id` = ?", [ dataVO.id ] );
-      }
+      }*/
 
       if( maps.isEmpty ) {
 
@@ -401,10 +401,10 @@ class LogosDB {
     } else if( dataManagerType == DataManagerType.screens ) {
       db = await DBHelpers.openDataTable( table: 'screens' );
       tableName = 'screens';
-    } else if( dataManagerType == DataManagerType.styles ) {
+    } /*else if( dataManagerType == DataManagerType.styles ) {
       db = await DBHelpers.openDataTable( table: 'styles' );
       tableName = 'styles';
-    }
+    }*/
 
     List<Map<String, dynamic>> maps = await db.rawQuery( "SELECT * FROM `$tableName`" );
 

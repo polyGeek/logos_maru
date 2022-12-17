@@ -29,8 +29,7 @@ class LogosVO {
     required this.style,
     required this.isRich
   }): txtOriginal = txt {
-    this.txt = LogosController().newLine( txt: txt ); //unEscapeTxt( s: LogosController().newLine( txt: txt ) );
-    //this.note = unEscapeTxt( s: note );
+    this.txt = LogosController().newLine( txt: txt );
   }
 
   LogosVO.error( {
@@ -48,7 +47,7 @@ class LogosVO {
     this.txtOriginal = txt;
   }
 
-  LogosVO.clone( { required LogosVO logosVO } ) :
+  /*LogosVO.clone( { required LogosVO logosVO } ) :
         this.logosID      = logosVO.logosID,
         this.tags         = logosVO.tags,
         this.note         = logosVO.note,
@@ -58,7 +57,7 @@ class LogosVO {
         this.lastUpdate   = logosVO.lastUpdate,
         this.style        = logosVO.style,
         this.isRich       = logosVO.isRich,
-        this.txtOriginal = logosVO.txtOriginal;
+        this.txtOriginal = logosVO.txtOriginal;*/
 
   LogosVO fromMap( { required Map map } ) {
     return LogosVO(
@@ -92,18 +91,6 @@ class LogosVO {
     };
   }
 
-  /*String escapeTxt( { required String s } ) {
-    s = s.replaceAll( "'", "\'" );
-    s = s.replaceAll( '"', '\"' );
-    return s;
-  }
-
-  String unEscapeTxt( { required String s } ) {
-    s = s.replaceAll( '&#39;', "'" );
-    s = s.replaceAll( '&quot;', '"' );
-    return s;
-  }*/
-
   factory LogosVO.fromJson( Map<String, dynamic> json ) {
     _log(msg: json.toString() );
 
@@ -123,13 +110,13 @@ class LogosVO {
 
   /// Returns the TextStyle for the given style name
   /// If the style name is not found, returns the default style (body).
-  static Map<dynamic, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
+  static Map<String, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
   static double _lastFontSize = LogosController().logosFontStyles!.body.fontSize! + LogosFontSizeController().fontSizeAdjustment;
 
   static TextStyle getStyle( { required String styleName } ) {
 
     if( _txtStyles.isEmpty ) {
-      Map<dynamic, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
+      Map<String, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
     }
 
     /// todo: Using the _lastFontSize won't work if the text begins with a different style.
@@ -176,22 +163,6 @@ class LogosVO {
   }
 }
 
-extension ExtendedString on String {
-
-  /*String escapeTxt() {
-    String s = this;
-    s = s.replaceAll( "'", "&#39;" );
-    s = s.replaceAll( '"', '&quot;' );
-    return s;
-  }
-
-  String unEscapeTxt() {
-    String s = this;
-    s = s.replaceAll( '&#39;', "'" );
-    s = s.replaceAll( '&quot;', '"' );
-    return s;
-  }*/
-}
 
 /*
 import 'package:flutter/cupertino.dart';
@@ -387,4 +358,5 @@ extension ExtendedString on String {
     s = s.replaceAll( '&quot;', '"' );
     return s;
   }
-}*/
+}
+*/
