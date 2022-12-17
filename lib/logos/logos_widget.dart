@@ -143,7 +143,7 @@ class _LogosUpdateTxt extends StatefulWidget {
   final TextStyle? textStyle;
   final Widget? child;
   final TextAlign textAlign;
-  String? txt;
+  final String? txt;
   final int? maxLines;
   final bool? isRich;
 
@@ -174,12 +174,9 @@ class _LogosUpdateTxtState extends State<_LogosUpdateTxt> {
 
     if( widget.logosID == 0 ) {
       /// This is STATIC text.
-      if( LogosController().useHashtag == true ) {
-        widget.txt = '#${widget.txt}#';
-      }
       _logosVO = LogosVO(
         logosID       : 0,
-        txt           : widget.txt!,
+        txt           : ( LogosController().useHashtag == true)? '#${widget.txt}#' : widget.txt!,
         style         : 'body', /// This would have been chosen as the default text no matter.
         description   : '',
         tags          : '',
