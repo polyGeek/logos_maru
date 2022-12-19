@@ -5,6 +5,7 @@ import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
 import 'package:logos_maru/logos/model/rich_txt.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
+import 'package:logos_maru/logos_styles.dart';
 
 /** ===============================================
  *  Formatting Row for the Translation Editor
@@ -27,12 +28,26 @@ class FormattingRow extends StatefulWidget {
 
 class _FormattingRowState extends State<FormattingRow> {
 
-  List<Widget> _formattingBtns = [];
+  List<Widget> _formattingBtnsList = [];
+  Widget _formatBtnsContainer = Container( width: 30, height: 30 , color: Colors.blueGrey );
 
   @override
   void initState() {
-    _formattingBtns = createFormattingBtnsList();
+    _formattingBtnsList = createFormattingBtnsList();
+
+    displayFormatBtns();
+
     super.initState();
+  }
+
+  void displayFormatBtns() {
+
+    /// Should the Format Buttons be displayed?
+    _formatBtnsContainer = ( LogosController().editingLogosVO!.isRich == 1 )
+        ? _formatBtns()
+        : SizedBox.shrink();
+
+    setState(() {});
   }
 
   List<Widget> createFormattingBtnsList() {
@@ -52,9 +67,7 @@ class _FormattingRowState extends State<FormattingRow> {
   }
 
   void removeFormattingAlert( { required bool isRich } ) {
-    print( 'widget.txt: ' + widget.txt );
-    print( 'isRich: ' + isRich.toString() );
-    print( ' widget.txt.contains "</" = ' + widget.txt.contains( '</' ).toString() );
+
     if( isRich == false && widget.txt.contains( '</' ) ) {
       showDialog<void>(
           context: context,
@@ -67,7 +80,7 @@ class _FormattingRowState extends State<FormattingRow> {
 
   @override
   Widget build( BuildContext context ) {
-    return Row(
+    return Column(
       children: [
 
         /** ===============================================
@@ -82,8 +95,9 @@ class _FormattingRowState extends State<FormattingRow> {
             borderRadius: BorderRadius.all( Radius.circular( 4 ) ),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
+            padding: const EdgeInsets.all(0.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Checkbox(
                     value: ( widget.logosVO.isRich == 1 )? true : false,
@@ -91,6 +105,8 @@ class _FormattingRowState extends State<FormattingRow> {
                       LogosController().setEditingLogoVOisRich( isRich: value! );
                       FormattingBtnController().update();
                       removeFormattingAlert( isRich: value );
+
+                      displayFormatBtns();
                     }
                 ),
 
@@ -101,6 +117,8 @@ class _FormattingRowState extends State<FormattingRow> {
                       LogosController().setEditingLogoVOisRich( isRich: newValue );
                       FormattingBtnController().update();
                       removeFormattingAlert( isRich: newValue );
+
+                      displayFormatBtns();
                     },
                     child: Text( 'isRichTxt' )
                 ),
@@ -109,16 +127,28 @@ class _FormattingRowState extends State<FormattingRow> {
           ),
         ),/// End RichTxt toggle
 
-        SizedBox( width: 8 ,),
-
-        Expanded(
-          child: Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            children: _formattingBtns,
-          ),
+        AnimatedSwitcher(
+          duration: Duration( milliseconds: 500 ),
+            transitionBuilder: ( Widget child, Animation<double> animation ) {
+              return ScaleTransition( scale: animation, child: child );
+            },
+            child: _formatBtnsContainer
         ),
 
       ],
+    );
+  }
+
+  Widget _formatBtns() {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Container(
+        width: 1000,//MediaQuery.of( context ).size.width * 2,
+        child: Wrap(
+          crossAxisAlignment: WrapCrossAlignment.center,
+          children: _formattingBtnsList,
+        ),
+      ),
     );
   }
 }
@@ -193,7 +223,7 @@ class _FormattingBtnState extends State<FormattingBtn> {
 
               LogosRichTxt(
                 txt: '<' + widget.tag + '>' + widget.formattedCharacter + '</' + widget.tag + '>',
-                txtStyle: LogosAdminTxtStyles.body,
+                txtStyle: LogosTextStyles().body,
               ),
 
               Text( '>', style: TextStyle( color: Colors.white ), ),
@@ -239,20 +269,20 @@ class FormattingAlert extends StatelessWidget {
 
       actions: [
 
-        TextButton(
+        OutlinedButton(
             onPressed: (){
               Navigator.of( context ).pop();
             },
-            child: Text( 'CLOSE', style: LogosAdminTxtStyles.btn,)
+            child: Text( 'CLOSE', style: LogosAdminTxtStyles.btn.logos_white,)
         ),
 
-        ElevatedButton(
+        /*ElevatedButton(
             onPressed: () {
               callback( '<>' );
               Navigator.of( context ).pop();
             },
             child: Text( 'REMOVE FORMATTING', style: LogosAdminTxtStyles.btn,)
-        ),
+        ),*/
       ],
     );
   }
@@ -273,3 +303,94 @@ class FormattingBtnController extends ChangeNotifier {
   }
 }
 
+/** ===============================================
+*  isRichTxt toggle button
+*  ===============================================*/
+class IsRichTxtToggleBtn extends StatefulWidget {
+
+  final LogosVO logosVO;
+  final String txt;
+  final void Function( String s ) callback;
+
+  IsRichTxtToggleBtn( {
+    required this.logosVO,
+    required this.txt,
+    required this.callback,
+  });
+
+    @override
+    _IsRichTxtToggleBtnState createState() => _IsRichTxtToggleBtnState();
+}
+
+class _IsRichTxtToggleBtnState extends State<IsRichTxtToggleBtn> {
+
+    @override
+  void initState() {
+    super.initState();
+
+  }
+
+  @override
+  void dispose() {
+
+    super.dispose();
+  }
+
+  void _update(){
+    if( mounted )
+      setState(() {});
+  }
+
+    void removeFormattingAlert( { required bool isRich } ) {
+      print( 'widget.txt: ' + widget.txt );
+      print( 'isRich: ' + isRich.toString() );
+      print( ' widget.txt.contains "</" = ' + widget.txt.contains( '</' ).toString() );
+      if( isRich == false && widget.txt.contains( '</' ) ) {
+        showDialog<void>(
+            context: context,
+            barrierDismissible: false,
+            builder: (BuildContext context) {
+              return FormattingAlert( callback: widget.callback );
+            });
+      }
+    }
+
+    @override
+    Widget build( BuildContext context ) {
+        return Container(
+          decoration: BoxDecoration(
+            border: Border.all(
+                width: 1.0,
+                color: Colors.white70
+            ),
+            borderRadius: BorderRadius.all( Radius.circular( 4 ) ),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Checkbox(
+                    value: ( widget.logosVO.isRich == 1 )? true : false,
+                    onChanged: ( bool? value ) {
+                      LogosController().setEditingLogoVOisRich( isRich: value! );
+                      FormattingBtnController().update();
+                      removeFormattingAlert( isRich: value );
+                    }
+                ),
+
+                GestureDetector(
+                    onTap: () {
+                      bool newValue = ( LogosController().editingLogosVO!.isRich == 1 )? false : true;
+
+                      LogosController().setEditingLogoVOisRich( isRich: newValue );
+                      FormattingBtnController().update();
+                      removeFormattingAlert( isRich: newValue );
+                    },
+                    child: Text( 'isRichTxt' )
+                ),
+              ],
+            ),
+          ),
+        );
+    }
+}

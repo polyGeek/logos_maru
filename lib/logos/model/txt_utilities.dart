@@ -16,6 +16,12 @@ class LogosAdminTxtStyles {
     height: 1.3,
   ).logos_white;
 
+  static TextStyle label = GoogleFonts.robotoMono(
+    letterSpacing: 1.2,
+    fontSize: ( 12 + LogosFontSizeController().fontSizeAdjustment).toDouble(),
+    height: 1.2,
+  ).logos_white;
+
   static TextStyle get btn =>
       body.copyWith( fontSize: LogosFontSizeController().fontSizeAdjustment + 16 ).logos_black.logos_bold;
 

@@ -3,6 +3,7 @@ import 'package:logos_maru/logos/ancillary.dart';
 import 'package:logos_maru/logos/logos_editor_parts/formatting_btn.dart';
 import 'package:logos_maru/logos/model/lang_controller.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
+import 'package:logos_maru/logos/model/logos_vo.dart';
 import 'package:logos_maru/logos/model/txt_utilities.dart';
 
 class LogosEditor extends StatefulWidget {
@@ -11,33 +12,37 @@ class LogosEditor extends StatefulWidget {
 }
 
 class _LogosEditorState extends State<LogosEditor> {
-  final _tecTxt = TextEditingController();
+  final _tecTxt  = TextEditingController();
   final _tecNote = TextEditingController();
 
-  bool _isBusy = false;
+  bool _isBusy              = false;
+  bool _showSettings        = false;
+  Widget _settingsContainer = Container();
+
+  /** ===============================================
+   *  This VO is used internally to track changes.
+   *  And only when the user clicks the save button
+   *  will the changes be saved to the LogosController.
+   *  ===============================================*/
+  late LogosVO _logosVO;
 
   @override
   void initState() {
     super.initState();
 
-    _tecTxt.text = LogosController().editingLogosVO!.txtOriginal;
+    _logosVO = LogosController().editingLogosVO!;
 
-    LogosController().addListener(() {
-      _update();
-    });
-    LogosLanguageController().addListener(() {
-      _update();
-    });
+    _tecTxt.text = _logosVO.txtOriginal;
+
+    LogosController().addListener(() { _update(); });
+
+    LogosLanguageController().addListener(() { _update(); });
   }
 
   @override
   void dispose() {
-    LogosController().removeListener(() {
-      _update();
-    });
-    LogosLanguageController().removeListener(() {
-      _update();
-    });
+    LogosController().removeListener(() { _update(); });
+    LogosLanguageController().removeListener(() { _update(); });
 
     super.dispose();
   }
@@ -45,6 +50,16 @@ class _LogosEditorState extends State<LogosEditor> {
   void _update() {
     /// todo: this update is called multiple times when editing language changes.
     if (mounted) setState(() {});
+  }
+
+  void _toggleSettings() {
+    _showSettings = !_showSettings;
+
+    _settingsContainer = ( _showSettings == true )
+        ? _settingsView()
+        : SizedBox.shrink();
+
+    _update();
   }
 
   void changeBusyState(bool isBusy) {
@@ -94,8 +109,8 @@ class _LogosEditorState extends State<LogosEditor> {
 
       if (selectionStart == selectionEnd) {
         /// Insert one character where the cursor is.
-        t1 = txt.substring(0, selectionStart);
-        t2 = txt.substring(selectionStart, txt.length);
+        t1 = txt.substring( 0, selectionStart );
+        t2 = txt.substring( selectionStart, txt.length );
         newTxt = t1 + '<' + formatChar + '>' + t2;
         selectionEnd += formatChar.length + 2;
       } else {
@@ -139,8 +154,9 @@ class _LogosEditorState extends State<LogosEditor> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
+      title: Text('LogosMaru [ID:' + _logosVO.logosID.toString() + ']', style: LogosAdminTxtStyles.title),
       scrollable: true,
-      insetPadding: EdgeInsets.symmetric(horizontal: 20),
+      insetPadding: EdgeInsets.symmetric(horizontal: 2),
       contentPadding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(8)),
@@ -148,217 +164,231 @@ class _LogosEditorState extends State<LogosEditor> {
       ),
       content: (_isBusy == true)
           ? Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                CircularProgress(),
-              ],
-            )
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          CircularProgress(),
+        ],
+      )
           : Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              SizedBox(
-                width: MediaQuery.of(context).size.width - 30,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Text('LogosMaru Editor [ID:' + LogosController().editingLogosVO!.logosID.toString() + ']', style: LogosAdminTxtStyles.title),
-                  Expanded(child: SizedBox()),
-                  LanguageChooser(
-                    callbackState: changeBusyState,
-                  ),
-                ],
-              ),
-              Divider(
-                color: Colors.white38,
-                thickness: 1,
-                height: 2,
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Table(
-                columnWidths: {
-                  0: FlexColumnWidth(3),
-                  1: FlexColumnWidth(7),
-                },
-                children: [
-                  /// Description
-                  TableRow(
-                    children: [
-                      TableCell(
-                        child: Text(
-                          'Description:',
-                          style: LogosAdminTxtStyles.body,
-                        ),
-                      ),
-                      TableCell(
-                        child: Text(
-                          LogosController().editingLogosVO!.description,
-                          style: LogosAdminTxtStyles.body.logos_italic,
-                        ),
-                      ),
-                    ],
-                  ),
 
-                  /// Tags
-                  TableRow(
-                    children: [
-                      TableCell(
-                        child: Text(
-                          'Tags:',
-                          style: LogosAdminTxtStyles.body,
-                        ),
-                      ),
-                      TableCell(
-                        child: Text(
-                          LogosController().editingLogosVO!.tags,
-                          style: LogosAdminTxtStyles.body.logos_italic,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
-              Text(
-                'Primary Style:',
-                style: LogosAdminTxtStyles.bodySm,
-              ),
-              StyleChooser(
-                logosID: LogosController().editingLogosVO!.logosID,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              FormattingRow(logosVO: LogosController().editingLogosVO!, txt: _tecTxt.text, callback: formatCallback),
-              SizedBox(
-                height: 35,
-              ),
-              TextField(
-                minLines: 1,
-
-                /// Normal textInputField will be displayed
-                maxLines: 10,
-
-                /// When user presses enter it will adapt to it
-                autofocus: false,
-                controller: _tecTxt,
-                style: LogosAdminTxtStyles.body,
-                autocorrect: false,
-                onChanged: onChange,
-                decoration: InputDecoration(
-                  errorStyle: TextStyle(fontSize: 18, color: Colors.redAccent),
-                  border: OutlineInputBorder(),
-                  labelText: LogosLanguageController().getLanguageNameFromCode(
-                    langCode: LogosLanguageController().editingLanguageCode,
-                  ),
-                  labelStyle: LogosAdminTxtStyles.bodySm.logos_offWhite,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.amber,
-                      width: 3,
-                      strokeAlign: StrokeAlign.outside,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.white70,
-                      width: 2,
-                      strokeAlign: StrokeAlign.outside,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              TextField(
-                minLines: 1,
-
-                /// Normal textInputField will be displayed
-                maxLines: 7,
-
-                /// When user presses enter it will adapt to it
-                autofocus: false,
-                controller: _tecNote,
-                style: LogosAdminTxtStyles.body,
-                autocorrect: false,
-                decoration: InputDecoration(
-                  errorStyle: TextStyle(fontSize: 18, color: Colors.redAccent),
-                  border: OutlineInputBorder(),
-                  labelText: 'Note',
-                  labelStyle: LogosAdminTxtStyles.bodySm.logos_offWhite,
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.amber,
-                      width: 3,
-                      strokeAlign: StrokeAlign.outside,
-                    ),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.white70,
-                      width: 2,
-                      strokeAlign: StrokeAlign.outside,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 15,
-              ),
-              RadioBtnLabel(
-                boolean: LogosController().useHashtag,
-                callback: callbackHashtag,
-                label: 'Add Hashtag',
-              ),
-              SizedBox(
-                width: 20,
-              ),
-              RadioBtnLabel(
-                boolean: LogosController().makeDoubleSize,
-                callback: callbackDoubleSized,
-                label: 'DoubleSize',
-              ),
-            ]),
-      actions: [
-        Row(
-          children: [
-            Expanded(child: SizedBox()),
-            OutlinedButton(
-              onPressed: () {
-                LogosController().update();
-                Navigator.of(context).pop();
-              },
-              style: LogosAdminWidgetStyles().outlineBtnStyle,
-              child: Text(
-                'CANCEL',
-                style: LogosAdminTxtStyles.btnSub,
-              ),
-            ),
-            SizedBox(
-              width: 25,
-            ),
-            ElevatedButton(
-              onPressed: () {
-                LogosController().editingLogosVO!.txt = _tecTxt.text;
-                LogosController().editingLogosVO!.note = _tecNote.text;
-
-                LogosController().updateLogosDatabase(
-                  logosVO: LogosController().editingLogosVO!,
-                  langCode: LogosLanguageController().editingLanguageCode,
-                );
-
-                Navigator.of(context).pop();
-              },
-              style: LogosAdminWidgetStyles().elevatedBtnStyle,
-              child: Text(
-                'SUBMIT',
-              ),
-            ),
-          ],
+        Align(
+          alignment: Alignment.centerRight,
+          child: LanguageChooser(
+            callbackState: changeBusyState,
+          ),
         ),
+
+        Divider(
+          color: Colors.white38,
+          thickness: 1,
+          height: 2,
+        ),
+
+        SizedBox(
+          height: 20,
+        ),
+
+        Text(
+          'Description:',
+          style: LogosAdminTxtStyles.label,
+        ),
+
+        Text(
+          _logosVO.description,
+          style: LogosAdminTxtStyles.body.logos_italic,
+        ),
+
+        SizedBox( height: 20, ),
+
+        Text(
+          'Tags:',
+          style: LogosAdminTxtStyles.label,
+        ),
+
+        Text(
+          _logosVO.tags,
+          style: LogosAdminTxtStyles.body.logos_italic,
+        ),
+
+        SizedBox( height: 20, ),
+
+        Text(
+          'Primary Style:',
+          style: LogosAdminTxtStyles.label,
+        ),
+
+        StyleChooser(
+          logosID: _logosVO.logosID,
+        ),
+
+        SizedBox( height: 10, ),
+
+        TextField(
+          minLines: 1,
+
+          /// Normal textInputField will be displayed
+          maxLines: 10,
+
+          /// When user presses enter it will adapt to it
+          autofocus: false,
+          controller: _tecTxt,
+          style: LogosAdminTxtStyles.body,
+          autocorrect: false,
+          onChanged: onChange,
+          decoration: InputDecoration(
+            errorStyle: TextStyle(fontSize: 18, color: Colors.redAccent),
+            border: OutlineInputBorder(),
+            labelText: LogosLanguageController().getLanguageNameFromCode(
+              langCode: LogosLanguageController().editingLanguageCode,
+            ),
+            labelStyle: LogosAdminTxtStyles.bodySm.logos_offWhite,
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.amber,
+                width: 3,
+                strokeAlign: StrokeAlign.outside,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.white70,
+                width: 2,
+                strokeAlign: StrokeAlign.outside,
+              ),
+            ),
+          ),
+        ),
+
+        SizedBox( height: 15, ),
+
+        FormattingRow(
+            logosVO: _logosVO,
+            txt: _tecTxt.text,
+            callback: formatCallback
+        ),
+
+        SizedBox( height: 15, ),
+
+        TextField(
+          minLines: 1,
+
+          /// Normal textInputField will be displayed
+          maxLines: 7,
+
+          /// When user presses enter it will adapt to it
+          autofocus: false,
+          controller: _tecNote,
+          style: LogosAdminTxtStyles.body,
+          autocorrect: false,
+          decoration: InputDecoration(
+            errorStyle: TextStyle(fontSize: 18, color: Colors.redAccent),
+            border: OutlineInputBorder(),
+            labelText: 'Note',
+            labelStyle: LogosAdminTxtStyles.bodySm.logos_offWhite,
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.amber,
+                width: 3,
+                strokeAlign: StrokeAlign.outside,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Colors.white70,
+                width: 2,
+                strokeAlign: StrokeAlign.outside,
+              ),
+            ),
+          ),
+        ),
+
+        SizedBox( height: 15, ),
+
+        AnimatedSwitcher(
+            duration: Duration(milliseconds: 500),
+            transitionBuilder: (Widget child, Animation<double> animation) {
+              return ScaleTransition( scale: animation, child: child,);
+            },
+            child: _settingsContainer
+        ),
+
+      ]),
+      actions: [
+        Container(
+          color: Colors.white10,
+          child: Row(
+            children: [
+
+              IconButton(
+                onPressed: (){
+                  _toggleSettings();
+                },
+                icon: Icon( Icons.settings, ),
+              ),
+
+              Expanded(child: SizedBox()),
+
+              OutlinedButton(
+                onPressed: () {
+                  LogosController().update();
+                  Navigator.of(context).pop();
+                },
+                style: LogosAdminWidgetStyles().outlineBtnStyle,
+                child: Text(
+                  'CANCEL',
+                  style: LogosAdminTxtStyles.btnSub,
+                ),
+              ),
+              SizedBox(
+                width: 25,
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  LogosController().editingLogosVO!.txt = _tecTxt.text;
+                  LogosController().editingLogosVO!.note = _tecNote.text;
+
+                  LogosController().updateLogosDatabase(
+                    logosVO: LogosController().editingLogosVO!,
+                    langCode: LogosLanguageController().editingLanguageCode,
+                  );
+
+                  Navigator.of(context).pop();
+                },
+                style: LogosAdminWidgetStyles().elevatedBtnStyle,
+                child: Text(
+                  'SUBMIT',
+                ),
+              ),
+
+              SizedBox( width: 10, ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+
+  Widget _settingsView() {
+    return Column(
+      children: [
+
+        RadioBtnLabel(
+          boolean: LogosController().useHashtag,
+          callback: callbackHashtag,
+          label: 'Add Hashtag',
+          description: "Adds a #hashtag# to the beginning/end of the text so that you can easily spot what text is translated and what isn't.",
+        ),
+
+        SizedBox( height: 20, ),
+
+        RadioBtnLabel(
+          boolean: LogosController().makeDoubleSize,
+          callback: callbackDoubleSized,
+          label: 'DoubleSize',
+          description: "Repeats each translation twice so that you can spot places where translations might overflow.",
+        ),
+
       ],
     );
   }

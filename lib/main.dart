@@ -116,7 +116,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if( await LogosController().init(
       apiPath: 'https://runpee.net/logos_api/',
       apiVersion: '0.0',
-      environment: 'RP',
+      environment: 'HT',
       logosTextStyles: LogosTextStyles(),
       embeddedDatabases: [
         /*'assets/logos_maru/logos_pref.db',

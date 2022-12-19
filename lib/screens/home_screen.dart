@@ -28,9 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
     LogosController().addListener(() { _update(); } );
 
     _dynamicText = LogosController().getLogosVO(
-        logosID     : 67,
-        comment     : 'HomeScreen',
-        vars        : {'count': 4}
+        logosID     : 3,
+        comment     : 'Welcome userName',
+        vars        : {'userName': 'Dan'}
     ).txt;
   }
 
@@ -106,7 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
 
-              LogosTxt(
+              /*LogosTxt(
                 comment: 'Sign in & <gold>get 2 FREE Peecoins</gold> | sign in message',
                 logosID: 2,
                 textAlign: TextAlign.center,
@@ -114,34 +114,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   fontSize: 20,
                   color: Colors.blue,
                 ),
-              ),
+              ),*/
 
               Text( _dynamicText ),
 
-              SizedBox( height: 30, ),
-
-              Text( LogosController().getLogosVO(
-                  logosID: 20,
-                  comment: 'HomeScreen',
-              ).txt,
-              ),
 
               SizedBox( height: 30, ),
 
-              LogosTxt(
-                comment: "150",
-                logosID: 150,
-              ),
-
-              LogosTxt(
-                comment: "150",
-                logosID: 151,
-              ),
-
-              LogosTxt(
-                comment: "150",
-                logosID: 152,
-              ),
 
               LogosTxt(
                 comment: "RunPee: because movie theaters don't have pause buttons. | RunPee tagline",
@@ -166,7 +145,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 isRich: true,
               ),
 
-              Builder(builder: (BuildContext context) {
+              /*Builder(builder: (BuildContext context) {
                 if (true) {
                   return Column(
                     children: [
@@ -197,7 +176,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 } else {
                   return SizedBox.shrink();
                 }
-              }),
+              }),*/
 
 
 
@@ -233,7 +212,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
 
 
-              Builder(builder: (BuildContext context) {
+              /*Builder(builder: (BuildContext context) {
                 List<String> days = [ 'January', 'February', 'March', 'April', 'May' ];
                 List<Widget> dayChildren = [];
 
@@ -252,15 +231,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: dayChildren,
                 );
-              }),
+              }),*/
 
-              //LogosTxt.static( txt: 'HELLO \nWORLD...', textStyle: TextStyle( fontSize: 44, color: Colors.yellowAccent),),
+              LogosTxt.static( txt: 'HELLO \nWORLD...', textStyle: TextStyle( fontSize: 44, color: Colors.yellowAccent),),
 
-              LogosTxt(
-                logosID: 112,
-                comment: 'I am about to watch...',
-                vars: { 'movieTitle': 'The Matrix' },
-              ),
+
 
               SizedBox( height: 20,),
               

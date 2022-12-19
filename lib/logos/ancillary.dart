@@ -110,13 +110,13 @@ class _StyleChooserState extends State<StyleChooser> {
   Widget build( BuildContext context ) {
     return DropdownButton<String>(
         isExpanded: true,
-        itemHeight: 120,
+        itemHeight: 80,
         borderRadius: BorderRadius.circular( 10 ),
         icon: const Icon(Icons.arrow_downward),
         iconSize: 24,
         elevation: 16,
         underline: Container(
-          height: 2,
+          height: 0,
           color: Colors.amber,
         ),
         value: _dropdownValue,
@@ -125,7 +125,7 @@ class _StyleChooserState extends State<StyleChooser> {
           print( _dropdownValue.toString() );
           LogosController().setEditingLogoVOstyle(
               logosID: widget.logosID,
-              style: _dropdownValue.toString(),//.split( '.')[0]
+              style: _dropdownValue.toString(),
           );
           _update();
         },
@@ -148,12 +148,12 @@ class _StyleChooserState extends State<StyleChooser> {
                     children: [
                       Text(
                         value.name,
-                        style: LogosAdminTxtStyles.body.logos_bold,
+                        style: LogosAdminTxtStyles.bodySm,
                       ),
                       Text( value.description,
                         style: LogosVO.getStyle(styleName: value.name ),
                         maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                        overflow:TextOverflow.clip,
                       ),
                     ],
                   ),
@@ -194,11 +194,13 @@ class RadioBtnLabel extends StatefulWidget {
   final void Function( bool value )  callback;
   final bool boolean;
   final String label;
+  final String description;
 
   RadioBtnLabel( {
     required this.callback,
     required this.boolean,
     required this.label,
+    required this.description,
   } );
 
   @override
@@ -223,37 +225,40 @@ class _RadioBtnLabelState extends State<RadioBtnLabel> {
 
   @override
   Widget build( BuildContext context ) {
-    return Row(
-
+    return Column(
       children: [
+        Row(
 
-        Checkbox(
-            value: _localBool,
-            side: BorderSide(
-              strokeAlign: StrokeAlign.outside,
-              color: Colors.white,
-              width: 2,
+          children: [
+
+            Checkbox(
+                value: _localBool,
+                side: BorderSide(
+                  strokeAlign: StrokeAlign.outside,
+                  color: Colors.white,
+                  width: 2,
+                ),
+                onChanged: ( bool? value ) {
+                  _localBool = value!;
+                  widget.callback( value );
+                  _update();
+                }
             ),
-            onChanged: ( bool? value ) {
-              _localBool = value!;
-              widget.callback( value );
-              _update();
-            }
+
+            GestureDetector(
+                onTap: () {
+                  _localBool = !_localBool;
+                  widget.callback( _localBool );
+                  _update();
+                },
+                child: Text( widget.label, style: LogosAdminTxtStyles.body, )
+            ),
+
+            SizedBox( width: 10, ),
+          ],
         ),
 
-        GestureDetector(
-            onTap: () {
-              _localBool = !_localBool;
-              widget.callback( _localBool );
-              _update();
-            },
-            child: Text( widget.label, style: LogosAdminTxtStyles.body, )
-        ),
-
-        SizedBox( width: 10, ),
-        /// Todo: Make help icon dynamic.
-        Icon( Icons.help ),
-
+        Text( widget.description, style: LogosAdminTxtStyles.bodySm, ),
       ],
     );
   }
