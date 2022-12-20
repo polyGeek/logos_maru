@@ -14,6 +14,7 @@ import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_service.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
 import 'package:logos_maru/logos/model/settings_controller.dart';
+import 'package:logos_maru/logos_styles.dart';
 
 
 class LogosController extends ChangeNotifier {
@@ -303,17 +304,9 @@ class LogosController extends ChangeNotifier {
     }
 
     /// Update stylesDB
-    /*var stylesDecoded = jsonDecode(result)[ 'styles' ] as List;
-    if( stylesDecoded.isNotEmpty ) {
-      _log( msg: "New styles", shout: true );
-      List<DataVO> stylesList = stylesDecoded.map((e) => DataVO.fromJson(e)).toList();
-
-      /// Update database
-      await LogosDB().updateData(
-          dataManagerType: DataManagerType.styles,
-          newData: stylesList,
-      );
-    }*/
+    /** ===============================================
+    *  Styles are gathered from the LogosTextStyles class.
+    *  ===============================================*/
   }
 
   bool doesHaveLogos() {

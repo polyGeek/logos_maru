@@ -29,21 +29,33 @@ Widget DropDownChild_FlagOnly( LangVO value, double width ) {
   );
 }
 
-class LogosChangeLanguageDropdown extends StatefulWidget {
+class LogosLanguageOptionsDropdown extends StatefulWidget {
 
-  final LogosDropDownOptions childOptions;
-  final Function? onLanguageChanged;
+  final LogosDropDownOptions    childOptions;
+  final Function?               onLanguageChanged;
+  final Color                   dropDownUnderlineColor;
+  final double                  dropDownUnderlineThickness;
+  final TextStyle               dropDownTextStyle;
+  final IconData                dropDownIcon;
+  final double                  dropDownIconSize;
+  final Color                   dropDownIconColor;
 
-  LogosChangeLanguageDropdown( {
+  LogosLanguageOptionsDropdown( {
     required this.childOptions,
-    this.onLanguageChanged = null,
+    this.dropDownUnderlineColor       = Colors.white54,
+    this.dropDownUnderlineThickness   = 1.0,
+    this.dropDownTextStyle            = const TextStyle( color: Colors.white, fontSize: 12 ),
+    this.dropDownIcon                 = Icons.language,
+    this.dropDownIconSize             = 20,
+    this.dropDownIconColor            = Colors.white,
+    this.onLanguageChanged            = null,
   } );
 
   @override
-  _LogosChangeLanguageDropdownState createState() => _LogosChangeLanguageDropdownState();
+  _LogosLanguageOptionsDropdownState createState() => _LogosLanguageOptionsDropdownState();
 }
 
-class _LogosChangeLanguageDropdownState extends State<LogosChangeLanguageDropdown> {
+class _LogosLanguageOptionsDropdownState extends State<LogosLanguageOptionsDropdown> {
   String _dropdownValue   = 'EN';
 
   @override
@@ -59,8 +71,8 @@ class _LogosChangeLanguageDropdownState extends State<LogosChangeLanguageDropdow
       iconSize: 24,
       elevation: 16,
       underline: Container(
-        height: 2,
-        color: Colors.amber,
+        height: widget.dropDownUnderlineThickness,
+        color: widget.dropDownUnderlineColor,
       ),
       onChanged: ( String? newValue ) {
         _dropdownValue = newValue!;
@@ -82,7 +94,10 @@ class _LogosChangeLanguageDropdownState extends State<LogosChangeLanguageDropdow
                   children: [
                     DropDownChild_FlagOnly( value, 30 ),
                     SizedBox( width: 10 ),
-                    Text( value.name ),
+                    Text(
+                      value.name,
+                      style: widget.dropDownTextStyle,
+                    ),
                   ],
                 );
               else if( widget.childOptions == LogosDropDownOptions.flagAndCountryCode )
@@ -90,37 +105,66 @@ class _LogosChangeLanguageDropdownState extends State<LogosChangeLanguageDropdow
                   children: [
                     DropDownChild_FlagOnly( value, 24 ),
                     SizedBox( width: 10 ),
-                    Text( value.countryCode.toUpperCase() ),
+                    Text(
+                      value.countryCode.toUpperCase(),
+                      style: widget.dropDownTextStyle,
+                    ),
                   ],
                 );
               else if( widget.childOptions == LogosDropDownOptions.countryFullNameOnly )
-                return Text( value.name );
+                return Text(
+                  value.name,
+                  style: widget.dropDownTextStyle,
+                );
               else if( widget.childOptions == LogosDropDownOptions.countryFullNameAndCountryCode )
                 return Row(
                   children: [
-                    Text( value.name ),
+                    Text(
+                      value.name,
+                      style: widget.dropDownTextStyle,
+                    ),
                     SizedBox( width: 10 ),
-                    Text( value.countryCode ),
+                    Text(
+                      value.countryCode,
+                      style: widget.dropDownTextStyle,
+                    ),
                   ],
                 );
               else if( widget.childOptions == LogosDropDownOptions.worldIconCountryCodeLangCode )
                 return Row(
                   children: [
-                    Icon( Icons.language ),
+                    Icon(
+                        widget.dropDownIcon,
+                        size: widget.dropDownIconSize,
+                        color: widget.dropDownIconColor,
+                    ),
                     SizedBox( width: 10 ),
-                    Text( value.countryCode.toUpperCase() + ' [' + value.langCode + ']'),
+                    Text(
+                      value.countryCode.toUpperCase() + ' [' + value.langCode + ']',
+                      style: widget.dropDownTextStyle,
+                    ),
+
                   ],
                 );
               else if( widget.childOptions == LogosDropDownOptions.worldIconLangName )
                 return Row(
                   children: [
-                    Icon( Icons.language ),
+                    Icon(
+                      widget.dropDownIcon,
+                      size: widget.dropDownIconSize,
+                      color: widget.dropDownIconColor,
+                    ),
                     SizedBox( width: 10 ),
-                    Text( value.langCode ),
+                    Text(
+                      value.langCode,
+                      style: widget.dropDownTextStyle,),
                   ],
                 );
               else {
-                return Text( value.countryCode );
+                return Text(
+                  value.countryCode,
+                  style: widget.dropDownTextStyle,
+                );
               }
             }
             )

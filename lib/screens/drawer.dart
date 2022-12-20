@@ -22,7 +22,7 @@ class DrawerMenu extends StatelessWidget {
         children: [
           SizedBox( height: 50 ,),
 
-          LogosChangeLanguageDropdown(
+          LogosLanguageOptionsDropdown(
             childOptions: LogosDropDownOptions.countryFullNameAndCountryCode,
           ),
 
