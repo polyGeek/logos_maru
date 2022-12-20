@@ -242,7 +242,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Align(
                   alignment: Alignment.center,
                   child: LogosLanguageOptionsDropdown(
-                    childOptions: LogosDropDownOptions.worldIconCountryCodeLangCode,
+                    childOptions: LogosDropDownOptions.worldIconLangNameFull,
                     dropDownIcon: Icons.language,
                     dropDownIconSize: 30,
                     dropDownIconColor: Colors.blue,

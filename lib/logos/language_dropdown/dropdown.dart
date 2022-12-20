@@ -15,7 +15,8 @@ enum LogosDropDownOptions {
   countryFullNameOnly,
   countryFullNameAndCountryCode,
   worldIconCountryCodeLangCode,
-  worldIconLangName,
+  worldIconLangNameFull,
+  worldIconLangNameCode,
 }
 
 Widget DropDownChild_FlagOnly( LangVO value, double width ) {
@@ -146,7 +147,21 @@ class _LogosLanguageOptionsDropdownState extends State<LogosLanguageOptionsDropd
 
                   ],
                 );
-              else if( widget.childOptions == LogosDropDownOptions.worldIconLangName )
+              else if( widget.childOptions == LogosDropDownOptions.worldIconLangNameFull )
+                return Row(
+                  children: [
+                    Icon(
+                      widget.dropDownIcon,
+                      size: widget.dropDownIconSize,
+                      color: widget.dropDownIconColor,
+                    ),
+                    SizedBox( width: 10 ),
+                    Text(
+                      value.name,
+                      style: widget.dropDownTextStyle,),
+                  ],
+                );
+              else if( widget.childOptions == LogosDropDownOptions.worldIconLangNameCode )
                 return Row(
                   children: [
                     Icon(
