@@ -40,6 +40,7 @@ class LogosLanguageOptionsDropdown extends StatefulWidget {
   final IconData                dropDownIcon;
   final double                  dropDownIconSize;
   final Color                   dropDownIconColor;
+  final double                  gapBetweenIconAndText;
 
   LogosLanguageOptionsDropdown( {
     required this.childOptions,
@@ -49,6 +50,7 @@ class LogosLanguageOptionsDropdown extends StatefulWidget {
     this.dropDownIcon                 = Icons.language,
     this.dropDownIconSize             = 20,
     this.dropDownIconColor            = Colors.white,
+    this.gapBetweenIconAndText        = 10,
     this.onLanguageChanged            = null,
   } );
 
@@ -94,7 +96,7 @@ class _LogosLanguageOptionsDropdownState extends State<LogosLanguageOptionsDropd
                 return Row(
                   children: [
                     DropDownChild_FlagOnly( value, 30 ),
-                    SizedBox( width: 10 ),
+                    SizedBox( width: widget.gapBetweenIconAndText ),
                     Text(
                       value.name,
                       style: widget.dropDownTextStyle,
@@ -105,7 +107,7 @@ class _LogosLanguageOptionsDropdownState extends State<LogosLanguageOptionsDropd
                 return Row(
                   children: [
                     DropDownChild_FlagOnly( value, 24 ),
-                    SizedBox( width: 10 ),
+                    SizedBox( width: widget.gapBetweenIconAndText ),
                     Text(
                       value.countryCode.toUpperCase(),
                       style: widget.dropDownTextStyle,
@@ -124,7 +126,7 @@ class _LogosLanguageOptionsDropdownState extends State<LogosLanguageOptionsDropd
                       value.name,
                       style: widget.dropDownTextStyle,
                     ),
-                    SizedBox( width: 10 ),
+                    SizedBox( width: widget.gapBetweenIconAndText ),
                     Text(
                       value.countryCode,
                       style: widget.dropDownTextStyle,
@@ -139,7 +141,7 @@ class _LogosLanguageOptionsDropdownState extends State<LogosLanguageOptionsDropd
                         size: widget.dropDownIconSize,
                         color: widget.dropDownIconColor,
                     ),
-                    SizedBox( width: 10 ),
+                    SizedBox( width: widget.gapBetweenIconAndText ),
                     Text(
                       value.countryCode.toUpperCase() + ' [' + value.langCode + ']',
                       style: widget.dropDownTextStyle,
@@ -155,7 +157,7 @@ class _LogosLanguageOptionsDropdownState extends State<LogosLanguageOptionsDropd
                       size: widget.dropDownIconSize,
                       color: widget.dropDownIconColor,
                     ),
-                    SizedBox( width: 10 ),
+                    SizedBox( width: widget.gapBetweenIconAndText ),
                     Text(
                       value.name,
                       style: widget.dropDownTextStyle,),
@@ -169,7 +171,7 @@ class _LogosLanguageOptionsDropdownState extends State<LogosLanguageOptionsDropd
                       size: widget.dropDownIconSize,
                       color: widget.dropDownIconColor,
                     ),
-                    SizedBox( width: 10 ),
+                    SizedBox( width: widget.gapBetweenIconAndText ),
                     Text(
                       value.langCode,
                       style: widget.dropDownTextStyle,),
