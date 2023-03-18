@@ -9,6 +9,8 @@ import 'package:logos_maru/logos/model/rich_txt.dart';
 
 class LogosTxt extends StatefulWidget {
 
+  @override
+  final Key? key;
   final int logosID;
   final String comment;
   final Map? vars;
@@ -24,6 +26,7 @@ class LogosTxt extends StatefulWidget {
   LogosTxt({
     required this.logosID,
     required this.comment,
+    this.key,
     this.child,
     this.vars,
     this.textStyle,
@@ -38,6 +41,7 @@ class LogosTxt extends StatefulWidget {
   LogosTxt.dynamic({
     required String txt,
     required String tag,
+    this.key,
     this.isRich,
     this.textStyle,
     this.vars,
@@ -52,6 +56,7 @@ class LogosTxt extends StatefulWidget {
   /// Allows static text to be passed through LogosTxt so that it will be adjusted for font size.
   LogosTxt.static({
     required String txt,
+    this.key,
     this.isRich,
     this.textStyle,
     this.comment = '',
