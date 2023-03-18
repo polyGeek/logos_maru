@@ -336,11 +336,6 @@ class _IsRichTxtToggleBtnState extends State<IsRichTxtToggleBtn> {
     super.dispose();
   }
 
-  void _update(){
-    if( mounted )
-      setState(() {});
-  }
-
     void removeFormattingAlert( { required bool isRich } ) {
       print( 'widget.txt: ' + widget.txt );
       print( 'isRich: ' + isRich.toString() );

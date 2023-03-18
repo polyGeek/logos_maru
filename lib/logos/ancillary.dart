@@ -234,7 +234,7 @@ class _RadioBtnLabelState extends State<RadioBtnLabel> {
             Checkbox(
                 value: _localBool,
                 side: BorderSide(
-                  strokeAlign: StrokeAlign.outside,
+                  strokeAlign: BorderSide.strokeAlignOutside,
                   color: Colors.white,
                   width: 2,
                 ),

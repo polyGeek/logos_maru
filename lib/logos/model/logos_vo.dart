@@ -115,9 +115,9 @@ class LogosVO {
 
   static TextStyle getStyle( { required String styleName } ) {
 
-    if( _txtStyles.isEmpty ) {
+    /*if( _txtStyles.isEmpty ) {
       Map<String, dynamic> _txtStyles = LogosController().logosFontStyles!.toJson();
-    }
+    }*/
 
     /// todo: Using the _lastFontSize won't work if the text begins with a different style.
     try {

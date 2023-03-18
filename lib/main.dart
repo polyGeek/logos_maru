@@ -53,8 +53,8 @@ class _MyApp extends StatelessWidget {
           textTheme: ButtonTextTheme.primary, ///  <-- this auto selects the right color
         ),
         textTheme: TextTheme(
-            bodyText1: LogosTextStyles().body,
-            bodyText2: LogosTextStyles().body
+            bodyLarge: LogosTextStyles().body,
+            bodyMedium: LogosTextStyles().body
         ),
         checkboxTheme: CheckboxThemeData(
           side: MaterialStateBorderSide.resolveWith(

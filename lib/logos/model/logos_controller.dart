@@ -14,7 +14,6 @@ import 'package:logos_maru/logos/model/lang_vo.dart';
 import 'package:logos_maru/logos/model/logos_service.dart';
 import 'package:logos_maru/logos/model/logos_vo.dart';
 import 'package:logos_maru/logos/model/settings_controller.dart';
-import 'package:logos_maru/logos_styles.dart';
 
 
 class LogosController extends ChangeNotifier {
