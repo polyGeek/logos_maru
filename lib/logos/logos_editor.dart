@@ -49,7 +49,8 @@ class _LogosEditorState extends State<LogosEditor> {
 
   void _update() {
     /// todo: this update is called multiple times when editing language changes.
-    if (mounted) setState(() {});
+    if (mounted)
+      setState(() {});
   }
 
   void _toggleSettings() {

@@ -20,6 +20,7 @@ class AuthenticateLogosEditorState extends State<AuthenticateLogosEditor> {
   }
 
   void _update() {
+    if( mounted )
     setState(() {});
   }
 
@@ -199,6 +200,7 @@ class _CodeInputBtnState extends State<CodeInputBtn> {
   Color btnColor = Colors.amber;
 
   void _update() {
+    if( mounted )
     setState(() {});
   }
 

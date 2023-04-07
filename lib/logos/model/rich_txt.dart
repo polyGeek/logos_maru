@@ -120,7 +120,8 @@ class _LogosRichTxtState extends State<LogosRichTxt> {
         children: _spans,
         style: widget.txtStyle,
       );
-      setState(() {});
+      if( mounted )
+        setState(() {});
 
     }
   }

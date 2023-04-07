@@ -108,7 +108,8 @@ class _LogosTxtState extends State<LogosTxt> {
 
       _body = _Wait();
 
-      setState(() {});
+      if( mounted )
+        setState(() {});
 
       await Future.delayed( const Duration( milliseconds: 100 ), () {
         _body = _LogosUpdateTxt(
@@ -124,7 +125,8 @@ class _LogosTxtState extends State<LogosTxt> {
         );
       } );
 
-      setState(() {});
+      if( mounted )
+        setState(() {});
     }
 
   }

@@ -47,7 +47,8 @@ class _FormattingRowState extends State<FormattingRow> {
         ? _formatBtns()
         : SizedBox.shrink();
 
-    setState(() {});
+    if( mounted )
+      setState(() {});
   }
 
   List<Widget> createFormattingBtnsList() {
