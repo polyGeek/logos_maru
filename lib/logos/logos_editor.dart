@@ -247,14 +247,14 @@ class _LogosEditorState extends State<LogosEditor> {
               borderSide: BorderSide(
                 color: Colors.amber,
                 width: 3,
-                strokeAlign: BorderSide.strokeAlignOutside,
+                strokeAlign: BorderSide.strokeAlignCenter,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.white70,
                 width: 2,
-                strokeAlign: BorderSide.strokeAlignOutside,
+                strokeAlign: BorderSide.strokeAlignCenter,
               ),
             ),
           ),
@@ -290,14 +290,14 @@ class _LogosEditorState extends State<LogosEditor> {
               borderSide: BorderSide(
                 color: Colors.amber,
                 width: 3,
-                strokeAlign: BorderSide.strokeAlignOutside,
+                strokeAlign: BorderSide.strokeAlignCenter,
               ),
             ),
             enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: Colors.white70,
                 width: 2,
-                strokeAlign: BorderSide.strokeAlignOutside,
+                strokeAlign: BorderSide.strokeAlignCenter,
               ),
             ),
           ),
