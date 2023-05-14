@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:logos_maru/logos/model/logos_controller.dart';
 import 'package:logos_maru/logos_styles.dart';
 import 'package:logos_maru/screens/home_screen.dart';
-import 'package:logos_maru/utils/data_controller.dart';
-import 'package:package_info_plus/package_info_plus.dart';
+
 
 /**
  * todo:
@@ -134,12 +133,12 @@ class _MyHomePageState extends State<MyHomePage> {
       ),));
     }
 
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
+    /*PackageInfo packageInfo = await PackageInfo.fromPlatform();
 
     AppController.appName      = packageInfo.appName;
     AppController.packageName  = packageInfo.packageName;
     AppController.version      = packageInfo.version;
-    AppController.buildNumber  = packageInfo.buildNumber;
+    AppController.buildNumber  = packageInfo.buildNumber;*/
 
     _update();
   }
