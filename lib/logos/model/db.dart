@@ -18,7 +18,7 @@ class LogosDB {
 
     /// Query the table for the movie to be updated.
     final List<Map<String, dynamic>> maps = await db.rawQuery(
-        "SELECT * FROM `logos_$langCode` ORDER BY lastUpdate DESC LIMIT 1"
+        "SELECT * FROM `logos_$langCode` ORDER BY lastUpdated DESC LIMIT 1"
     );
 
     List<LogosVO> list = List.generate( maps.length, ( i ) {
@@ -33,7 +33,7 @@ class LogosDB {
           langCode      : ( maps[i][ 'langCode' ] == null )? '' : maps[i][ 'langCode' ],
           txt           : ( maps[i][ 'txt' ] == null )? '' : maps[i][ 'txt' ],
           note          : ( maps[i][ 'note' ] == null )? '' : maps[i][ 'note' ],
-          lastUpdate    : maps[i][ 'lastUpdate' ],
+          lastUpdate    : maps[i][ 'lastUpdated' ],
           style         : maps[i][ 'style' ],
           isRich        : maps[i][ 'isRich' ]
       );
